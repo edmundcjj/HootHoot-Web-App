@@ -21,6 +21,45 @@ h6 {
     font-weight: 700;
 }
 
+/* -- Start Added Portions -- */
+/* Others */
+.timer {
+    padding-top: 5%;
+}
+.stationConfig{
+    padding-top: 20%;
+}
+
+.playerContainer{
+    min-height: 100%;
+    height: 100%;
+}
+/* nav bar*/
+
+/* Added Header */
+.waitingpage-header{
+    background-color: #32CD32;//#00CCFF;
+    width: 100%;
+    height: 100%;
+}
+
+
+/* Added Fonts*/ 
+.luckyGuyFont {
+    font-size: 85px; 
+    font-family: 'Luckiest Guy', cursive;
+}
+
+.lob2Font{
+    font-size: 55px; 
+    font-family: 'Lobster Two', cursive;
+}
+.robotoFont{
+    font-family: 'Roboto', sans-serif;
+    color: white;
+}
+
+/* -- end -- */
 .topnav {
     font-size: 14px; 
 }
@@ -30,6 +69,7 @@ h6 {
     font-weight: 400;
 }
 
+
 .intro-header {
     padding-bottom: 50px;
     text-align: center;
@@ -38,6 +78,13 @@ h6 {
     background-attachment: fixed;
     background-size: cover;
 }
+
+.intro-header2 {
+    background: url(../img/zoo_wallpaper.jpg) no-repeat center center;
+    height: 100%;
+    
+}
+
 
 .intro-message {
     position: relative;
@@ -168,3 +215,6 @@ footer {
 p.copyright {
     margin: 15px 0 0;
 }
+
+
+

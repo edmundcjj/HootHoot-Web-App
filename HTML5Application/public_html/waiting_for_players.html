@@ -18,6 +18,8 @@
     <link href="css/landing-page.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy|Lobster+Two" rel="stylesheet">
+    
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
 
@@ -28,36 +30,66 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    
     <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
     <script src="js/waiting_for_player.js"></script>
+    
+
+   
+
     
 </head>
 
 <body>
 
     <!-- Header -->
-    <div class="intro-header">
-        <div class="container">
-
+    <div class="waitingpage-header">
+        
+        <!-- names of player who joined game -->
+        <div class="row col-md-1  playerContainer ">
+            
+            <div class="robotoFont" style="padding-top: 2%; margin-left: 15%; font-size: 20px">
+                <p>player IDS</p>
+                <p>player IDS</p>
+                <p>player IDS</p>
+                <p>player IDS</p>
+            </div>
+            
+            
+        </div>
+        <div >
+            <!-- Station name Title -->
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="intro-message">
-                        <h1 id="stn_name"></h1>
-                        <br>
-                        <br>
-                        <div class="container">
-                            <h3><label class="control-label col-md-2">Who's here</label></h3>
-                            <div class="col-md-3">
-                              <ul class="form-control" id="player_list">
-                                    <!-- Get data from firebase in waiting_for_player.js -->
-                              </ul>
-                            </div>
-                              
-                    </div>
-                        
-                    </div>
+                <div class="col-md-1 col-md-offset-1">
+                      <button class="btn btn-success" onclick="showCountDownTimer();">Show Timer</button>
+                   
+                </div>
+                
+                <div class=" col-md-6 luckyGuyFont"  style="padding-left: 5%;"> 
+                       <p id="stn_name"></p>
+           
+                </div>
+                
+                <!-- code for timer countdown (1). Check firebase for players. If num player > 0, display timer.-->
+                <div class="col-md-3">
+                    <div class="timer"></div>
+
+                     <script src="js/countdown_timer.js" type="text/javascript"></script>
+                </div>
+               
+                  <!-- Loading Gif -->
+             <div class="row">
+                <div class="col-sm-offset-3 col-md-4 ">
+                    <p class ="lob2Font" style="padding-left: 2% ">Waiting for players...</p>
+                    <iframe src="//giphy.com/embed/4AGlRfJwFDW00" width="500" height="400" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+                   <!--<iframe src="//giphy.com/embed/vYJUEg743346A" width="400" height="400" frameBorder="0" class="giphy-embed" allowFullScreen=""></iframe>-->
                 </div>
             </div>
+            </div>
+            
+          
 
         </div>
         <!-- /.container -->
@@ -67,10 +99,48 @@
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
+    
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+    
+    <!-- Countdown timer -->
+      <!--sample code for timer countdown (2)-->
+    <script src="js/circular-countdown.js"></script>
+    <script>
+        
+    function showCountDownTimer() {
+        $(".timer").circularCountDown({
+                        delayToFadeIn: 500,
+			size: 150,
+			fontColor: '#fff',
+                        fontSize: 25,
+			colorCircle: 'white',
+			background: '#FF8C1A',
+                        
+              reverseLoading: true,
+              duration: {
+                  seconds: 60
+              },
+              beforeStart: function() {
+                  $('.launcher').hide();
+              },
+              end: function(countdown) {
+                  countdown.destroy();
+                  $('.launcher').show();
+                  //alert('terminé');
+                  //do something after count down
+              }
+          });
+     };
+   
+
+</script>
+<script type="text/javascript">
+   
 
 </body>
 
 </html>
+
+
