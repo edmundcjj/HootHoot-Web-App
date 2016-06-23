@@ -23,6 +23,10 @@ h6 {
 
 /* -- Start Added Portions -- */
 /* Others */
+ul #player_name{
+    display:inline
+}
+
 .timer {
     padding-top: 5%;
 }
