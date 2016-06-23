@@ -49,40 +49,36 @@ ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name +
             list = document.createElement("li");                        // Create a <li> node
             text_li = document.createTextNode(pname);                   // Create a text node
             list.appendChild(text_li);                                  // Append the text to <li>
+            list.id = snapshot.key() + "";                              // Tag the id to li element
             document.getElementById("player_name").appendChild(list);   // Append <li> to <ul> with id="player_name"
             
             // Extract animal icon url
-            ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name + "/PLAYERS/" + newPlayer + "/animal_icon/icon_url");
+            /*ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name + "/PLAYERS/" + newPlayer + "/animal_icon/icon_url");
             ref.on("value", function(snapshot) {
                 var url = snapshot.val();
                 console.log("url = " + url);
             }, function (errorObject) {
               console.log("The read failed: " + errorObject.code);
-            });
+            });*/
 
         }, function (errorObject) {
 	  console.log("The read failed: " + errorObject.code);
 	});
         
-        // Retrieve & display updated player nicknames
-        ref.on("child_changed", function(snapshot) {
-            // Extract out player nickname
-            editedPlayer = snapshot.val();
-            pname = editedPlayer.nickname;
-            
-            // Update player nickname in list
-            
-        }, function (errorObject) {
-	  console.log("The read failed: " + errorObject.code);
-	});
-        
-        // Retrieve & update display of deleted players
+        // Update list of players after deletion
         ref.on("child_removed", function(snapshot) {
             // Extract out player nickname
             deletedPlayer = snapshot.val();
-            pname = deletedPlayer.nickname;
             
             // Remove player nickname from list
+            var ul = document.getElementById("player_name");
+            var items = ul.getElementsByTagName("li");
+            var k;
+            for (k = 0; k < items.length; k++){
+                if (snapshot.key() === ul.childNodes[k].id){
+                   ul.removeChild(ul.childNodes[k]);
+                }
+            }
             
         }, function (errorObject) {
 	  console.log("The read failed: " + errorObject.code);
