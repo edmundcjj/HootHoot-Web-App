@@ -22,7 +22,7 @@ state_ref.update({
 
 // Retrieve and display player nicknames of specific station
 ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name + "/PLAYERS");
-        var newPlayer, editedPlayer, deletedPlayer, player_count, list, pname, text_li;
+        var newPlayer, editedPlayer, deletedPlayer, player_count, list, pname, text_li, user_icon;
         
         // Update state of station to "starting" when player count > 0
         ref.on("value", function(snapshot) {
@@ -35,9 +35,7 @@ ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name +
                     "state": "starting" 
                 });
             }
-        }, function (errorObject) {
-	  console.log("The read failed: " + errorObject.code);
-	});
+        });
             
         // Retrieve & display new players as they are added to firebase
         ref.on("child_added", function(snapshot, prevChildKey) {
@@ -53,17 +51,10 @@ ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name +
             document.getElementById("player_name").appendChild(list);   // Append <li> to <ul> with id="player_name"
             
             // Extract animal icon url
-            /*ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name + "/PLAYERS/" + newPlayer + "/animal_icon/icon_url");
-            ref.on("value", function(snapshot) {
-                var url = snapshot.val();
-                console.log("url = " + url);
-            }, function (errorObject) {
-              console.log("The read failed: " + errorObject.code);
-            });*/
-
-        }, function (errorObject) {
-	  console.log("The read failed: " + errorObject.code);
-	});
+            user_icon = document.createElement("img");
+            user_icon.src = newPlayer.animal_icon.icon_url;
+            document.getElementById("player_name").appendChild(user_icon);
+        });
         
         // Update list of players after deletion
         ref.on("child_removed", function(snapshot) {
@@ -79,10 +70,6 @@ ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name +
                    ul.removeChild(ul.childNodes[k]);
                 }
             }
-            
-        }, function (errorObject) {
-	  console.log("The read failed: " + errorObject.code);
-	});
+        });
         
-// Retrieve and display player display picture of specific station
 
