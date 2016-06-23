@@ -33,7 +33,7 @@
         <div class="waitingpage-header">
 
             <!-- names of player who joined game -->
-            <div class="row col-md-1  playerContainer">
+            <div class="row col-md-3  playerContainer">
                 <div class="robotoFont" style="padding-top: 2%; margin-left: 15%; font-size: 20px">
                     <p class="robotoFont" style="font-size: 50px; font-weight: 100;">Players</p>
                     
@@ -42,25 +42,21 @@
                 </div>
             </div>
 
-
-
             <div>
 
                 <div class="row">
                     <div class="col-md-1 col-md-offset-1">
-                          <button class="btn btn-success" onclick="showCountDownTimer();">Show Timer</button>
+                        <button class="btn btn-success" onclick="showCountDownTimer();">Show Timer</button>
                     </div>
 
                     <!-- Station name Title -->
                     <div class=" col-md-6 luckyGuyFont"  style="padding-left: 5%;"> 
-                           <p id="stn_name"></p>
+                        <p id="stn_name"></p>
                     </div>
 
                     <!-- code for timer countdown (1). Check firebase for players. If num player > 0, display timer.-->
                     <div class="col-md-3">
-                        <div class="timer">
-
-                        </div>
+                        <div class="timer"></div>
                         <script src="js/countdown_timer.js" type="text/javascript"></script>
                     </div>
 
@@ -82,7 +78,6 @@
 
         <!-- jQuery -->
         <script src="js/jquery.js"></script>
-
 
         <!-- Bootstrap Core JavaScript -->
         <script src="js/bootstrap.min.js"></script>

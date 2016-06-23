@@ -20,7 +20,7 @@ state_ref.update({
     "state": "waiting_for_players" 
 });
 
-// Retrieve and display player nicknames of specific station
+// Retrieve, display player nicknames & picture of specific station
 ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name + "/PLAYERS");
         var newPlayer, editedPlayer, deletedPlayer, player_count, list, pname, text_li, user_icon;
         
@@ -43,25 +43,28 @@ ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name +
             newPlayer = snapshot.val();
             pname = newPlayer.nickname;
             
-            // Display extracted player nickname
-            list = document.createElement("li");                        // Create a <li> node
-            text_li = document.createTextNode(pname);                   // Create a text node
-            list.appendChild(text_li);                                  // Append the text to <li>
+            list = document.createElement("li");                        // Create a <li> element
             list.id = snapshot.key() + "";                              // Tag the id to li element
-            document.getElementById("player_name").appendChild(list);   // Append <li> to <ul> with id="player_name"
             
-            // Extract animal icon url
-            user_icon = document.createElement("img");
-            user_icon.src = newPlayer.animal_icon.icon_url;
-            document.getElementById("player_name").appendChild(user_icon);
+            var div = document.createElement("div");                    // Create <div> element
+            user_icon = document.createElement("img");                  // Create <img> element
+            user_icon.width = 50;                                       // Set picture width to 50
+            user_icon.src = newPlayer.animal_icon.icon_url;             // Set picture source to icon_url obtained from firebase
+            div.appendChild(user_icon);                                 // Append user_icon to <div> element
+            
+            text_li = document.createTextNode(pname);                   // Create a text node
+            div.appendChild(text_li);                                   // Append the text to <li>
+            
+            list.appendChild(div);                                      // Append <div> element to <li> element
+            document.getElementById("player_name").appendChild(list);   // Append <li> to <ul> with id="player_name"
         });
         
         // Update list of players after deletion
         ref.on("child_removed", function(snapshot) {
-            // Extract out player nickname
+            // Snapshot of the deleted player values
             deletedPlayer = snapshot.val();
             
-            // Remove player nickname from list
+            // Remove player from list when deleted in firebase
             var ul = document.getElementById("player_name");
             var items = ul.getElementsByTagName("li");
             var k;
@@ -71,5 +74,3 @@ ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name +
                 }
             }
         });
-        
-
