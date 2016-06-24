@@ -23,10 +23,6 @@ h6 {
 
 /* -- Start Added Portions -- */
 /* Others */
-ul #player_name{
-    display:inline
-}
-
 .timer {
     padding-top: 5%;
 }
@@ -73,7 +69,6 @@ ul #player_name{
     font-weight: 400;
 }
 
-
 .intro-header {
     padding-bottom: 50px;
     text-align: center;
@@ -86,9 +81,7 @@ ul #player_name{
 .intro-header2 {
     background: url(../img/zoo_wallpaper.jpg) no-repeat center center;
     height: 100%;
-    
 }
-
 
 .intro-message {
     position: relative;
@@ -218,6 +211,35 @@ footer {
 
 p.copyright {
     margin: 15px 0 0;
+}
+
+/* Clock */
+#clockdiv{
+	font-family: sans-serif;
+	color: #fff;
+	display: inline-block;
+	font-weight: 100;
+	text-align: center;
+	font-size: 30px;
+}
+
+#clockdiv > div{
+	padding: 10px;
+	border-radius: 3px;
+	background: #00BF96;
+	display: inline-block;
+}
+
+#clockdiv div > span{
+	padding: 15px;
+	border-radius: 3px;
+	background: #00816A;
+	display: inline-block;
+}
+
+.smalltext{
+	padding-top: 5px;
+	font-size: 16px;
 }
 
 
