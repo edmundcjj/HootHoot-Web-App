@@ -43,33 +43,22 @@
             </div>
 
             <div>
+                <!-- Station name Title -->
+                <div class=" col-md-5 luckyGuyFont"> 
+                    <p id="stn_name"></p>
+                </div>
 
+                <!-- code for timer countdown (1). Check firebase for players. If num player > 0, display timer.-->
+                <button class="btn btn-success" onclick="showCountDownTimer();">Show Timer</button>
+                <div class="timer"></div>
+
+                  <!-- Loading Gif -->
                 <div class="row">
-                    <div class="col-md-1 col-md-offset-1">
-                        <button class="btn btn-success" onclick="showCountDownTimer();">Show Timer</button>
-                    </div>
-
-                    <!-- Station name Title -->
-                    <div class=" col-md-6 luckyGuyFont"  style="padding-left: 5%;"> 
-                        <p id="stn_name"></p>
-                    </div>
-
-                    <!-- code for timer countdown (1). Check firebase for players. If num player > 0, display timer.-->
-                    <div class="col-md-3">
-                        <div class="timer"></div>
-                        <script src="js/countdown_timer.js" type="text/javascript"></script>
-                    </div>
-
-                      <!-- Loading Gif -->
-                 <div class="row">
-                    <div class="col-sm-offset-3 col-md-4 ">
-                        <p class ="lob2Font" style="padding-left: 2%" id="state">Waiting for players...</p>
-                        <iframe src="//giphy.com/embed/4AGlRfJwFDW00" width="500" height="400" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
-                    </div>
-                </div>
-
-                </div>
-
+                   <div class="col-md-5">
+                       <p class ="lob2Font" style="padding-left: 2%" id="state_ref"></p>
+                       <iframe src="//giphy.com/embed/4AGlRfJwFDW00" width="500" height="400" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+                   </div>
+               </div>
             </div>
             <!-- /.container -->
 
@@ -86,36 +75,33 @@
           <!--sample code for timer countdown (2)-->
         <script src="js/circular-countdown.js"></script>
         <script>
+            function showCountDownTimer() {
+                $(".timer").circularCountDown({
+                                delayToFadeIn: 500,
+                                size: 150,
+                                fontColor: '#fff',
+                                fontSize: 25,
+                                colorCircle: 'white',
+                                background: '#FF8C1A',
 
-        function showCountDownTimer() {
-            $(".timer").circularCountDown({
-                            delayToFadeIn: 500,
-                            size: 150,
-                            fontColor: '#fff',
-                            fontSize: 25,
-                            colorCircle: 'white',
-                            background: '#FF8C1A',
-
-                  reverseLoading: true,
-                  duration: {
-                      seconds: 60
-                  },
-                  beforeStart: function() {
-                      $('.launcher').hide();
-                  },
-                  end: function(countdown) {
-                      countdown.destroy();
-                      $('.launcher').show();
-                      //alert('terminé');
-                      //do something after count down
-                  }
-              });
-         };
-
-    </script>
+                      reverseLoading: true,
+                      duration: {
+                          seconds: 60
+                      },
+                      beforeStart: function() {
+                          $('.launcher').hide();
+                      },
+                      end: function(countdown) {
+                          countdown.destroy();
+                          $('.launcher').show();
+                          //alert('terminé');
+                          //do something after count down
+                      }
+                  });
+            };
+        </script>
     
-    <script type="text/javascript"></script>
-    
+        <script type="text/javascript"></script>
     </body>
 </html>
     
