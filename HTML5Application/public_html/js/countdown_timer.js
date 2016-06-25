@@ -31,11 +31,24 @@ function initializeClock(id, endtime) {
     var timeinterval = setInterval(updateClock, 1000);
 }
 
-var deadline = new Date(Date.parse(new Date()) + 15 * 24 * 60 * 60 * 1000);
-initializeClock('clockdiv', deadline);
+function decode_url(){
+    // Decode url to get station name
+    var search_query = window.location.search;
+    var station = [];
+    station = search_query.split('=');
+    var station_name = station[1];
+    window.onload = function(){
+        document.getElementById("stn_name").innerHTML = station_name;
+    };
+    return station_name;
+}
 
-
-
-
-
-
+var station_name = decode_url();
+var ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name + "/state");
+    ref.on("value", function(snapshot) {
+        var values = snapshot.val();
+        if (values.toString() === "starting"){
+            var deadline = new Date(Date.parse(new Date()) + 15 * 24 * 60 * 60 * 1000);
+            initializeClock('clockdiv', deadline);
+        }
+    });

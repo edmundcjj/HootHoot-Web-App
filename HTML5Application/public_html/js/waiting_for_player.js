@@ -101,6 +101,3 @@ ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name +
             }
         });
     });
-        
-        
-             
