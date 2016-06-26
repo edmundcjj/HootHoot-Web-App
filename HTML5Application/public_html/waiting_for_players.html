@@ -24,7 +24,7 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
         <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
-        <script src="js/waiting_for_player.js"></script>
+        
     </head>
     
     <body>
@@ -49,19 +49,19 @@
                         <div class="smalltext">Seconds</div>
                     </div>
                 </div>
-                
+
                 <!-- Station name Title -->
                 <div class=" col-md-5 luckyGuyFont"> 
                     <p id="stn_name"></p>
                 </div>
 
-                  <!-- Loading Gif -->
+                <!-- Loading Gif -->
                 <div class="row">
-                   <div class="col-md-5">
-                       <p class ="lob2Font" style="padding-left: 2%" id="state_ref"></p>
-                       <iframe src="//giphy.com/embed/4AGlRfJwFDW00" width="500" height="400" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
-                   </div>
-               </div>
+                    <div class="col-md-5">
+                        <p class ="lob2Font" style="padding-left: 2%" id="state_ref"></p>
+                        <iframe src="//giphy.com/embed/4AGlRfJwFDW00" width="500" height="400" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+                    </div>
+                </div>
             </div>
             <!-- /.container -->
 
@@ -75,14 +75,26 @@
         <script src="js/bootstrap.min.js"></script>
 
         <!-- Countdown timer -->
-        <script src="js/countdown_timer.js"></script>
+        <script src="js/waiting_for_player.js"></script>
         <script>
+            // Retrieve station name from url
+            var station_name = decode_url();
+            
+            // Display countdown timer if state = starting
+            var ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name + "/state");
+            ref.on("value", function(snapshot) {
+                var values = snapshot.val();
+                if (values.toString() === "starting"){
+                    var deadline = new Date(Date.parse(new Date()) + 15 * 24 * 60 * 60 * 1000);
+                    initializeClock('clockdiv', deadline);
+                }
+            });
+            
             // Function to get time left in countdown timer
             function getTimeRemaining(endtime) {
                 var t = Date.parse(endtime) - Date.parse(new Date());
                 var seconds = Math.floor((t / 1000) % 60);
                 return {
-                  'total': t,
                   'seconds': seconds
                 };
             }
@@ -98,13 +110,17 @@
 
                     secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
 
-                    if (t.total <= 0) {
-                        clearInterval(timeinterval);
+                    if (t.seconds <= 0) {
+                        ref.on("value", function(snapshot) {
+                            var values = snapshot.val();
+                            if (values.toString() === "starting"){
+                                // Redirect to <div id="get_ready">
+                            }
+                            clearInterval(timeinterval);
+                        });
                     }
                 }
 
-                updateClock();
-                
                 // Update the countdown timer every second
                 var timeinterval = setInterval(updateClock, 1000);
             }
@@ -120,19 +136,6 @@
                 };
                 return station_name;
             }
-            
-            // Retrieve station name from url
-            var station_name = decode_url();
-            
-            // Display countdown timer if state = starting
-            var ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name + "/state");
-            ref.on("value", function(snapshot) {
-                var values = snapshot.val();
-                if (values.toString() === "starting"){
-                    var deadline = new Date(Date.parse(new Date()) + 15 * 24 * 60 * 60 * 1000);
-                    initializeClock('clockdiv', deadline);
-                }
-            });
         </script>
         
     </body>

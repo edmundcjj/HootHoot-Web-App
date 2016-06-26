@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+// Function to get time left in countdown timer
 function getTimeRemaining(endtime) {
     var t = Date.parse(endtime) - Date.parse(new Date());
     var seconds = Math.floor((t / 1000) % 60);
@@ -13,6 +14,7 @@ function getTimeRemaining(endtime) {
     };
 }
 
+// Function to display the countdown timer
 function initializeClock(id, endtime) {
     var clock = document.getElementById(id);
     var secondsSpan = clock.querySelector('.seconds');
@@ -22,15 +24,25 @@ function initializeClock(id, endtime) {
 
       secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
 
-      if (t.total <= 0) {
-        clearInterval(timeinterval);
-      }
+        if (t.seconds <= 0) {
+              //clearInterval(timeinterval);
+              console.log(window.location.pathname);
+              var url_array = [];
+              url_array = window.location.pathname.split("/");
+              console.log(url_array);
+              var new_url = "http://localhost:8383//" + url_array[1] + "/Questions.html";
+              console.log(new_url);
+              window.location.assign = new_url;
+        }
     }
 
     updateClock();
+    
+    // Update seconds in countdown timer every second
     var timeinterval = setInterval(updateClock, 1000);
 }
 
+// Decode url to obtain station name
 function decode_url(){
     // Decode url to get station name
     var search_query = window.location.search;
@@ -43,6 +55,7 @@ function decode_url(){
     return station_name;
 }
 
+// Display countdown timer only when state = starting
 var station_name = decode_url();
 var ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name + "/state");
     ref.on("value", function(snapshot) {

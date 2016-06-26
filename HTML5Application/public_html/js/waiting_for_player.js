@@ -101,3 +101,10 @@ ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name +
             }
         });
     });
+    
+    console.log(window.location.pathname);
+    var url_array = [];
+    url_array = window.location.pathname.split("/");
+    console.log(url_array);
+    var new_url = "/" + url_array[1] + "/Questions.html";
+    console.log(new_url);
