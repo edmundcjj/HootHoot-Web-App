@@ -112,7 +112,7 @@
                                     // Clear display of <div id="waiting_for_players">
                                     document.getElementById("waiting_for_players").style.display = "none";
                                     
-                                    // Populate display of <div id="get_ready">
+                                    // Make display of <div id="get_ready"> visible
                                     document.getElementById("get_ready").style.display = "block";
                                 }
                                 clearInterval(timeinterval);
@@ -143,15 +143,18 @@
         <!-- end of state = waiting_for_players -->
         
         <!-- state = get_ready -->
-        <div class="get_ready_page" id="get_ready" style = "display:none">
+        <div class="get_ready_page" id="get_ready" style="display:none">
             
-            <script src="js/CMS_get_questions.js"></script>
+            <p class="robotoFont col-md-offset-3" style="font-size: 50px; font-weight: 100;">Question</p>
             
-            <div class="col-md-1">
-                <p class="robotoFont" style="font-size: 50px; font-weight: 100;">Question</p>
+            <!-- Question Name -->
+            <div class="row col-md-6">
                 <p class="robotoFont" style="font-size: 50px; font-weight: 100;" id="question_name"></p>
             </div>
             
+            <!-- Question Options -->
+            
+            <script src="js/CMS_get_questions.js"></script>
         </div>
         <!-- end of state = get_ready -->
         
