@@ -80,8 +80,11 @@
             // Retrieve station name from url
             var station_name = decode_url();
             
+            // Constants for firebase url
+            var FB_stationState_url = "https://mantrodev.firebaseio.com/STATIONS/HH_" + station_name + "/state";
+            
             // Display countdown timer if state = starting
-            var ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/HH_" + station_name + "/state");
+            var ref = new Firebase(FB_stationState_url);
             ref.on("value", function(snapshot) {
                 var values = snapshot.val();
                 if (values.toString() === "starting"){

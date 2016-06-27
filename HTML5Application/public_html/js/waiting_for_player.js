@@ -16,9 +16,14 @@ window.onload = function(){
     document.getElementById("stn_name").innerHTML = station_name;
 };
 
+// Constants for firebase url
+var FB_station_url = "https://mantrodev.firebaseio.com/STATIONS/HH_" + station_name;
+var FB_stationPlayers_url = "https://mantrodev.firebaseio.com/STATIONS/HH_" + station_name + "/PLAYERS";
+
+
 // Update state of station to "waiting_for_players" when entering
 // waiting_for_players.html for the first time
-var ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/HH_" + station_name);
+var ref = new Firebase(FB_station_url);
 ref.update({
     "state": "waiting_for_players" 
 });
@@ -29,7 +34,7 @@ ref.on("value", function(snapshot) {
 });
 
 // Retrieve & display player list
-ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/HH_" + station_name + "/PLAYERS");
+ref = new Firebase(FB_stationPlayers_url);
     var existingPlayer, newPlayer, editedPlayer, deletedPlayer, player_count, list, pname, text_li, user_icon, values;
 
     // Retrieve & display new players as they are added to firebase
@@ -54,11 +59,11 @@ ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/HH_" + station_nam
         document.getElementById("player_name").appendChild(list);   // Append <li> to <ul> with id="player_name"
 
         // Update state of station to "starting" when player count > 0
-        ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/HH_" + station_name + "/PLAYERS");
+        ref = new Firebase(FB_stationPlayers_url);
         ref.on("value", function(snapshot) {
             values = snapshot.val();
             player_count = Object.keys(values).length;
-            ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/HH_" + station_name);
+            ref = new Firebase(FB_station_url);
             if (player_count >= 1){
                 ref.update({
                     "state": "starting" 
@@ -87,11 +92,11 @@ ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/HH_" + station_nam
             }
         }
         // Update state of station to "waiting_for_players" when player count < 1
-        ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/HH_" + station_name + "/PLAYERS");
+        ref = new Firebase(FB_stationPlayers_url);
         ref.on("value", function(snapshot) {
             values = snapshot.val();
             player_count = Object.keys(values).length;
-            ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/HH_" + station_name);
+            ref = new Firebase(FB_station_url);
             if (player_count < 1){
                 ref.update({
                     "state": "waiting_for_players" 
