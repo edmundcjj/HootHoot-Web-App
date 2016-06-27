@@ -33,7 +33,7 @@
 
             <!-- names of player who joined the game -->
             <div class="row col-md-3  playerContainer">
-                <div class="robotoFont" style="padding-top: 2%; margin-left: 15%; font-size: 20px">
+                <div class="robotoFont" style="padding-top: 2%; margin-left: 10%; font-size: 20px">
                     <p class="robotoFont" style="font-size: 50px; font-weight: 100;">Players</p>
                     
                     <!-- Get player names from firebase in waiting_for_player.js -->
@@ -144,9 +144,14 @@
         
         <!-- state = get_ready -->
         <div class="get_ready_page" id="get_ready" style = "display:none">
-            <h1>Get Ready State</h1>
             
             <script src="js/CMS_get_questions.js"></script>
+            
+            <div class="col-md-1">
+                <p class="robotoFont" style="font-size: 50px; font-weight: 100;">Question</p>
+                <p class="robotoFont" style="font-size: 50px; font-weight: 100;" id="question_name"></p>
+            </div>
+            
         </div>
         <!-- end of state = get_ready -->
         
