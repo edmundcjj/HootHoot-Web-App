@@ -9,13 +9,16 @@ var search_query = window.location.search;
 var station = [];
 station = search_query.split('=');
 var station_name = station[1];
+var decode_station = [];
+decode_station = station_name.split('+');
+station_name = decode_station[0] + "_" + decode_station[1];
 window.onload = function(){
     document.getElementById("stn_name").innerHTML = station_name;
 };
 
-// Update state of station to "waiting_for_players" when entering 
+// Update state of station to "waiting_for_players" when entering
 // waiting_for_players.html for the first time
-var ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name);
+var ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/HH_" + station_name);
 ref.update({
     "state": "waiting_for_players" 
 });
@@ -26,7 +29,7 @@ ref.on("value", function(snapshot) {
 });
 
 // Retrieve & display player list
-ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name + "/PLAYERS");
+ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/HH_" + station_name + "/PLAYERS");
     var existingPlayer, newPlayer, editedPlayer, deletedPlayer, player_count, list, pname, text_li, user_icon, values;
 
     // Retrieve & display new players as they are added to firebase
@@ -51,11 +54,11 @@ ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name +
         document.getElementById("player_name").appendChild(list);   // Append <li> to <ul> with id="player_name"
 
         // Update state of station to "starting" when player count > 0
-        ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name + "/PLAYERS");
+        ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/HH_" + station_name + "/PLAYERS");
         ref.on("value", function(snapshot) {
             values = snapshot.val();
             player_count = Object.keys(values).length;
-            ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name);
+            ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/HH_" + station_name);
             if (player_count >= 1){
                 ref.update({
                     "state": "starting" 
@@ -84,11 +87,11 @@ ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name +
             }
         }
         // Update state of station to "waiting_for_players" when player count < 1
-        ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name + "/PLAYERS");
+        ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/HH_" + station_name + "/PLAYERS");
         ref.on("value", function(snapshot) {
             values = snapshot.val();
             player_count = Object.keys(values).length;
-            ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name);
+            ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/HH_" + station_name);
             if (player_count < 1){
                 ref.update({
                     "state": "waiting_for_players" 
@@ -101,10 +104,3 @@ ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name +
             }
         });
     });
-    
-    console.log(window.location.pathname);
-    var url_array = [];
-    url_array = window.location.pathname.split("/");
-    console.log(url_array);
-    var new_url = "/" + url_array[1] + "/Questions.html";
-    console.log(new_url);

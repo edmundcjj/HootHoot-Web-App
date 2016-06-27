@@ -81,7 +81,7 @@
             var station_name = decode_url();
             
             // Display countdown timer if state = starting
-            var ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + station_name + "/state");
+            var ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/HH_" + station_name + "/state");
             ref.on("value", function(snapshot) {
                 var values = snapshot.val();
                 if (values.toString() === "starting"){
@@ -131,6 +131,9 @@
                 var station = [];
                 station = search_query.split('=');
                 var station_name = station[1];
+                var decode_station = [];
+                decode_station = station_name.split('+');
+                station_name = decode_station[0] + "_" + decode_station[1];
                 window.onload = function(){
                     document.getElementById("stn_name").innerHTML = station_name;
                 };
