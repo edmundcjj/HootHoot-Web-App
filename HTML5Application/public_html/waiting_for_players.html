@@ -24,15 +24,14 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
         <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
-        
     </head>
     
     <body>
 
-        <!-- Header -->
-        <div class="waitingpage-header">
+        <!-- state = waiting_for_players -->
+        <div class="waiting_players_page" id="waiting_for_players">
 
-            <!-- names of player who joined game -->
+            <!-- names of player who joined the game -->
             <div class="row col-md-3  playerContainer">
                 <div class="robotoFont" style="padding-top: 2%; margin-left: 15%; font-size: 20px">
                     <p class="robotoFont" style="font-size: 50px; font-weight: 100;">Players</p>
@@ -63,10 +62,115 @@
                     </div>
                 </div>
             </div>
-            <!-- /.container -->
+            
+            <!-- Countdown timer -->
+            <script src="js/waiting_for_player.js"></script>
+            <script>
+                // Retrieve station name from url
+                var station_name = decode_url();
 
+                // Constants for firebase url
+                var FB_stationState_url = "https://mantrodev.firebaseio.com/STATIONS/HH_" + station_name + "/state";
+
+                // Display countdown timer if state = starting
+                var ref = new Firebase(FB_stationState_url);
+                ref.on("value", function(snapshot) {
+                    var values = snapshot.val();
+                    if (values.toString() === "starting"){
+                        var deadline = new Date(Date.parse(new Date()) + 15 * 24 * 60 * 60 * 1000);
+                        initializeClock('clockdiv', deadline);
+                    }
+                });
+
+                // Function to get time left in countdown timer
+                function getTimeRemaining(endtime) {
+                    var t = Date.parse(endtime) - Date.parse(new Date());
+                    var seconds = Math.floor((t / 1000) % 60);
+                    return {
+                      'seconds': seconds
+                    };
+                }
+
+                // Function to display the clock
+                function initializeClock(id, endtime) {
+                    var clock = document.getElementById(id);
+                    var secondsSpan = clock.querySelector('.seconds');
+
+                    // Function to update the value inside the countdown timer
+                    function updateClock() {
+                        var t = getTimeRemaining(endtime);
+
+                        secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+                        
+                        // Redirect to <div id="get_ready"> when countdown timer
+                        // hits 0 and state = "starting"
+                        if (t.seconds <= 0) {
+                            ref = new Firebase(FB_stationState_url);
+                            ref.on("value", function(snapshot) {
+                                var values = snapshot.val();
+                                if (values.toString() === "starting"){
+                                    // Clear display of <div id="waiting_for_players">
+                                    document.getElementById("waiting_for_players").style.display = "none";
+                                    
+                                    // Populate display of <div id="get_ready">
+                                    document.getElementById("get_ready").style.display = "block";
+                                }
+                                clearInterval(timeinterval);
+                            });
+                        }
+                    }
+
+                    // Update the countdown timer every second
+                    var timeinterval = setInterval(updateClock, 1000);
+                }
+                
+                // Decode web url to retrieve current station name
+                function decode_url(){
+                    var search_query = window.location.search;
+                    var station = [];
+                    station = search_query.split('=');
+                    var station_name = station[1];
+                    var decode_station = [];
+                    decode_station = station_name.split('+');
+                    station_name = decode_station[0] + "_" + decode_station[1];
+                    window.onload = function(){
+                        document.getElementById("stn_name").innerHTML = station_name;
+                    };
+                    return station_name;
+                }
+            </script>
         </div>
-        <!-- /.intro-header -->
+        <!-- end of state = waiting_for_players -->
+        
+        <!-- state = get_ready -->
+        <div class="get_ready_page" id="get_ready" style = "display:none">
+            <h1>Get Ready State</h1>
+        </div>
+        <!-- end of state = get_ready -->
+        
+        <!-- state = answering_questions -->
+        <div class="answering_qns_page" id="answering_questions" style = "display:none">
+            <h1>answering_questions State</h1>
+        </div>
+        <!-- end of state = answering_questions -->
+        
+        <!-- state = answered -->
+        <div class="answered_page" id="answered" style = "display:none">
+            <h1>answered State</h1>
+        </div>
+        <!-- end of state = answered -->
+        
+        <!-- state = game_over -->
+        <div class="game_over_page" id="game_over" style = "display:none">
+            <h1>game_over State</h1>
+        </div>
+        <!-- end of state = game_over -->
+        
+        <!-- state = leaderboard -->
+        <div class="leaderboard_page" id="leaderboard" style = "display:none">
+            <h1>leaderboard State</h1>
+        </div>
+        <!-- end of state = leaderboard -->
 
         <!-- jQuery -->
         <script src="js/jquery.js"></script>
@@ -74,76 +178,6 @@
         <!-- Bootstrap Core JavaScript -->
         <script src="js/bootstrap.min.js"></script>
 
-        <!-- Countdown timer -->
-        <script src="js/waiting_for_player.js"></script>
-        <script>
-            // Retrieve station name from url
-            var station_name = decode_url();
-            
-            // Constants for firebase url
-            var FB_stationState_url = "https://mantrodev.firebaseio.com/STATIONS/HH_" + station_name + "/state";
-            
-            // Display countdown timer if state = starting
-            var ref = new Firebase(FB_stationState_url);
-            ref.on("value", function(snapshot) {
-                var values = snapshot.val();
-                if (values.toString() === "starting"){
-                    var deadline = new Date(Date.parse(new Date()) + 15 * 24 * 60 * 60 * 1000);
-                    initializeClock('clockdiv', deadline);
-                }
-            });
-            
-            // Function to get time left in countdown timer
-            function getTimeRemaining(endtime) {
-                var t = Date.parse(endtime) - Date.parse(new Date());
-                var seconds = Math.floor((t / 1000) % 60);
-                return {
-                  'seconds': seconds
-                };
-            }
-            
-            // Function to display the clock
-            function initializeClock(id, endtime) {
-                var clock = document.getElementById(id);
-                var secondsSpan = clock.querySelector('.seconds');
-                
-                // Function to update the value inside the countdown timer
-                function updateClock() {
-                    var t = getTimeRemaining(endtime);
-
-                    secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
-
-                    if (t.seconds <= 0) {
-                        ref.on("value", function(snapshot) {
-                            var values = snapshot.val();
-                            if (values.toString() === "starting"){
-                                // Redirect to <div id="get_ready">
-                            }
-                            clearInterval(timeinterval);
-                        });
-                    }
-                }
-
-                // Update the countdown timer every second
-                var timeinterval = setInterval(updateClock, 1000);
-            }
-
-            function decode_url(){
-                // Decode url to get station name
-                var search_query = window.location.search;
-                var station = [];
-                station = search_query.split('=');
-                var station_name = station[1];
-                var decode_station = [];
-                decode_station = station_name.split('+');
-                station_name = decode_station[0] + "_" + decode_station[1];
-                window.onload = function(){
-                    document.getElementById("stn_name").innerHTML = station_name;
-                };
-                return station_name;
-            }
-        </script>
-        
     </body>
 </html>
     

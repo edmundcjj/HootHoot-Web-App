@@ -37,7 +37,7 @@ h6 {
 /* nav bar*/
 
 /* Added Header */
-.waitingpage-header{
+.waiting_players_page, .get_ready_page, .answering_qns_page, .answered_page, .game_over_page, .leaderboard_page{
     background-color: #32CD32;
     width: 100%;
     height: 100%;
@@ -240,6 +240,31 @@ p.copyright {
 .smalltext{
 	padding-top: 5px;
 	font-size: 16px;
+}
+
+/* station states */
+#waiting_for_players{
+    display: block;
+}
+
+#get_ready{
+    display: none;
+}
+
+#answering_questions{
+    display: none;
+}
+
+#answered{
+    display: none;
+}
+
+#game_over{
+    display: none;
+}
+
+#leaderboard{
+    display: none;
 }
 
 
