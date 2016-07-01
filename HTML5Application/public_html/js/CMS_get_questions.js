@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
         
-
 // Retrieve all questions from CMS and save it to QNS_BANK array
 var xmlhttp = new XMLHttpRequest();
 var url = 'http://hootsq-mantro.azurewebsites.net/api/Questions/GetQuestions';

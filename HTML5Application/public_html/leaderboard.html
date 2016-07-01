@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>HootHoot Web App</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!-- Bootstrap Core CSS -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="css/landing-page.css" rel="stylesheet">
+
+        <!-- Custom Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy|Lobster+Two" rel="stylesheet">
+
+        <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+        <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+    </head>
+    <body>
+        <div class="container-fluid" id="container">
+            <div class="col-lg-12" id="leaderboard_header">
+                <h1 id="h1_qns_header">TOP SCORER</h1>
+            </div>
+            
+            <div class="col-lg-12" id="leaderboard_nickname">
+                <div class="col-lg-4 col-lg-offset-4" id="leaderboard_nickname_container">
+                    <h2 id="h2_leaderboard_nickname">Nickname</h2>
+                </div>
+                
+                <div class="col-lg-12" id="leaderboard_stats">
+                    <div class="col-lg-4" id="leaderboard_points">
+                        <h2># points</h2>
+                    </div>
+                    
+                    <div class="col-lg-4" id="leaderboard_points">
+                        <h2># correct</h2>
+                    </div>
+                    
+                    <div class="col-lg-4" id="leaderboard_points">
+                        <h2># incorrect</h2>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row col-lg-12">
+                <div class="col-lg-6" id="leaderboard_next_qns">
+                    <h2 id="h2_leaderboard_next_qns">Next question in</h2>
+                </div>
+
+                <div class="col-lg-6" id="leaderboard_timer">
+                    <h2 id="h2_leaderboard_timer">timer</h2>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
