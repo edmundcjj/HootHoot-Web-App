@@ -39,6 +39,8 @@ h6 {
 /* Added Header */
 .waiting_players_page, .get_ready_page, .answering_qns_page, .answered_page, .game_over_page, .leaderboard_page{
     background-color: #32CD32;
+    margin-left: 0px;
+    margin-right: 0px;
     width: 100%;
     height: 100%;
 }
@@ -213,36 +215,7 @@ p.copyright {
     margin: 15px 0 0;
 }
 
-/* Clock */
-#clockdiv{
-	font-family: sans-serif;
-	color: #fff;
-	display: inline-block;
-	font-weight: 100;
-	text-align: center;
-	font-size: 30px;
-}
-
-#clockdiv > div{
-	padding: 10px;
-	border-radius: 3px;
-	background: #00BF96;
-	display: inline-block;
-}
-
-#clockdiv div > span{
-	padding: 15px;
-	border-radius: 3px;
-	background: #00816A;
-	display: inline-block;
-}
-
-.smalltext{
-	padding-top: 5px;
-	font-size: 16px;
-}
-
-/* station states */
+/* ___________________________ station states ________________________________ */
 #waiting_for_players{
     display: block;
 }
@@ -266,13 +239,48 @@ p.copyright {
 #leaderboard{
     display: none;
 }
+/* ___________________________ station states ________________________________ */
 
-#qns_header{
+/* ___________________________ waiting state ________________________________ */
+#waiting_players_body{
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+#waiting_player_column{
+    background: #008B45;
+    padding-left: 60px;
+    height: 965px;
+}
+
+#waiting_station_column{
+    background: #00CD66;
+    padding-left: 300px;
+    height: 965px;
+}
+
+#waiting_timer_column{
+    background: #00EE76;
+    padding-left: 100px;
+    height: 965px;
+}
+
+#waiting_for_player_seconds{
+    padding-top: 430px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+/* ___________________________ waiting state ________________________________ */
+
+
+#get_ready_qns_header, #answering_qns_header, #answered_qns_header{
     background: #00816A;
     text-align: center;
 }
 
-#h1_qns_header{
+#h1_qns_header, #get_ready_h1_qns_header, #answering_h1_qns_header, #answered_h1_qns_header, #leaderboard_h1_scorer_header, #game_over_h1_header{
     margin-bottom: 0px;
     margin-top: 0px;
     font-size: 60px;
@@ -309,11 +317,11 @@ p.copyright {
     height: 560px;
 }
 
-#answered_options{
+#answered_options_images{
     padding-top: 70px;
 }
 
-#answered_number{
+#answered_options_stats{
     padding-top: 230px;
 }
 
@@ -343,11 +351,11 @@ p.copyright {
     text-align: center;
 }
 
-#h1_read_qns{
+#get_ready_h1_read_qns{
     font-size: 50px;
 }
 
-#countdown_timer{
+#countdown_timer, #answering_countdown_timer{
     margin-top: 0px;
     padding-top: 125px;
     padding-bottom: 121px;
@@ -359,7 +367,7 @@ p.copyright {
     padding-bottom: 125px;
 }
 
-#option_1{
+#option_1, #answering_option_1{
     padding-left: 350px;
     padding-right: 0px;
     padding-top: 60px;
@@ -367,7 +375,7 @@ p.copyright {
     background: #008B45;
 }
 
-#option_2{
+#option_2, #answering_option_2{
     padding-left: 350px;
     padding-right: 0px;
     padding-top: 60px;
@@ -375,7 +383,7 @@ p.copyright {
     background: #00CD66;
 }
 
-#option_3{
+#option_3, #answering_option_3{
     padding-left: 350px;
     padding-right: 0px;
     padding-top: 60px;
@@ -383,7 +391,7 @@ p.copyright {
     background: #00EE76;
 }
 
-#option_4{
+#option_4, #answering_option_4{
     padding-left: 350px;
     padding-right: 0px;
     padding-top: 60px;
@@ -406,19 +414,19 @@ p.copyright {
     text-align: center;
 }
 
-#h2_leaderboard_nickname{
+#h2_leaderboard_nickname, #h2_game_over_nickname{
     font-size: 40px;
     margin-bottom: 0px;
     margin-top: 0px;
     padding-top: 25px;
 }
 
-#leaderboard_nickname_container{
+#leaderboard_nickname_container, #game_over_nickname_container{
     background: #00816A;
     height: 100px;
 }
 
-#leaderboard_stats{
+#leaderboard_stats, #game_over_stats{
     padding-top: 100px;
 }
 
@@ -452,7 +460,7 @@ p.copyright {
     text-align: center;
 }
 
-#container{
+#answering_container, #answered_container, #leaderboard_container, #game_over_container{
     padding-left: 0px;
     padding-right: 0px;
 }

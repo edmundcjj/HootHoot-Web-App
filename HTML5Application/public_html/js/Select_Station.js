@@ -6,7 +6,7 @@
 var ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS");
 	var values, dropdown, count, option, selected_val;
         
-        var query = ref.orderByChild("station_type").startAt("HOOTHOOT").endAt("HOOTHOOT");
+        var query = ref.orderByChild("station_type").startAt("HOOT HOOT").endAt("HOOT HOOT");
         query.once("value", function(allStationsSnapshot) {
             values = allStationsSnapshot.val();
             count = Object.keys(values).length;
@@ -20,5 +20,3 @@ var ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS");
                 });
             }
         });
-
-

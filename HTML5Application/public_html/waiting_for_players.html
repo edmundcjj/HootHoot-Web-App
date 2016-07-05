@@ -29,131 +29,56 @@
     
     <body>
 
-        <!-- state = waiting_for_players -->
+        <!-- _____________________________________________________  state = waiting_for_players ___________________________________________________________________________ -->
         <div class="waiting_players_page" id="waiting_for_players">
-
-            <!-- names of player who joined the game -->
-            <div class="row col-md-3 col-md-offset-1  playerContainer">
-                <div class="robotoFont" style="padding-top: 2%; margin-left: 10%; font-size: 20px">
+            
+            <!-- Call "start_waiting_for_players" function in load_all_js.js -->
+            <script>start_waiting_for_players();</script>
+            
+            <div class="col-lg-12 container-fluid" id="waiting_players_body">
+                <!-- Player Column -->
+                <div class="col-lg-2" id="waiting_player_column">
                     <p class="robotoFont" style="font-size: 50px; font-weight: 100;">Players</p>
                     
                     <!-- Get player names from firebase in waiting_for_player.js -->
-                    <ul id="player_name" style="list-style: none;"></ul>
+                    <ul id="player_name" style="list-style: none; font-size: 25px;"></ul>
                 </div>
-            </div>
-            
-            <div>
-                <div id="clockdiv" style="margin-left: 5%">
-                    <div>
-                        Time Remaining: <span class="seconds"></span>
-                        <div class="smalltext">Seconds</div>
-                    </div>
-                </div>
-
-                <!-- Station name Title -->
-                <div class=" col-md-5 luckyGuyFont"> 
-                    <p id="stn_name"></p>
-                </div>
-
-                <!-- Loading Gif -->
-                <div class="row">
-                    <div class="col-md-5">
-                        <p class ="lob2Font" style="padding-left: 2%" id="state_ref"></p>
-                        <iframe src="//giphy.com/embed/4AGlRfJwFDW00" width="500" height="400" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Countdown timer -->
-            <script src="js/waiting_for_player.js"></script>
-            <script>
-                // Retrieve station name from url
-                var station_name = decode_url();
-
-                // Constants for firebase url
-                var FB_stationState_url = "https://mantrodev.firebaseio.com/STATIONS/HH_" + station_name + "/state";
-
-                // Display countdown timer if state = starting
-                var ref = new Firebase(FB_stationState_url);
-                ref.on("value", function(snapshot) {
-                    var values = snapshot.val();
-                    if (values.toString() === "starting"){
-                        var deadline = new Date(Date.parse(new Date()) + 15 * 24 * 60 * 60 * 1000);
-                        initializeClock('clockdiv', deadline);
-                    }
-                });
-
-                // Function to get time left in countdown timer
-                function getTimeRemaining(endtime) {
-                    var t = Date.parse(endtime) - Date.parse(new Date());
-                    var seconds = Math.floor((t / 1000) % 60);
-                    return {
-                      'seconds': seconds
-                    };
-                }
-
-                // Function to display the clock
-                function initializeClock(id, endtime) {
-                    var clock = document.getElementById(id);
-                    var secondsSpan = clock.querySelector('.seconds');
-
-                    // Function to update the value inside the countdown timer
-                    function updateClock() {
-                        var t = getTimeRemaining(endtime);
-
-                        secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
-                        
-                        // Redirect to <div id="get_ready"> when countdown timer
-                        // hits 0 and state = "starting"
-                        if (t.seconds <= 0) {
-                            ref = new Firebase(FB_stationState_url);
-                            ref.on("value", function(snapshot) {
-                                var values = snapshot.val();
-                                if (values.toString() === "starting"){
-                                    // Clear display of <div id="waiting_for_players">
-                                    document.getElementById("waiting_for_players").style.display = "none";
-                                    
-                                    // Make display of <div id="get_ready"> visible
-                                    document.getElementById("get_ready").style.display = "block";
-                                }
-                                clearInterval(timeinterval);
-                            });
-                        }
-                    }
-
-                    // Update the countdown timer every second
-                    var timeinterval = setInterval(updateClock, 1000);
-                }
                 
-                // Decode web url to retrieve current station name
-                function decode_url(){
-                    var search_query = window.location.search;
-                    var station = [];
-                    station = search_query.split('=');
-                    var station_name = station[1];
-                    var decode_station = [];
-                    decode_station = station_name.split('+');
-                    station_name = decode_station[0] + "_" + decode_station[1];
-                    window.onload = function(){
-                        document.getElementById("stn_name").innerHTML = station_name;
-                    };
-                    return station_name;
-                }
-            </script>
+                <!-- Station Column -->
+                <div class="col-lg-8" id="waiting_station_column">
+                    <div class=" col-md-12 luckyGuyFont"> 
+                        <p id="stn_name"></p>
+                    </div>
+                    
+                    <!-- Loading Gif -->
+                    <div class="col-md-12">
+                        <p class ="lob2Font" style="padding-left: 2%" id="state_ref"></p>
+                        <iframe src="//giphy.com/embed/4AGlRfJwFDW00" width="500" height="400" frameBorder="0" allowFullScreen></iframe>
+                    </div>
+                </div>
+                
+                <!-- 60 sec timer Column for -->
+                <div class="col-lg-2" id="waiting_timer_column">
+                    <h2 id="waiting_for_player_seconds" style="font-size: 50px;"></h2>
+                </div>
+            </div>
         </div>
-        <!-- end of state = waiting_for_players -->
+        <!-- _____________________________________________________ end of state = waiting_for_players _____________________________________________________________________ -->
         
-        <!-- state = get_ready -->
+        
+        <!-- ______________________________________________________ state = get_ready _____________________________________________________________________________________ -->
         <!-- Display the question -->
         <div class="get_ready_page" id="get_ready" style="display:none">
             
+            <script>start_get_ready();</script>
+            
             <!-- Question Header -->
-            <div class="col-lg-12" id="qns_header">
-                <h1 id="h1_qns_header">QUESTION #</h1>
+            <div class="col-lg-12" id="get_ready_qns_header">
+                <h1 id="get_ready_h1_qns_header">QUESTION #</h1>
             </div>
             
             <div class="col-lg-12" id="get_ready_read_qns">
-                <h1 class="col-lg-11" id="h1_read_qns">Read the question before answering</h1>
+                <h1 class="col-lg-11" id="get_ready_h1_read_qns">Read the question before answering</h1>
                 <div class="col-lg-1" id="get_ready_timer"></div>
             </div>
             
@@ -163,14 +88,15 @@
             </div>
             
         </div>
-        <!-- end of state = get_ready -->
+        <!-- ______________________________________________________ end of state = get_ready ______________________________________________________________________________ -->
         
-        <!-- state = answering_questions -->
+        
+        <!-- ______________________________________________________ state = answering_questions ___________________________________________________________________________ -->
         <!-- Update the number of answers being answered -->
         <div class="answering_qns_page" id="answering_questions" style = "display:none">
-            <div class="container-fluid" id="container">
-                <div class="col-lg-12" id="qns_header">
-                    <h1 id="h1_qns_header">QUESTION #</h1>
+            <div class="container-fluid" id="answering_container">
+                <div class="col-lg-12" id="answering_qns_header">
+                    <h1 id="answering_h1_qns_header">QUESTION #</h1>
                 </div>
 
                 <div class="col-lg-11" id="answering_qns_name">
@@ -179,55 +105,56 @@
                 </div>
 
                 <div class="col-lg-1" id="answering_side_column">
-                    <div class="col-lg-12" id="countdown_timer"></div>
+                    <div class="col-lg-12" id="answering_countdown_timer"></div>
                     <h3 class="col-lg-12" id="ans_num">0 answers</h3>
                 </div>
 
                 <div class="col-lg-12">
                     <div class="row">
-                        <div class="col-lg-6" id="option_1">
-                            <img class="col-lg-3" src="" alt="" width="50" height="50">
-                            <h3 class="col-lg-9">Option 1</h3>
+                        <div class="col-lg-6" id="answering_option_1">
+                            <img id="answering_option_1_img" class="col-lg-3" src="" alt="" width="50" height="50">
+                            <h3 id="answering_option_1_text" class="col-lg-9">Option 1</h3>
                         </div>
-                        <div class="col-lg-6" id="option_2">
-                            <img class="col-lg-3" src="" alt="" width="50" height="50">
-                            <h3 class="col-lg-9">Option 2</h3>
+                        <div class="col-lg-6" id="answering_option_2">
+                            <img id="answering_option_2_img" class="col-lg-3" src="" alt="" width="50" height="50">
+                            <h3 id="answering_option_2_text" class="col-lg-9">Option 2</h3>
                         </div>
-                        <div class="col-lg-6" id="option_3">
-                            <img class="col-lg-3" src="" alt="" width="50" height="50">
-                            <h3 class="col-lg-9">Option 3</h3>
+                        <div class="col-lg-6" id="answering_option_3">
+                            <img id="answering_option_3_img" class="col-lg-3" src="" alt="" width="50" height="50">
+                            <h3 id="answering_option_3_text" class="col-lg-9">Option 3</h3>
                         </div>
-                        <div class="col-lg-6" id="option_4">
-                            <img class="col-lg-3" src="" alt="" width="50" height="50">
-                            <h3 class="col-lg-9">Option 4</h3>
+                        <div class="col-lg-6" id="answering_option_4">
+                            <img id="answering_option_4_img" class="col-lg-3" src="" alt="" width="50" height="50">
+                            <h3 id="answering_option_4_text" class="col-lg-9">Option 4</h3>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- end of state = answering_questions -->
+        <!-- ______________________________________________________ end of state = answering_questions ____________________________________________________________________ -->
         
-        <!-- state = answered -->
+        
+        <!-- ______________________________________________________ state = answered ______________________________________________________________________________________ -->
         <!-- Show the answer statistics -->
         <div class="answered_page" id="answered" style = "display:none">
-            <div class="container-fluid" id="container">
-                <div class="col-lg-12" id="qns_header">
-                    <h1 id="h1_qns_header">QUESTION #</h1>
+            <div class="container-fluid" id="answered_container">
+                <div class="col-lg-12" id="answered_qns_header">
+                    <h1 id="answered_h1_qns_header">QUESTION #</h1>
                 </div>
                 
                 <div class="col-lg-11" id="answered_qns_name">
                     <h2 id="answered_h2_qns_name">Question Name</h2>
-                    <div class="row" id="answered_number">
-                        <h3 class="col-lg-3">#</h3>
-                        <h3 class="col-lg-3">#</h3>
-                        <h3 class="col-lg-3">#</h3>
-                        <h3 class="col-lg-3">#</h3>
+                    <div class="row" id="answered_options_stats">
+                        <h3 id="answered_option_1_text" class="col-lg-3">#</h3>
+                        <h3 id="answered_option_2_text" class="col-lg-3">#</h3>
+                        <h3 id="answered_option_3_text" class="col-lg-3">#</h3>
+                        <h3 id="answered_option_4_text" class="col-lg-3">#</h3>
                     </div>
-                    <div class="row" id="answered_options">
-                        <img class="col-lg-3" src="" alt="" width="50" height="50">
-                        <img class="col-lg-3" src="" alt="" width="50" height="50">
-                        <img class="col-lg-3" src="" alt="" width="50" height="50">
-                        <img class="col-lg-3" src="" alt="" width="50" height="50">
+                    <div class="row" id="answered_options_images">
+                        <img id="answered_option_1_img" class="col-lg-3" src="" alt="" width="50" height="50">
+                        <img id="answered_option_2_img" class="col-lg-3" src="" alt="" width="50" height="50">
+                        <img id="answered_option_3_img" class="col-lg-3" src="" alt="" width="50" height="50">
+                        <img id="answered_option_4_img" class="col-lg-3" src="" alt="" width="50" height="50">
                     </div>
                 </div>
                 
@@ -257,14 +184,15 @@
                 </div>
             </div>
         </div>
-        <!-- end of state = answered -->
+        <!-- ______________________________________________________ end of state = answered _______________________________________________________________________________ -->
         
-        <!-- state = leaderboard -->
-        <!-- Display the top scorer statistics -->
+        
+        <!-- ______________________________________________________ state = Leaderboard ___________________________________________________________________________________ -->
+        <!-- Display the top scorer statistics, will be shown if there is a next question otherwise go to game over state -->
         <div class="leaderboard_page" id="leaderboard" style = "display:none">
-            <div class="container-fluid" id="container">
+            <div class="container-fluid" id="leaderboard_container">
                 <div class="col-lg-12" id="leaderboard_header">
-                    <h1 id="h1_qns_header">TOP SCORER</h1>
+                    <h1 id="leaderboard_h1_scorer_header">TOP SCORER</h1>
                 </div>
 
                 <div class="col-lg-12" id="leaderboard_nickname">
@@ -277,11 +205,11 @@
                             <h2># points</h2>
                         </div>
 
-                        <div class="col-lg-4" id="leaderboard_points">
+                        <div class="col-lg-4" id="leaderboard_correct">
                             <h2># correct</h2>
                         </div>
 
-                        <div class="col-lg-4" id="leaderboard_points">
+                        <div class="col-lg-4" id="leaderboard_incorrect">
                             <h2># incorrect</h2>
                         </div>
                     </div>
@@ -298,37 +226,38 @@
                 </div>
             </div>
         </div>
-        <!-- end of state = leaderboard -->
+        <!-- ______________________________________________________ end of state = Leaderboard ____________________________________________________________________________ -->
         
-        <!-- state = game_over -->
+        
+        <!-- ______________________________________________________ state = game_over _____________________________________________________________________________________ -->
         <div class="game_over_page" id="game_over" style = "display:none">
-            <div class="container-fluid" id="container">
+            <div class="container-fluid" id="game_over_container">
                 <div class="col-lg-12" id="game_over_header">
-                    <h1 id="h1_qns_header">GAME OVER</h1>
+                    <h1 id="game_over_h1_header">GAME OVER</h1>
                 </div>
 
                 <div class="col-lg-12" id="game_over_body">
-                    <div class="col-lg-4 col-lg-offset-4" id="leaderboard_nickname_container">
-                        <h2 id="h2_leaderboard_nickname">Nickname</h2>
+                    <div class="col-lg-4 col-lg-offset-4" id="game_over_nickname_container">
+                        <h2 id="h2_game_over_nickname">Nickname</h2>
                     </div>
 
-                    <div class="col-lg-12" id="leaderboard_stats">
-                        <div class="col-lg-4" id="leaderboard_points">
+                    <div class="col-lg-12" id="game_over_stats">
+                        <div class="col-lg-4" id="game_over_points">
                             <h2># points</h2>
                         </div>
 
-                        <div class="col-lg-4" id="leaderboard_points">
+                        <div class="col-lg-4" id="game_over_correct">
                             <h2># correct</h2>
                         </div>
 
-                        <div class="col-lg-4" id="leaderboard_points">
+                        <div class="col-lg-4" id="game_over_incorrect">
                             <h2># incorrect</h2>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- end of state = game_over -->
+        <!-- ______________________________________________________ end of state = game_over ______________________________________________________________________________ -->
 
         <!-- jQuery -->
         <script src="js/jquery.js"></script>
