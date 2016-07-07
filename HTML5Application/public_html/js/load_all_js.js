@@ -44,8 +44,8 @@ function countdown_60sec_timer(){
 
 
 // 5 seconds countdown timer function
-function countdown_5sec_timer(){
-    var countdownElement = document.getElementById("waiting_for_player_seconds"),
+function countdown_5sec_timer(id){
+    var countdownElement = document.getElementById(id),
     seconds = 5,
     second = 0,
     interval;
@@ -54,11 +54,6 @@ function countdown_5sec_timer(){
         countdownElement.innerHTML = (seconds - second) + ' secs';
         if (second >= seconds) {
             clearInterval(interval);
-            // Clear display of <div id="waiting_for_players">
-                //document.getElementById("waiting_for_players").style.display = "none";
-
-            // Make display of <div id="get_ready"> visible
-                //document.getElementById("get_ready").style.display = "block";
         }
         second++;
     }, 1000);
@@ -169,57 +164,113 @@ function start_waiting_for_players(){
 function stop_waiting_for_players(FB_stationPlayer_ref, FB_station_ref){
     FB_stationPlayer_ref.off();
     FB_station_ref.off();
-    
 }
 
 
 // Start all functions related to get_ready state
 function start_get_ready(){
     
-    // Local variables
-    var qns;
-    
-    // Retrieve all questions from CMS and save it to QNS_BANK array
-    var xmlhttp = new XMLHttpRequest();
-    var url = 'http://hootsq-mantro.azurewebsites.net/api/Questions/GetQuestions';
-    var questionBank = [];
-    var question_ids = [];
-    xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                    questionBank = JSON.parse(xmlhttp.responseText);
-                    if(questionBank.length > 0)
-                    {
-                        console.log(questionBank);
-                        for (var j = 0; j < questionBank.length; j++){
-                            question_ids.push(questionBank[j].question_id);
+        console.log("Inside start_get_ready function");
+        var station_ref, curr_qns_ref;
+        // Retrieve all questions from CMS and save it to QNS_BANK array
+        var xmlhttp = new XMLHttpRequest();
+        var url = 'http://hootsq-mantro.azurewebsites.net/api/Questions/GetQuestions';
+        var questionBank = [];
+        xmlhttp.onreadystatechange = function() {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                        questionBank = JSON.parse(xmlhttp.responseText);
+                        if(questionBank.length > 0)
+                        {
+                            console.log(questionBank);
                         }
-                        console.log(question_ids);
-                    }
+                }
+        };
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+
+        // Check if station node has QUESTION_HISTORY node
+        station_ref = new Firebase(FB_station_url);
+        station_ref.once("value", function(snapshot){
+            // Create QUESTION_HISTORY node and push list of questions retrieved from CMS
+            var has_QUESTION_HISTORY = snapshot.child("QUESTION_HISTORY").exists();
+            if (has_QUESTION_HISTORY === false){
+                console.log("No question history node");
+                var qns_history_ref = station_ref.child("QUESTION_HISTORY");
+                for (var i = 0; i < questionBank.length; i++){
+                    qns_history_ref.child(questionBank[i].question_id).set({
+                        correct_answer: questionBank[i].correct_option,
+                        option_1: questionBank[i].option_1,
+                        option_2: questionBank[i].option_2,
+                        option_3: questionBank[i].option_3,
+                        option_4: questionBank[i].option_4,
+                        question: questionBank[i].question_name,
+                        total_correct_answer: 0,
+                        total_incorrect_answer: 0
+                    });
+                }
             }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-    
-    // Push list of questions retrieved from CMS into firebase QUESTION_HISTORY node
-    var qns_history = new Firebase(FB_stationQuestionHistory_url);
-    qns_history.on("value", function(snapshot){
-        qns = snapshot.val();
-        console.log("question length = " +  Object.keys(qns).length);
-        console.log(snapshot.val());
+        });
+
+        // Update firebase CURRENT_QUESTION node with a random question from question bank
+        var curr_qns = questionBank[Math.floor(Math.random()*questionBank.length)];
+        station_ref.on("value", function(snapshot){
+            // Create CURRENT_QUESTION node if it doesnt exists
+            var has_CURRENT_QUESTION = snapshot.child("CURRENT_QUESTION").exists();
+            if (has_CURRENT_QUESTION === false){
+                console.log("No current question node");
+                var qns_curr_ref = station_ref.child("CURRENT_QUESTION");
+                qns_curr_ref.child(curr_qns.question_id).set({
+                    answering_duration: curr_qns.answering_duration,
+                    correct_answer: curr_qns.correct_option,
+                    option_1: curr_qns.option_1,
+                    option_2: curr_qns.option_2,
+                    option_3: curr_qns.option_3,
+                    option_4: curr_qns.option_4,
+                    posting_time: Firebase.ServerValue.TIMESTAMP,
+                    question: curr_qns.question_name
+                });
+            }
+            // Update CURRENT_QUESTION node with new current question
+            else{
+                curr_qns_ref = new Firebase(FB_stationCurrentQuestion_url);
+                curr_qns_ref.on("value", function(){
+                    curr_qns_ref.child(curr_qns.question_id).set({
+                    answering_duration: curr_qns.answering_duration,
+                    correct_answer: curr_qns.correct_option,
+                    option_1: curr_qns.option_1,
+                    option_2: curr_qns.option_2,
+                    option_3: curr_qns.option_3,
+                    option_4: curr_qns.option_4,
+                    posting_time: Firebase.ServerValue.TIMESTAMP,
+                    question: curr_qns.question_name
+                    });
+                });
+            }
+        });
+
+        // Display current question on web app
+        var qns_number = document.getElementById("get_ready_h1_qns_header");
+        qns_number.innerHTML = "QUESTION " + curr_qns.question_id;
+        var qns_name = document.getElementById("get_ready_qns_name");
+        qns_name.innerHTML = curr_qns.question_name;
         
-        // Check if the question id from questionBank is inside QUESTION_HISTORY node
-        for (var i = 0; i < questionBank.length; i++){
+        // Countdown timer of 5 secs for players to read
+        countdown_5sec_timer("get_ready_timer");
         
-        }
-    });
-    
-    // Update firebase CURRENT_QUESTION node with any question
-    
+        // Stop all firebase event listeners related to get_ready state
+        stop_get_ready(station_ref, curr_qns_ref);
+        
+        // Clear display of <div id="waiting_for_players">
+        document.getElementById("get_ready").style.display = "none";
+
+        // Make display of <div id="get_ready"> visible
+        document.getElementById("answering_questions").style.display = "block";
 }
 
 // Stop all functions related to get_ready state
-function stop_get_ready(){
-    
+function stop_get_ready(station_ref, curr_qns_ref){
+    station_ref.off();
+    curr_qns_ref.off();
 }
 
 

@@ -70,7 +70,11 @@
         <!-- Display the question -->
         <div class="get_ready_page" id="get_ready" style="display:none">
             
-            <script>start_get_ready();</script>
+            <script>
+            if (document.getElementById("get_ready").style.display === "block"){
+                start_get_ready();
+            }
+            </script>
             
             <!-- Question Header -->
             <div class="col-lg-12" id="get_ready_qns_header">
@@ -94,6 +98,13 @@
         <!-- ______________________________________________________ state = answering_questions ___________________________________________________________________________ -->
         <!-- Update the number of answers being answered -->
         <div class="answering_qns_page" id="answering_questions" style = "display:none">
+            
+            <script>
+            if (document.getElementById("answering_questions").style.display === "block"){
+                start_get_ready();
+            }
+            </script>
+            
             <div class="container-fluid" id="answering_container">
                 <div class="col-lg-12" id="answering_qns_header">
                     <h1 id="answering_h1_qns_header">QUESTION #</h1>
