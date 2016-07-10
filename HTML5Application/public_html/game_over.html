@@ -26,30 +26,38 @@ and open the template in the editor.
         <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
     </head>
     <body>
-        <div class="container-fluid" id="game_over_container">
-                <div class="col-lg-12" id="game_over_header">
-                    <h1 id="game_over_h1_header">GAME OVER</h1>
-                </div>
-
-                <div class="col-lg-12" id="game_over_body">
-                    <div class="col-lg-4 col-lg-offset-4" id="game_over_nickname_container">
-                        <h2 id="h2_game_over_nickname">Nickname</h2>
+        <div class="game_over_page">
+            <div class="col-lg-12">
+                <div class="gameover_header_row col-md-12">
+                    <div id="game_over_header">
+                        <h1 id="game_over_h1_header">TOP SCORER</h1>
                     </div>
-
-                    <div class="col-lg-12" id="game_over_stats">
-                        <div class="col-lg-4" id="game_over_points">
-                            <h2># points</h2>
+                </div>
+                
+                <div class="gameover_nickname_row col-md-12">
+                    <div id="gameover_nickname">
+                        <div class="col-md-4 col-md-offset-4" id="game_over_nickname_container">
+                            <h2 id="h2_game_over_nickname">Nickname</h2>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gameover_stats_row col-md-12">
+                    <div id="game_over_stats">
+                        <div class="col-md-4">
+                            <h2 id="game_over_points"># points</h2>
                         </div>
 
-                        <div class="col-lg-4" id="game_over_correct">
-                            <h2># correct</h2>
+                        <div class="col-md-4">
+                            <h2 id="game_over_correct"># correct</h2>
                         </div>
 
-                        <div class="col-lg-4" id="game_over_incorrect">
-                            <h2># incorrect</h2>
+                        <div class="col-md-4">
+                            <h2 id="game_over_incorrect"># incorrect</h2>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
     </body>
 </html>

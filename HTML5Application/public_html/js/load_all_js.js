@@ -20,6 +20,7 @@ var decode_station = [];
 decode_station = station_name.split('+');
 station_name = decode_station[0] + " " + decode_station[1];
 
+// Decode url to get station id
 var station_id = station[1];
 var decode_station_id = station_id.split("&");
 station_id = decode_station_id[0];
@@ -144,7 +145,7 @@ function stop_answering_countdown_20sec_timer(ref1){
 // 10 seconds countdown timer function for answered state
 function answered_countdown_10sec_timer(id){
     var countdownElement = document.getElementById(id),
-    seconds = 20,
+    seconds = 10,
     second = 0;
 
     interval = setInterval(function() {
@@ -159,6 +160,7 @@ function answered_countdown_10sec_timer(id){
             if (curr_qns_index !== questionBank.length){
                 console.log(curr_qns_index + " " + questionBank.length);
                 console.log("Go to leaderboard");
+                document.getElementById("game_over").style.display = "none";
                 document.getElementById("leaderboard").style.display = "block";
                 start_leaderboard();
             }
@@ -166,7 +168,9 @@ function answered_countdown_10sec_timer(id){
             else{
                 console.log(curr_qns_index + " " + questionBank.length);
                 console.log("Go to game over");
+                document.getElementById("leaderboard").style.display = "none";
                 document.getElementById("game_over").style.display = "block";
+                update_user_node();
                 start_game_over();
             }
         }
@@ -207,8 +211,8 @@ function leaderboard_countdown_10sec_timer(id, ref1){
 
 
 // 60 seconds countdown timer function for gameover state before returning to waiting state
-function game_over_countdown_60sec_timer(ref1){
-    var seconds = 60,
+function game_over_countdown_10sec_timer(ref1){
+    var seconds = 10,
     second = 0;
 
     interval = setInterval(function() {
@@ -217,6 +221,13 @@ function game_over_countdown_60sec_timer(ref1){
             
             // Stop firebase event listeners related to gameover state
             stop_game_over(ref1);
+            
+            // Hide all other states layout
+            document.getElementById("get_ready").style.display = "none";
+            document.getElementById("answering_questions").style.display = "none";
+            document.getElementById("answered").style.display = "none";
+            document.getElementById("leaderboard").style.display = "none";
+            document.getElementById("game_over").style.display = "none";
             
             // Transit to waiting state
             document.getElementById("waiting_for_players").style.display = "block";
@@ -264,6 +275,29 @@ function remove_players_ans_ansduration(){
             stationPlayers_ref.child(PlayerSnapshot.key()).child("answering_duration").remove();
             stationPlayers_ref.child(PlayerSnapshot.key()).child("score_gained").set(0);
             stationPlayers_ref.child(PlayerSnapshot.key()).child("is_correct_answer").set(false);
+        });
+    });
+}
+
+
+// Update user's score, total_correct_answer & total_incorrect_answer
+function update_user_node(){
+    var stationPlayers_ref = new Firebase(FB_stationPlayers_url);
+    stationPlayers_ref.once("value", function(AllPlayerSnapshot){
+        AllPlayerSnapshot.forEach(function(PlayerSnapshot){
+            var value = PlayerSnapshot.val();
+            
+            // Update score in users node with player score earned from the game
+            var stationPlayer_score_ref = new Firebase(FB_stationPlayers_url + "/" + PlayerSnapshot.key() + "/scores/" + station_id + "/score");
+            stationPlayer_score_ref.child("score").set(value.score);
+            
+            // Update total_correct_answer in users node with total_correct_answer earned from the game
+            var stationPlayer_total_correct_ref = new Firebase(FB_stationPlayers_url + "/" + PlayerSnapshot.key() + "/scores/" + station_id + "/total_correct_answer");
+            stationPlayer_total_correct_ref.child("total_correct_answer").set(value.total_correct_answer);
+            
+            // Update total_incorrect_answer in users node with total_incorrect_answer earned from the game
+            var stationPlayer_total_incorrect_ref = new Firebase(FB_stationPlayers_url + "/" + PlayerSnapshot.key() + "/scores/" + station_id + "/total_incorrect_answer");
+            stationPlayer_total_incorrect_ref.child("total_incorrect_answer").set(value.total_incorrect_answer);
         });
     });
 }
@@ -660,10 +694,10 @@ function start_answered(){
             console.log("Option 4 stats = " + curr_option4_stats);
             
             // Display option icon statistics
-            document.getElementById("answered_option_1_stats").innerHTML = curr_option1_stats;
-            document.getElementById("answered_option_2_stats").innerHTML = curr_option2_stats;
-            document.getElementById("answered_option_3_stats").innerHTML = curr_option3_stats;
-            document.getElementById("answered_option_4_stats").innerHTML = curr_option4_stats;
+            document.getElementById("answered_option_1_stats").innerHTML = curr_option1_stats + "answers";
+            document.getElementById("answered_option_2_stats").innerHTML = curr_option2_stats + "answers";
+            document.getElementById("answered_option_3_stats").innerHTML = curr_option3_stats + "answers";
+            document.getElementById("answered_option_4_stats").innerHTML = curr_option4_stats + "answers";
             
         });
     });
@@ -781,7 +815,7 @@ function start_game_over(){
         snapshot.forEach(function(childSnapshot) {
             var value = childSnapshot.val();
             if (value.score === highest_score){
-                document.getElementById("h2_game_over_nickname").innerHTML = value.nickname;
+                document.getElementById("h2_game_over_nickname").innerHTML = "Rank 1: " + value.nickname;
                 document.getElementById("game_over_points").innerHTML = value.score + " points";
                 document.getElementById("game_over_correct").innerHTML = value.total_correct_answer + " correct";
                 document.getElementById("game_over_incorrect").innerHTML = value.total_correct_answer + " incorrect";
@@ -790,7 +824,7 @@ function start_game_over(){
     });
     
     // Call countdown timer function
-    game_over_countdown_60sec_timer(stationPlayers_ref);
+    game_over_countdown_10sec_timer(stationPlayers_ref);
 }
 
 // Stop all functions related to game over state

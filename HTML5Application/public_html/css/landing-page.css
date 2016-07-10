@@ -70,7 +70,7 @@ html,body,.col-lg-12,.row{
     height: 8%;
 }
 .get_ready_qns_header_row > div{
-    height: 100%
+    height: 100%;
 }
 .get_ready_read_qns_row{
     height: 8%;
@@ -82,7 +82,7 @@ html,body,.col-lg-12,.row{
     height: 84%;
 }
 .get_ready_qns_name_row > div{
-    height: 100%
+    height: 100%;
 }
 
 .answering_qns_header_row{
@@ -119,13 +119,13 @@ html,body,.col-lg-12,.row{
     height: 40%;
 }
 .answering_row1{
-    height: 50%
+    height: 50%;
 }
 .answering_row1 > div{
     height: 100%;
 }
 .answering_row2{
-    height: 50%
+    height: 50%;
 }
 .answering_row2 > div{
     height: 100%;
@@ -155,7 +155,7 @@ html,body,.col-lg-12,.row{
 .answered_stats_number_row{
     padding: 0px;
     margin: 0px;
-    height: 10%
+    height: 10%;
 }
 .answered_stats_number_row > div{
     height: 100%;
@@ -163,7 +163,7 @@ html,body,.col-lg-12,.row{
 .answered_stats_img_row{
     padding: 0px;
     margin: 0px;
-    height: 30%
+    height: 30%;
 }
 .answered_stats_img_row > div{
     height: 100%;
@@ -173,15 +173,70 @@ html,body,.col-lg-12,.row{
     height: 40%;
 }
 .answered_row1{
-    height: 50%
+    height: 50%;
 }
 .answered_row1 > div{
     height: 100%;
 }
 .answered_row2{
-    height: 50%
+    height: 50%;
 }
 .answered_row2 > div{
+    height: 100%;
+}
+
+.leaderboard_header_row{
+    padding: 0px;
+    height: 8%;
+}
+.leaderboard_header_row > div{
+    height: 100%;
+}
+.leaderboard_nickname_row{
+    background: #00BF96;
+    padding: 0px;
+    height: 40%;
+}
+.leaderboard_nickname_row > div{
+    height: 100%;
+}
+.leaderboard_stats_row{
+    background: #00BF96;
+    padding: 0px;
+    height: 40%;
+}
+.leaderboard_stats_row > div{
+    height: 100%;
+}
+.leaderboard_timer_row{
+    padding: 0px;
+    height: 12%;
+}
+.leaderboard_timer_row > div{
+    height: 100%;
+}
+
+.gameover_header_row{
+    padding: 0px;
+    height: 8%;
+}
+.gameover_header_row > div{
+    height: 100%;
+}
+.gameover_nickname_row{
+    background: #00BF96;
+    padding: 0px;
+    height: 46%;
+}
+.gameover_nickname_row > div{
+    height: 100%;
+}
+.gameover_stats_row{
+    background: #00BF96;
+    padding: 0px;
+    height: 46%;
+}
+.gameover_stats_row > div{
     height: 100%;
 }
 /* Layout configuration  */
@@ -215,30 +270,25 @@ html,body,.col-lg-12,.row{
 
 /* ___________________________ waiting state ________________________________ */
 #waiting_players_body{
-    margin-left: 0px;
-    margin-right: 0px;
-    padding-left: 0px;
-    padding-right: 0px;
+    margin: 0px;
+    padding: 0px;
 }
 
 #waiting_player_column{
     background: #008B45;
     text-align: center;
-    padding-left: 0px;
-    padding-right: 0px;
+    padding: 0px;
 }
 
 #waiting_station_column{
     background: #00CD66;
-    padding-left: 0px;
-    padding-right: 0px;
+    padding: 0px;
     text-align: center;
 }
 
 #waiting_timer_column{
     background: #00EE76;
-    padding-left: 0px;
-    padding-right: 0px;
+    padding: 0px;
 }
 
 #waiting_for_player_seconds{
@@ -303,6 +353,7 @@ html,body,.col-lg-12,.row{
 
 #get_ready_h2_qns_name{
     word-wrap: break-word;
+    margin: 0px;
     font-size: 100px;
     position: absolute;
     top: 50%;
@@ -338,9 +389,10 @@ html,body,.col-lg-12,.row{
 
 #get_ready_read_qns{
     background: #00C957;
-    padding-left: 0px;
-    padding-right: 0px;
-    text-align: center;
+    padding: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #get_ready_h1_read_qns{
@@ -410,11 +462,12 @@ html,body,.col-lg-12,.row{
     font-size: 60px;
 }
 
-#leaderboard_nickname{
-    height: 800px;
+#leaderboard_nickname, #gameover_nickname{
     background: #00BF96;
-    padding-top: 270px;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #h2_leaderboard_nickname, #h2_game_over_nickname{
@@ -427,33 +480,45 @@ html,body,.col-lg-12,.row{
 #leaderboard_nickname_container, #game_over_nickname_container{
     background: #00816A;
     height: 100px;
+    margin: 0px;
 }
 
 #leaderboard_stats, #game_over_stats{
-    padding-top: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#leaderboard_points, #leaderboard_correct, #leaderboard_incorrect, #game_over_points, #game_over_correct, #game_over_incorrect{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #h2_leaderboard_next_qns{
-    padding-top: 20px;
-    text-align: center;
+    margin: 0px;
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%,-50%);
 }
 
 #leaderboard_next_qns{
     background: #00CD66;
-    height: 99px;
-    margin-top: 0px;
+    margin: 0px;
 }
 
 #leaderboard_timer{
     background: #00FF7F;
-    height: 99px;
-    margin-top: 0px;
-    margin-right: 0px;
+    margin: 0px;
 }
 
 #h2_leaderboard_timer{
-    padding-top: 20px;
-    text-align: center;
+    margin: 0px;
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%,-50%);
 }
 
 #game_over_body{
