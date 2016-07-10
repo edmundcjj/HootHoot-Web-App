@@ -1,0 +1,26 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 10 Jul, 2016, 4:49:12 PM
+    Author     : reed92
+*/
+
+html,body,.col-lg-12,.row {
+  height:100%;
+}
+.row > div {
+  height:100%;
+}
+  
+  
+  
+/* to make columns visible */
+.row .col-lg-2 {
+  background-color:#eee;
+}
+.row .col-lg-8 {
+  background-color:#ddd;
+}

@@ -8,15 +8,22 @@ var ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS");
         
         var query = ref.orderByChild("station_type").startAt("HOOT HOOT").endAt("HOOT HOOT");
         query.once("value", function(allStationsSnapshot) {
-            values = allStationsSnapshot.val();
-            count = Object.keys(values).length;
             dropdown = document.getElementById("stn_list");
-            for (var i = 0; i < count; i++){
-                var station_ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS/" + Object.keys(values)[i] + "/station_name");
-                station_ref.on("value", function(Stationsnapshot){
-                    option = document.createElement("option");
-                    option.text = Stationsnapshot.val();
-                    dropdown.appendChild(option);
-                });
-            }
+            allStationsSnapshot.forEach(function(childSnapshot) {
+                values = childSnapshot.val();
+                console.log(values);
+                option = document.createElement("option");
+                option.text = values.station_name;
+                option.value = childSnapshot.key();
+                dropdown.appendChild(option);
+            });
+            onOptionChange();
         });
+    
+// Retrieve station names and station ids from form submission
+function onOptionChange(){
+    var hidden_input = document.getElementById("station_name");
+    var selected_index = document.getElementById("stn_list").selectedIndex;
+    hidden_input.value = document.getElementsByTagName("option")[selected_index].text;
+    console.log("The value is " + hidden_input.value);
+}

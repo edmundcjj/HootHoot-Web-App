@@ -11,7 +11,7 @@
         <title>HootHoot Web App</title>
 
         <!-- Bootstrap Core CSS -->
-        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
         <!-- Custom CSS -->
         <link href="css/landing-page.css" rel="stylesheet">
@@ -35,31 +35,33 @@
             <!-- Call "start_waiting_for_players" function in load_all_js.js -->
             <script>start_waiting_for_players();</script>
             
-            <div class="col-lg-12 container-fluid" id="waiting_players_body">
-                <!-- Player Column -->
-                <div class="col-lg-2" id="waiting_player_column">
-                    <p class="robotoFont" style="font-size: 50px; font-weight: 100;">Players</p>
-                    
-                    <!-- Get player names from firebase in waiting_for_player.js -->
-                    <ul id="player_name" style="list-style: none; font-size: 25px;"></ul>
-                </div>
-                
-                <!-- Station Column -->
-                <div class="col-lg-8" id="waiting_station_column">
-                    <div class=" col-md-12 luckyGuyFont"> 
-                        <p id="stn_name"></p>
+            <div class="col-lg-12" id="waiting_players_body">
+                <div class="row">
+                    <!-- Player Column -->
+                    <div class="col-lg-2" id="waiting_player_column">
+                        <p class="robotoFont" style="font-size: 50px; font-weight: 100;">Players</p>
+
+                        <!-- Get player names from firebase in waiting_for_player.js -->
+                        <ul id="player_name" style="list-style: none; font-size: 25px;"></ul>
                     </div>
-                    
-                    <!-- Loading Gif -->
-                    <div class="col-md-12">
-                        <p class ="lob2Font" style="padding-left: 2%" id="state_ref"></p>
-                        <iframe src="//giphy.com/embed/4AGlRfJwFDW00" width="500" height="400" frameBorder="0" allowFullScreen></iframe>
+
+                    <!-- Station Column -->
+                    <div class="col-lg-8" id="waiting_station_column">
+                        <div class="luckyGuyFont col-md-12" id="waiting_station_name"> 
+                            <p id="stn_name"></p>
+                        </div>
+
+                        <!-- Loading Gif -->
+                        <div class="col-md-12">
+                            <p class ="lob2Font col-md-12" style="padding-left: 2%" id="state_ref"></p>
+                            <iframe class="col-md-6 col-md-offset-3" src="//giphy.com/embed/4AGlRfJwFDW00" width="500" height="400" frameBorder="0" allowFullScreen></iframe>
+                        </div>
                     </div>
-                </div>
-                
-                <!-- 60 sec timer Column for -->
-                <div class="col-lg-2" id="waiting_timer_column">
-                    <h2 id="waiting_for_player_seconds" style="font-size: 50px;"></h2>
+
+                    <!-- 60 sec timer Column for -->
+                    <div class="col-lg-2" id="waiting_timer_column">
+                        <h2 id="waiting_for_player_seconds" style="font-size: 50px;">Timer</h2>
+                    </div>
                 </div>
             </div>
         </div>
@@ -68,29 +70,29 @@
         
         <!-- ______________________________________________________ state = get_ready _____________________________________________________________________________________ -->
         <!-- Display the question -->
-        <div class="get_ready_page" id="get_ready" style="display:none">
-            
-            <script>
-            if (document.getElementById("get_ready").style.display === "block"){
-                start_get_ready();
-            }
-            </script>
-            
-            <!-- Question Header -->
-            <div class="col-lg-12" id="get_ready_qns_header">
-                <h1 id="get_ready_h1_qns_header">QUESTION #</h1>
-            </div>
-            
-            <div class="col-lg-12" id="get_ready_read_qns">
-                <h1 class="col-lg-11" id="get_ready_h1_read_qns">Read the question before answering</h1>
-                <div class="col-lg-1" id="get_ready_timer"></div>
-            </div>
-            
-            <!-- Question Name -->
-            <div class="col-lg-12" id="get_ready_qns_name">
-                <h2 id="h2_qns_name">Question Name</h2>
-            </div>
-            
+        <div class="col-lg-12 get_ready_page" id="get_ready" style="display:none">
+                <!-- Question Header -->
+                <div class="get_ready_qns_header_row">
+                    <div class="col-md-12 " id="get_ready_qns_header">
+                        <h2 id="get_ready_h1_qns_header">QUESTION #</h2>
+                    </div>
+                </div>
+                
+                <div class="get_ready_read_qns_row">
+                    <div class="col-md-12" id="get_ready_read_qns">
+                        <h3 class="col-md-11" id="get_ready_h1_read_qns">Read the question before answering</h3>
+                        <div class="col-md-1" id="get_ready_timer">
+                            <h1 id="get_ready_h3_timer">Time</h1>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="get_ready_qns_name_row">
+                    <!-- Question Name -->
+                    <div class="col-md-12" id="get_ready_qns_name">
+                        <h1 id="get_ready_h2_qns_name">Question Name</h1>
+                    </div>
+                </div>
         </div>
         <!-- ______________________________________________________ end of state = get_ready ______________________________________________________________________________ -->
         
@@ -98,45 +100,51 @@
         <!-- ______________________________________________________ state = answering_questions ___________________________________________________________________________ -->
         <!-- Update the number of answers being answered -->
         <div class="answering_qns_page" id="answering_questions" style = "display:none">
-            
-            <script>
-            if (document.getElementById("answering_questions").style.display === "block"){
-                start_get_ready();
-            }
-            </script>
-            
-            <div class="container-fluid" id="answering_container">
-                <div class="col-lg-12" id="answering_qns_header">
-                    <h1 id="answering_h1_qns_header">QUESTION #</h1>
+            <div class="col-lg-12">
+                <div class="answering_qns_header_row col-md-12">
+                    <div id="answering_qns_header">
+                        <h1 id="answering_h1_qns_header">QUESTION #</h1>
+                    </div>
+                </div>
+                
+                <div class="answering_qns_name_row col-md-11">
+                    <div id="answering_qns_name">
+                        <h2 id="answering_h2_qns_name">Question Name</h2>
+                    </div>
+                </div>
+                
+                <div class="answering_side_column col-md-1"  style="padding: 0px">
+                    <div class="answering_side_column_top_row">
+                        <div class="col-md-12" id="answering_countdown_timer">
+                            <h3 id="h3_answering_countdown_timer" style="margin: 0px">Timer</h3>
+                        </div>
+                    </div>
+                    <div class="answering_side_column_bottom_row">
+                        <div class="col-md-12" id="answering_num">
+                            <h3 id="ans_num">0 answers</h3>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="col-lg-11" id="answering_qns_name">
-                    <h2 id="answering_h2_qns_name">Question Name</h2>
-                    <img style="padding-top: 50px" src="" alt="" width="400" height="400">
-                </div>
-
-                <div class="col-lg-1" id="answering_side_column">
-                    <div class="col-lg-12" id="answering_countdown_timer"></div>
-                    <h3 class="col-lg-12" id="ans_num">0 answers</h3>
-                </div>
-
-                <div class="col-lg-12">
-                    <div class="row">
-                        <div class="col-lg-6" id="answering_option_1">
-                            <img id="answering_option_1_img" class="col-lg-3" src="" alt="" width="50" height="50">
-                            <h3 id="answering_option_1_text" class="col-lg-9">Option 1</h3>
+                <div class="answering_row col-md-12 " style="padding: 0px">
+                    <div class="answering_row1">
+                        <div class="col-md-6" id="answering_option_1">
+                            <img id="answering_option_1_img" class="col-md-3" src="" alt="">
+                            <h3 id="answering_option_1_text" class="col-md-9">Option 1</h3>
                         </div>
-                        <div class="col-lg-6" id="answering_option_2">
-                            <img id="answering_option_2_img" class="col-lg-3" src="" alt="" width="50" height="50">
-                            <h3 id="answering_option_2_text" class="col-lg-9">Option 2</h3>
+                        <div class="col-md-6" id="answering_option_2">
+                            <img id="answering_option_2_img" class="col-md-3" src="" alt="">
+                            <h3 id="answering_option_2_text" class="col-md-9">Option 2</h3>
                         </div>
-                        <div class="col-lg-6" id="answering_option_3">
-                            <img id="answering_option_3_img" class="col-lg-3" src="" alt="" width="50" height="50">
-                            <h3 id="answering_option_3_text" class="col-lg-9">Option 3</h3>
+                    </div>
+                    <div class="answering_row2">
+                        <div class="col-md-6" id="answering_option_3">
+                            <img id="answering_option_3_img" class="col-md-3" src="" alt="">
+                            <h3 id="answering_option_3_text" class="col-md-9">Option 3</h3>
                         </div>
-                        <div class="col-lg-6" id="answering_option_4">
-                            <img id="answering_option_4_img" class="col-lg-3" src="" alt="" width="50" height="50">
-                            <h3 id="answering_option_4_text" class="col-lg-9">Option 4</h3>
+                        <div class="col-md-6" id="answering_option_4">
+                            <img id="answering_option_4_img" class="col-md-3" src="" alt="">
+                            <h3 id="answering_option_4_text" class="col-md-9">Option 4</h3>
                         </div>
                     </div>
                 </div>
@@ -148,48 +156,70 @@
         <!-- ______________________________________________________ state = answered ______________________________________________________________________________________ -->
         <!-- Show the answer statistics -->
         <div class="answered_page" id="answered" style = "display:none">
-            <div class="container-fluid" id="answered_container">
-                <div class="col-lg-12" id="answered_qns_header">
-                    <h1 id="answered_h1_qns_header">QUESTION #</h1>
-                </div>
-                
-                <div class="col-lg-11" id="answered_qns_name">
-                    <h2 id="answered_h2_qns_name">Question Name</h2>
-                    <div class="row" id="answered_options_stats">
-                        <h3 id="answered_option_1_text" class="col-lg-3">#</h3>
-                        <h3 id="answered_option_2_text" class="col-lg-3">#</h3>
-                        <h3 id="answered_option_3_text" class="col-lg-3">#</h3>
-                        <h3 id="answered_option_4_text" class="col-lg-3">#</h3>
-                    </div>
-                    <div class="row" id="answered_options_images">
-                        <img id="answered_option_1_img" class="col-lg-3" src="" alt="" width="50" height="50">
-                        <img id="answered_option_2_img" class="col-lg-3" src="" alt="" width="50" height="50">
-                        <img id="answered_option_3_img" class="col-lg-3" src="" alt="" width="50" height="50">
-                        <img id="answered_option_4_img" class="col-lg-3" src="" alt="" width="50" height="50">
+            <div class="col-lg-12">
+                <div class="answered_qns_header_row col-md-11">
+                    <div class="col-md-12" id="answered_qns_header">
+                        <h2 id="answered_h1_qns_header">QUESTION #</h2>
                     </div>
                 </div>
                 
-                <div class="col-lg-1" id="answered_timer">
-                    <div class="col-lg-12" id="countdown_timer"></div>
+                <div class="answered_timer_row col-md-1">
+                    <div id="answered_timer">
+                        <h2 id="answered_countdown_timer">Timer</h2>
+                    </div>
                 </div>
-            
-                <div class="col-lg-12">
-                    <div class="row">
-                        <div class="col-lg-6" id="option_1">
-                            <img class="col-lg-3" src="" alt="" width="50" height="50">
-                            <h3 class="col-lg-9">Option 1</h3>
+                
+                <div class="answered_qns_name_row col-md-12">
+                    <div class="col-md-12" id="answered_qns_name">
+                        <h2 id="answered_h2_qns_name">Question Name</h2>
+                    </div>
+                </div>
+                
+                <div class="answered_stats_img_row col-md-12">
+                    <div class="col-md-12" id="answered_stats_img">
+                        <div class="row" id="answered_options_images">
+                            <img id="answered_option_1_icon" class="col-md-3" height="300" src="" alt="">
+                            <img id="answered_option_2_icon" class="col-md-3" height="300" src="" alt="">
+                            <img id="answered_option_3_icon" class="col-md-3" height="300" src="" alt="">
+                            <img id="answered_option_4_icon" class="col-md-3" height="300" src="" alt="">
                         </div>
-                        <div class="col-lg-6" id="option_2">
-                            <img class="col-lg-3" src="" alt="" width="50" height="50">
-                            <h3 class="col-lg-9">Option 2</h3>
+                    </div>
+                </div>
+                
+                <div class="answered_stats_number_row col-md-12">
+                    <div class="col-md-12" id="answered_stats_num">
+                        <div class="row" id="answered_options_stats">
+                            <h3 id="answered_option_1_stats" class="col-md-3">0</h3>
+                            <h3 id="answered_option_2_stats" class="col-md-3">0</h3>
+                            <h3 id="answered_option_3_stats" class="col-md-3">0</h3>
+                            <h3 id="answered_option_4_stats" class="col-md-3">0</h3>
                         </div>
-                        <div class="col-lg-6" id="option_3">
-                            <img class="col-lg-3" src="" alt="" width="50" height="50">
-                            <h3 class="col-lg-9">Option 3</h3>
+                    </div>
+                </div>
+                
+                <div class="answered_row col-md-12">
+                    <div class="answered_row1">
+                        <div class="col-md-6" id="answered_option_1">
+                            <img id="answered_option_1_img" class="col-md-3" src="" alt="">
+                            <h3 id="answered_option_1_text" class="col-md-7">Option 1</h3>
+                            <img id="answered_option_1_correct" class="col-md-2" src="img/correct_answer_tick.png" alt="">
                         </div>
-                        <div class="col-lg-6" id="option_4">
-                            <img class="col-lg-3" src="" alt="" width="50" height="50">
-                            <h3 class="col-lg-9">Option 4</h3>
+                        <div class="col-md-6" id="answered_option_2">
+                            <img id="answered_option_2_img" class="col-md-3" src="" alt="">
+                            <h3 id="answered_option_2_text" class="col-md-7">Option 2</h3>
+                            <img id="answered_option_2_correct" class="col-md-2" src="img/correct_answer_tick.png" alt="">
+                        </div>
+                    </div>
+                    <div class="answered_row2">
+                        <div class="col-md-6" id="answered_option_3">
+                            <img id="answered_option_3_img" class="col-md-3" src="" alt="">
+                            <h3 id="answered_option_3_text" class="col-md-7">Option 3</h3>
+                            <img id="answered_option_3_correct" class="col-md-2" src="img/correct_answer_tick.png" alt="">
+                        </div>
+                        <div class="col-md-6" id="answered_option_4">
+                            <img id="answered_option_4_img" class="col-md-3" src="" alt="">
+                            <h3 id="answered_option_4_text" class="col-md-7">Option 4</h3>
+                            <img id="answered_option_4_correct" class="col-md-2" src="img/correct_answer_tick.png" alt="">
                         </div>
                     </div>
                 </div>
@@ -212,16 +242,16 @@
                     </div>
 
                     <div class="col-lg-12" id="leaderboard_stats">
-                        <div class="col-lg-4" id="leaderboard_points">
-                            <h2># points</h2>
+                        <div class="col-lg-4">
+                            <h2 id="leaderboard_points"># points</h2>
                         </div>
 
-                        <div class="col-lg-4" id="leaderboard_correct">
-                            <h2># correct</h2>
+                        <div class="col-lg-4">
+                            <h2 id="leaderboard_correct"># correct</h2>
                         </div>
 
-                        <div class="col-lg-4" id="leaderboard_incorrect">
-                            <h2># incorrect</h2>
+                        <div class="col-lg-4">
+                            <h2 id="leaderboard_incorrect"># incorrect</h2>
                         </div>
                     </div>
                 </div>
@@ -253,16 +283,16 @@
                     </div>
 
                     <div class="col-lg-12" id="game_over_stats">
-                        <div class="col-lg-4" id="game_over_points">
-                            <h2># points</h2>
+                        <div class="col-lg-4">
+                            <h2 id="game_over_points"># points</h2>
                         </div>
 
-                        <div class="col-lg-4" id="game_over_correct">
-                            <h2># correct</h2>
+                        <div class="col-lg-4">
+                            <h2 id="game_over_correct"># correct</h2>
                         </div>
 
-                        <div class="col-lg-4" id="game_over_incorrect">
-                            <h2># incorrect</h2>
+                        <div class="col-lg-4">
+                            <h2 id="game_over_incorrect"># incorrect</h2>
                         </div>
                     </div>
                 </div>

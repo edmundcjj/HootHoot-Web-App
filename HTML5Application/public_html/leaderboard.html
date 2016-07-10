@@ -26,7 +26,7 @@ and open the template in the editor.
         <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
     </head>
     <body>
-        <div class="container-fluid" id="container">
+        <div class="container-fluid" id="leaderboard_container">
             <div class="col-lg-12" id="leaderboard_header">
                 <h1 id="h1_qns_header">TOP SCORER</h1>
             </div>
@@ -37,21 +37,21 @@ and open the template in the editor.
                 </div>
                 
                 <div class="col-lg-12" id="leaderboard_stats">
-                    <div class="col-lg-4" id="leaderboard_points">
-                        <h2># points</h2>
+                    <div class="col-lg-4">
+                        <h2 id="leaderboard_points"># points</h2>
                     </div>
                     
-                    <div class="col-lg-4" id="leaderboard_points">
-                        <h2># correct</h2>
+                    <div class="col-lg-4">
+                        <h2 id="leaderboard_correct"># correct</h2>
                     </div>
                     
-                    <div class="col-lg-4" id="leaderboard_points">
-                        <h2># incorrect</h2>
+                    <div class="col-lg-4">
+                        <h2 id="leaderboard_incorrect"># incorrect</h2>
                     </div>
                 </div>
             </div>
             
-            <div class="row col-lg-12">
+            <div class="col-lg-12">
                 <div class="col-lg-6" id="leaderboard_next_qns">
                     <h2 id="h2_leaderboard_next_qns">Next question in</h2>
                 </div>

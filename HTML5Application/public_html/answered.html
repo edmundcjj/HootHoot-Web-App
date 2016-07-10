@@ -26,48 +26,72 @@ and open the template in the editor.
         <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
     </head>
     <body>
-        <div class="container-fluid" id="container">
-            <div class="col-lg-12" id="qns_header">
-                <h1 id="h1_qns_header">QUESTION #</h1>
-            </div>
-
-            <div class="col-lg-11" id="answered_qns_name">
-                <h2 id="answered_h2_qns_name">Question Name</h2>
-                <div class="row" id="answered_number">
-                    <h3 class="col-lg-3">#</h3>
-                    <h3 class="col-lg-3">#</h3>
-                    <h3 class="col-lg-3">#</h3>
-                    <h3 class="col-lg-3">#</h3>
-                </div>
-                <div class="row" id="answered_options">
-                    <img class="col-lg-3" src="" alt="" width="50" height="50">
-                    <img class="col-lg-3" src="" alt="" width="50" height="50">
-                    <img class="col-lg-3" src="" alt="" width="50" height="50">
-                    <img class="col-lg-3" src="" alt="" width="50" height="50">
-                </div>
-            </div>
-            
-            <div class="col-lg-1" id="answered_timer">
-                <div class="col-lg-12" id="countdown_timer"></div>
-            </div>
-            
+        <div class="answered_page">
             <div class="col-lg-12">
-                <div class="row">
-                    <div class="col-lg-6" id="option_1">
-                        <img class="col-lg-3" src="" alt="" width="50" height="50">
-                        <h3 class="col-lg-9">Option 1</h3>
+                <div class="answered_qns_header_row col-md-11">
+                    <div class="col-md-12" id="answered_qns_header">
+                        <h2 id="answered_h1_qns_header">QUESTION #</h2>
                     </div>
-                    <div class="col-lg-6" id="option_2">
-                        <img class="col-lg-3" src="" alt="" width="50" height="50">
-                        <h3 class="col-lg-9">Option 2</h3>
+                </div>
+                
+                <div class="answered_timer_row col-md-1">
+                    <div id="answered_timer">
+                        <h2 id="answered_countdown_timer">Timer</h2>
                     </div>
-                    <div class="col-lg-6" id="option_3">
-                        <img class="col-lg-3" src="" alt="" width="50" height="50">
-                        <h3 class="col-lg-9">Option 3</h3>
+                </div>
+                
+                <div class="answered_qns_name_row col-md-12">
+                    <div class="col-md-12" id="answered_qns_name">
+                        <h2 id="answered_h2_qns_name">Question Name</h2>
                     </div>
-                    <div class="col-lg-6" id="option_4">
-                        <img class="col-lg-3" src="" alt="" width="50" height="50">
-                        <h3 class="col-lg-9">Option 4</h3>
+                </div>
+                
+                <div class="answered_stats_img_row col-md-12">
+                    <div class="col-md-12" id="answered_stats_img">
+                        <div class="row" id="answered_options_images">
+                            <img id="answered_option_1_icon" class="col-md-3" height="300" src="" alt="">
+                            <img id="answered_option_2_icon" class="col-md-3" height="300" src="" alt="">
+                            <img id="answered_option_3_icon" class="col-md-3" height="300" src="" alt="">
+                            <img id="answered_option_4_icon" class="col-md-3" height="300" src="" alt="">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="answered_stats_number_row col-md-12">
+                    <div class="col-md-12" id="answered_stats_num">
+                        <div class="row" id="answered_options_stats">
+                            <h3 id="answered_option_1_stats" class="col-md-3">0</h3>
+                            <h3 id="answered_option_2_stats" class="col-md-3">0</h3>
+                            <h3 id="answered_option_3_stats" class="col-md-3">0</h3>
+                            <h3 id="answered_option_4_stats" class="col-md-3">0</h3>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="answered_row col-md-12">
+                    <div class="answered_row1">
+                        <div class="col-md-6" id="answered_option_1">
+                            <img id="answered_option_1_img" class="col-md-3" src="" alt="">
+                            <h3 id="answered_option_1_text" class="col-md-7">Option 1</h3>
+                            <img id="answered_option_1_correct" class="col-md-2" src="" alt="">
+                        </div>
+                        <div class="col-md-6" id="answered_option_2">
+                            <img id="answered_option_2_img" class="col-md-3" src="" alt="">
+                            <h3 id="answered_option_2_text" class="col-md-7">Option 2</h3>
+                            <img id="answered_option_2_correct" class="col-md-2" src="" alt="">
+                        </div>
+                    </div>
+                    <div class="answered_row2">
+                        <div class="col-md-6" id="answered_option_3">
+                            <img id="answered_option_3_img" class="col-md-3" src="" alt="">
+                            <h3 id="answered_option_3_text" class="col-md-7">Option 3</h3>
+                            <img id="answered_option_3_correct" class="col-md-2" src="" alt="">
+                        </div>
+                        <div class="col-md-6" id="answered_option_4">
+                            <img id="answered_option_4_img" class="col-md-3" src="" alt="">
+                            <h3 id="answered_option_4_text" class="col-md-7">Option 4</h3>
+                            <img id="answered_option_4_correct" class="col-md-2" src="" alt="">
+                        </div>
                     </div>
                 </div>
             </div>
