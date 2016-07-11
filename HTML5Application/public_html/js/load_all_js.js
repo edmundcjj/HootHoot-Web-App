@@ -43,6 +43,29 @@ var LEADERBOARD_STATE = "leaderboard";
 var GAMEOVER_STATE = "gameover";
 
 
+//// Function to play and pause music
+//function sound(src) {
+//    this.sound = document.createElement("audio");
+//    this.sound.src = src;
+//    this.sound.setAttribute("preload", "auto");
+//    this.sound.setAttribute("controls", "none");
+//    this.sound.style.display = "none";
+//    document.body.appendChild(this.sound);
+//    this.play = function(){
+//        this.sound.play();
+//    };
+//    this.stop = function(){
+//        this.sound.pause();
+//    };
+//}
+//
+//
+//// Play mario background music
+//var mario_theme_song;
+//mario_theme_song = new sound("Underworld.mp3");
+//mario_theme_song.play();
+
+
 // 60 seconds countdown timer function
 function countdown_60sec_timer(ref1, ref2){
     var countdownElement = document.getElementById("waiting_for_player_seconds"),
@@ -153,6 +176,39 @@ function answered_countdown_10sec_timer(id){
                 console.log("Go to leaderboard");
                 document.getElementById("game_over").style.display = "none";
                 document.getElementById("leaderboard").style.display = "block";
+                
+                var stationPlayers_ref = new Firebase(FB_stationPlayers_url);
+                stationPlayers_ref.once("value", function(snapshot){
+                   var player_count = Object.keys(snapshot.val()).length;
+                   if (player_count === 4){
+                        document.getElementById("leaderboard_nickname_container5").style.visibility = "hidden";
+                        document.getElementById("leaderboard_points5").style.visibility = "hidden";
+                   }
+                   else if (player_count === 3){
+                        document.getElementById("leaderboard_nickname_container4").style.visibility = "hidden";
+                        document.getElementById("leaderboard_points4").style.visibility = "hidden";
+                        document.getElementById("leaderboard_nickname_container5").style.visibility = "hidden";
+                        document.getElementById("leaderboard_points5").style.visibility = "hidden";
+                   }
+                   else if (player_count === 2){
+                        document.getElementById("leaderboard_nickname_container3").style.visibility = "hidden";
+                        document.getElementById("leaderboard_points3").style.visibility = "hidden";
+                        document.getElementById("leaderboard_nickname_container4").style.visibility = "hidden";
+                        document.getElementById("leaderboard_points4").style.visibility = "hidden";
+                        document.getElementById("leaderboard_nickname_container5").style.visibility = "hidden";
+                        document.getElementById("leaderboard_points5").style.visibility = "hidden";
+                   }
+                   else if (player_count === 1){
+                        document.getElementById("leaderboard_nickname_container2").style.visibility = "hidden";
+                        document.getElementById("leaderboard_points2").style.visibility = "hidden";
+                        document.getElementById("leaderboard_nickname_container3").style.visibility = "hidden";
+                        document.getElementById("leaderboard_points3").style.visibility = "hidden";
+                        document.getElementById("leaderboard_nickname_container4").style.visibility = "hidden";
+                        document.getElementById("leaderboard_points4").style.visibility = "hidden";
+                        document.getElementById("leaderboard_nickname_container5").style.visibility = "hidden";
+                        document.getElementById("leaderboard_points5").style.visibility = "hidden";
+                   }
+                });
                 start_leaderboard();
             }
             
@@ -163,6 +219,40 @@ function answered_countdown_10sec_timer(id){
                 document.getElementById("leaderboard").style.display = "none";
                 document.getElementById("game_over").style.display = "block";
                 update_user_node();
+                
+                var stationPlayers_ref = new Firebase(FB_stationPlayers_url);
+                stationPlayers_ref.once("value", function(snapshot){
+                   var player_count = Object.keys(snapshot.val()).length;
+                   if (player_count === 4){
+                        document.getElementById("gameover_nickname_container5").style.visibility = "hidden";
+                        document.getElementById("game_over_points5").style.visibility = "hidden";
+                   }
+                   else if (player_count === 3){
+                        document.getElementById("gameover_nickname_container4").style.visibility = "hidden";
+                        document.getElementById("game_over_points4").style.visibility = "hidden";
+                        document.getElementById("gameover_nickname_container5").style.visibility = "hidden";
+                        document.getElementById("game_over_points5").style.visibility = "hidden";
+                   }
+                   else if (player_count === 2){
+                        document.getElementById("gameover_nickname_container3").style.visibility = "hidden";
+                        document.getElementById("game_over_points3").style.visibility = "hidden";
+                        document.getElementById("gameover_nickname_container4").style.visibility = "hidden";
+                        document.getElementById("game_over_points4").style.visibility = "hidden";
+                        document.getElementById("gameover_nickname_container5").style.visibility = "hidden";
+                        document.getElementById("game_over_points5").style.visibility = "hidden";
+                   }
+                   else if (player_count === 1){
+                        document.getElementById("gameover_nickname_container2").style.visibility = "hidden";
+                        document.getElementById("game_over_points2").style.visibility = "hidden";
+                        document.getElementById("gameover_nickname_container3").style.visibility = "hidden";
+                        document.getElementById("game_over_points3").style.visibility = "hidden";
+                        document.getElementById("gameover_nickname_container4").style.visibility = "hidden";
+                        document.getElementById("game_over_points4").style.visibility = "hidden";
+                        document.getElementById("gameover_nickname_container5").style.visibility = "hidden";
+                        document.getElementById("game_over_points5").style.visibility = "hidden";
+                   }
+                });
+                
                 start_game_over();
             }
         }
@@ -791,8 +881,10 @@ function stop_answered(){
 function start_leaderboard(){
     
     // Local variable
-    var highest_score = 0;
-    var station_state_ref;
+    var player_count = 0;
+    var score = [];
+    var all_scores = [];
+    var station_state_ref, stationPlayers_ref;
     
     // Change station state to gameover
     station_state_ref = new Firebase(FB_STATION_URL);
@@ -801,30 +893,122 @@ function start_leaderboard(){
         "state": current_state 
     });
     
-    // Retrieve highest score
+    // Retrieve all player scores
     stationPlayers_ref = new Firebase(FB_stationPlayers_url);
-    stationPlayers_ref.on("value", function(snapshot){
-        snapshot.forEach(function(childSnapshot) {
-            var value = childSnapshot.val();
-            if (value.score > highest_score){
-                highest_score = value.score;
-            }
+    stationPlayers_ref.orderByChild("score").once("value", function(All_Players_Snapshot){
+        player_count = Object.keys(All_Players_Snapshot.val()).length;
+        All_Players_Snapshot.forEach(function(Player_Snapshot){
+            var value = Player_Snapshot.val();
+            score.push(Player_Snapshot.key());
+            score.push(value.nickname);
+            score.push(value.score);
+            all_scores.push(score);
         });
+        
+        document.getElementById("leaderboard_nickname_container1").style.visibility = "visible";
+        document.getElementById("leaderboard_points1").style.visibility = "visible";
+        document.getElementById("leaderboard_nickname_container2").style.visibility = "visible";
+        document.getElementById("leaderboard_points2").style.visibility = "visible";
+        document.getElementById("leaderboard_nickname_container3").style.visibility = "visible";
+        document.getElementById("leaderboard_points3").style.visibility = "visible";
+        document.getElementById("leaderboard_nickname_container4").style.visibility = "visible";
+        document.getElementById("leaderboard_points4").style.visibility = "visible";
+        document.getElementById("leaderboard_nickname_container5").style.visibility = "visible";
+        document.getElementById("leaderboard_points5").style.visibility = "visible";
+        
+        // Display top 5 high scores
+        if (player_count >= 5){
+            for (var i = 0; i < player_count; i++){
+                var station_player_icon_url = new Firebase(FB_stationUsers_url).child(all_scores[i][0]).child("animal_icon").child("icon_url");
+                station_player_icon_url.once("value", function(snapshot){
+                    document.getElementById("leaderboard_player_icon" + (i+1)).src = snapshot.val();
+                    document.getElementById("h2_leaderboard_nickname" + (i+1)).innerHTML = all_scores[i][1];
+                    document.getElementById("leaderboard_points" + (i+1)).innerHTML = all_scores[i][2] + " points";
+                });
+            }
+        }
+        
+        // Display top 4 high scores
+        else if (player_count === 4){
+                        
+            // Hide all other players points display
+            document.getElementById("leaderboard_nickname_container5").style.visibility = "hidden";
+            document.getElementById("leaderboard_points5").style.visibility = "hidden";
+            
+            for (var i = 0; i < player_count; i++){
+                var station_player_icon_url = new Firebase(FB_stationUsers_url).child(all_scores[i][0]).child("animal_icon").child("icon_url");
+                station_player_icon_url.once("value", function(snapshot){
+                    document.getElementById("leaderboard_player_icon" + (i+1)).src = snapshot.val();
+                    document.getElementById("h2_leaderboard_nickname" + (i+1)).innerHTML = all_scores[i][1];
+                    document.getElementById("leaderboard_points" + (i+1)).innerHTML = all_scores[i][2] + " points";
+                });
+            }
+        }
+        
+        // Display top 3 high scores
+        else if (player_count === 3){
+                        
+            // Hide all other players points display
+            document.getElementById("leaderboard_nickname_container4").style.visibility = "hidden";
+            document.getElementById("leaderboard_points4").style.visibility = "hidden";
+            document.getElementById("leaderboard_nickname_container5").style.visibility = "hidden";
+            document.getElementById("leaderboard_points5").style.visibility = "hidden";
+            
+            for (var i = 0; i < player_count; i++){
+                var station_player_icon_url = new Firebase(FB_stationUsers_url).child(all_scores[i][0]).child("animal_icon").child("icon_url");
+                station_player_icon_url.once("value", function(snapshot){
+                    document.getElementById("leaderboard_player_icon" + (i+1)).src = snapshot.val();
+                    document.getElementById("h2_leaderboard_nickname" + (i+1)).innerHTML = all_scores[i][1];
+                    document.getElementById("leaderboard_points" + (i+1)).innerHTML = all_scores[i][2] + " points";
+                });
+            }
+        }
+        
+        // Display top 2 high scores
+        else if (player_count === 2){
+                        
+            // Hide all other players points display
+            document.getElementById("leaderboard_nickname_container3").style.visibility = "hidden";
+            document.getElementById("leaderboard_points3").style.visibility = "hidden";
+            document.getElementById("leaderboard_nickname_container4").style.visibility = "hidden";
+            document.getElementById("leaderboard_points4").style.visibility = "hidden";
+            document.getElementById("leaderboard_nickname_container5").style.visibility = "hidden";
+            document.getElementById("leaderboard_points5").style.visibility = "hidden";
+            
+            for (var i = 0; i < player_count; i++){
+                var station_player_icon_url = new Firebase(FB_stationUsers_url).child(all_scores[i][0]).child("animal_icon").child("icon_url");
+                station_player_icon_url.once("value", function(snapshot){
+                    document.getElementById("leaderboard_player_icon" + (i+1)).src = snapshot.val();
+                    document.getElementById("h2_leaderboard_nickname" + (i+1)).innerHTML = all_scores[i][1];
+                    document.getElementById("leaderboard_points" + (i+1)).innerHTML = all_scores[i][2] + " points";
+                });
+            }
+        }
+        
+        // Display the only player highest score
+        else if (player_count === 1){
+                        
+            // Hide all other players points display
+            document.getElementById("leaderboard_nickname_container2").style.visibility = "hidden";
+            document.getElementById("leaderboard_points2").style.visibility = "hidden";
+            document.getElementById("leaderboard_nickname_container3").style.visibility = "hidden";
+            document.getElementById("leaderboard_points3").style.visibility = "hidden";
+            document.getElementById("leaderboard_nickname_container4").style.visibility = "hidden";
+            document.getElementById("leaderboard_points4").style.visibility = "hidden";
+            document.getElementById("leaderboard_nickname_container5").style.visibility = "hidden";
+            document.getElementById("leaderboard_points5").style.visibility = "hidden";
+            
+            // Player with highest score
+            var station_player_icon_url = new Firebase(FB_stationUsers_url).child(all_scores[0][0]).child("animal_icon").child("icon_url");
+            station_player_icon_url.once("value", function(snapshot){
+                console.log("Player icon url = " + snapshot.val());
+                document.getElementById("leaderboard_player_icon1").src = snapshot.val();
+                document.getElementById("h2_leaderboard_nickname1").innerHTML = all_scores[0][1];
+                document.getElementById("leaderboard_points1").innerHTML = all_scores[0][2] + " points";
+            });
+        }
     });
     
-    // Retrieve player with current highest score and display
-    stationPlayers_ref = new Firebase(FB_stationPlayers_url);
-    stationPlayers_ref.on("value", function(snapshot){
-        snapshot.forEach(function(childSnapshot) {
-            var value = childSnapshot.val();
-            if (value.score === highest_score){
-                document.getElementById("h2_leaderboard_nickname").innerHTML = value.nickname;
-                document.getElementById("leaderboard_points").innerHTML = value.score + " points";
-                document.getElementById("leaderboard_correct").innerHTML = value.total_correct_answer + " correct";
-                document.getElementById("leaderboard_incorrect").innerHTML = value.total_incorrect_answer + " incorrect";
-            }
-        });
-    });
     
     // Call 10 second countdown timer function for leaderboard state
     leaderboard_countdown_10sec_timer("h2_leaderboard_timer", stationPlayers_ref);
@@ -840,7 +1024,9 @@ function stop_leaderboard(Players_ref){
 function start_game_over(){
     
     // Local variable
-    var highest_score = 0;
+    var player_count = 0;
+    var score = [];
+    var all_scores = [];
     var station_state_ref, stationPlayers_ref;
     
     // Change station state to gameover
@@ -850,29 +1036,124 @@ function start_game_over(){
         "state": current_state 
     });
     
-    // Retrieve highest score
+    // Retrieve all player scores
     stationPlayers_ref = new Firebase(FB_stationPlayers_url);
-    stationPlayers_ref.on("value", function(snapshot){
-        snapshot.forEach(function(childSnapshot) {
-            var value = childSnapshot.val();
-            if (value.score > highest_score){
-                highest_score = value.score;
-            }
+    stationPlayers_ref.orderByChild("score").once("value", function(All_Players_Snapshot){
+        player_count = Object.keys(All_Players_Snapshot.val()).length;
+        All_Players_Snapshot.forEach(function(Player_Snapshot){
+            var value = Player_Snapshot.val();
+            score.push(Player_Snapshot.key());
+            score.push(value.nickname);
+            score.push(value.score);
+            all_scores.push(score);
         });
-    });
-    
-    // Retrieve player with the highest score and display
-    stationPlayers_ref = new Firebase(FB_stationPlayers_url);
-    stationPlayers_ref.on("value", function(snapshot){
-        snapshot.forEach(function(childSnapshot) {
-            var value = childSnapshot.val();
-            if (value.score === highest_score){
-                document.getElementById("h2_game_over_nickname").innerHTML = "Rank 1: " + value.nickname;
-                document.getElementById("game_over_points").innerHTML = value.score + " points";
-                document.getElementById("game_over_correct").innerHTML = value.total_correct_answer + " correct";
-                document.getElementById("game_over_incorrect").innerHTML = value.total_incorrect_answer + " incorrect";
+        
+        document.getElementById("gameover_nickname_container1").style.visibility = "visible";
+        document.getElementById("gameover_points1").style.visibility = "visible";
+        document.getElementById("gameover_nickname_container2").style.visibility = "visible";
+        document.getElementById("gameover_points2").style.visibility = "visible";
+        document.getElementById("gameover_nickname_container3").style.visibility = "visible";
+        document.getElementById("gameover_points3").style.visibility = "visible";
+        document.getElementById("gameover_nickname_container4").style.visibility = "visible";
+        document.getElementById("gameover_points4").style.visibility = "visible";
+        document.getElementById("gameover_nickname_container5").style.visibility = "visible";
+        document.getElementById("gameover_points5").style.visibility = "visible";
+        
+        // Display top 5 high scores
+        if (player_count >= 5){
+            for (var i = 0; i < player_count; i++){
+                var station_player_icon_url = new Firebase(FB_stationUsers_url).child(all_scores[i][0]).child("animal_icon").child("icon_url");
+                station_player_icon_url.once("value", function(snapshot){
+                    console.log("Player icon url = " + snapshot.val());
+                    document.getElementById("gameover_player_icon" + (i+1)).src = snapshot.val();
+                    document.getElementById("h2_game_over_nickname" + (i+1)).innerHTML = all_scores[i][1];
+                    document.getElementById("game_over_points" + (i+1)).innerHTML = all_scores[i][2] + " points";
+                });
             }
-        });
+        }
+        
+        // Display top 4 high scores
+        else if (player_count === 4){
+            
+            // Hide all other players points display
+            document.getElementById("gameover_nickname_container5").style.visibility = "hidden";
+            document.getElementById("game_over_points5").style.visibility = "hidden";
+            
+            for (var i = 0; i < player_count; i++){
+                var station_player_icon_url = new Firebase(FB_stationUsers_url).child(all_scores[i][0]).child("animal_icon").child("icon_url");
+                station_player_icon_url.once("value", function(snapshot){
+                    console.log("Player icon url = " + snapshot.val());
+                    document.getElementById("gameover_player_icon" + (i+1)).src = snapshot.val();
+                    document.getElementById("h2_game_over_nickname" + (i+1)).innerHTML = all_scores[i][1];
+                    document.getElementById("game_over_points" + (i+1)).innerHTML = all_scores[i][2] + " points";
+                });
+            }
+        }
+        
+        // Display top 3 high scores
+        else if (player_count === 3){
+                        
+            // Hide all other players points display
+            document.getElementById("gameover_nickname_container4").style.visibility = "hidden";
+            document.getElementById("game_over_points4").style.visibility = "hidden";
+            document.getElementById("gameover_nickname_container5").style.visibility = "hidden";
+            document.getElementById("game_over_points5").style.visibility = "hidden";
+            
+            for (var i = 0; i < player_count; i++){
+                var station_player_icon_url = new Firebase(FB_stationUsers_url).child(all_scores[i][0]).child("animal_icon").child("icon_url");
+                station_player_icon_url.once("value", function(snapshot){
+                    console.log("Player icon url = " + snapshot.val());
+                    document.getElementById("gameover_player_icon" + (i+1)).src = snapshot.val();
+                    document.getElementById("h2_game_over_nickname" + (i+1)).innerHTML = all_scores[i][1];
+                    document.getElementById("game_over_points" + (i+1)).innerHTML = all_scores[i][2] + " points";
+                });
+            }
+        }
+        
+        // Display top 2 high scores
+        else if (player_count === 2){
+                        
+            // Hide all other players points display
+            document.getElementById("gameover_nickname_container3").style.visibility = "hidden";
+            document.getElementById("game_over_points3").style.visibility = "hidden";
+            document.getElementById("gameover_nickname_container4").style.visibility = "hidden";
+            document.getElementById("game_over_points4").style.visibility = "hidden";
+            document.getElementById("gameover_nickname_container5").style.visibility = "hidden";
+            document.getElementById("game_over_points5").style.visibility = "hidden";
+            
+            for (var i = 0; i < player_count; i++){
+                var station_player_icon_url = new Firebase(FB_stationUsers_url).child(all_scores[i][0]).child("animal_icon").child("icon_url");
+                station_player_icon_url.once("value", function(snapshot){
+                    console.log("Player icon url = " + snapshot.val());
+                    document.getElementById("gameover_player_icon" + (i+1)).src = snapshot.val();
+                    document.getElementById("h2_game_over_nickname" + (i+1)).innerHTML = all_scores[i][1];
+                    document.getElementById("game_over_points" + (i+1)).innerHTML = all_scores[i][2] + " points";
+                });
+            }
+        }
+        
+        // Display the only player highest score
+        else if (player_count === 1){
+                        
+            // Hide all other players points display
+            document.getElementById("gameover_nickname_container2").style.visibility = "hidden";
+            document.getElementById("game_over_points2").style.visibility = "hidden";
+            document.getElementById("gameover_nickname_container3").style.visibility = "hidden";
+            document.getElementById("game_over_points3").style.visibility = "hidden";
+            document.getElementById("gameover_nickname_container4").style.visibility = "hidden";
+            document.getElementById("game_over_points4").style.visibility = "hidden";
+            document.getElementById("gameover_nickname_container5").style.visibility = "hidden";
+            document.getElementById("game_over_points5").style.visibility = "hidden";
+            
+            // Player with highest score
+            var station_player_icon_url = new Firebase(FB_stationUsers_url).child(all_scores[0][0]).child("animal_icon").child("icon_url");
+            station_player_icon_url.once("value", function(snapshot){
+                console.log("Player icon url = " + snapshot.val());
+                document.getElementById("gameover_player_icon1").src = snapshot.val();
+                document.getElementById("h2_game_over_nickname1").innerHTML = all_scores[0][1];
+                document.getElementById("game_over_points1").innerHTML = all_scores[0][2] + " points";
+            });
+        }
     });
     
     // Call countdown timer function

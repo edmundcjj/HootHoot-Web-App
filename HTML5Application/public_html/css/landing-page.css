@@ -192,10 +192,14 @@ html,body,.col-lg-12,.row{
 .leaderboard_header_row > div{
     height: 100%;
 }
+.leader_empty_space{
+    background: #00BF96;
+    height: 5%;
+}
 .leaderboard_nickname_row{
     background: #00BF96;
     padding: 0px;
-    height: 40%;
+    height: 12%;
 }
 .leaderboard_nickname_row > div{
     height: 100%;
@@ -203,14 +207,14 @@ html,body,.col-lg-12,.row{
 .leaderboard_stats_row{
     background: #00BF96;
     padding: 0px;
-    height: 40%;
+    height: 12%;
 }
 .leaderboard_stats_row > div{
     height: 100%;
 }
 .leaderboard_timer_row{
     padding: 0px;
-    height: 12%;
+    height: 7%;
 }
 .leaderboard_timer_row > div{
     height: 100%;
@@ -218,15 +222,19 @@ html,body,.col-lg-12,.row{
 
 .gameover_header_row{
     padding: 0px;
-    height: 8%;
+    height: 10%;
 }
 .gameover_header_row > div{
     height: 100%;
 }
+.gameover_empty_space{
+    background: #00BF96;
+    height: 5%;
+}
 .gameover_nickname_row{
     background: #00BF96;
     padding: 0px;
-    height: 46%;
+    height: 13%;
 }
 .gameover_nickname_row > div{
     height: 100%;
@@ -234,7 +242,7 @@ html,body,.col-lg-12,.row{
 .gameover_stats_row{
     background: #00BF96;
     padding: 0px;
-    height: 46%;
+    height: 13%;
 }
 .gameover_stats_row > div{
     height: 100%;
@@ -466,37 +474,48 @@ html,body,.col-lg-12,.row{
 #leaderboard_nickname, #gameover_nickname{
     background: #00BF96;
     text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-#h2_leaderboard_nickname, #h2_game_over_nickname{
+#h2_leaderboard_nickname1, #h2_leaderboard_nickname2, #h2_leaderboard_nickname3, #h2_leaderboard_nickname4, #h2_leaderboard_nickname5{
     font-size: 40px;
     margin-bottom: 0px;
     margin-top: 0px;
     padding-top: 25px;
 }
 
-#leaderboard_nickname_container, #game_over_nickname_container{
+#h2_game_over_nickname1, #h2_game_over_nickname2, #h2_game_over_nickname3, #h2_game_over_nickname4, #h2_game_over_nickname5{
+    font-size: 40px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    padding-top: 25px;
+}
+
+#leaderboard_nickname_container1, #leaderboard_nickname_container2, #leaderboard_nickname_container3, #leaderboard_nickname_container4, #leaderboard_nickname_container5{
     background: #00816A;
     height: 100px;
     margin: 0px;
 }
 
-#leaderboard_stats, #game_over_stats{
+#gameover_nickname_container1, #gameover_nickname_container2, #gameover_nickname_container3, #gameover_nickname_container4, #gameover_nickname_container5{
+    background: #00816A;
+    height: 100px;
+    margin: 0px;
+}
+
+#leaderboard_points1, #leaderboard_points2, #leaderboard_points3, #leaderboard_points4, #leaderboard_points5{
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-#leaderboard_points, #leaderboard_correct, #leaderboard_incorrect, #game_over_points, #game_over_correct, #game_over_incorrect{
+#game_over_points1, #game_over_points2, #game_over_points3, #game_over_points4, #game_over_points5{
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 #h2_leaderboard_next_qns{
+    font-size: 60px;
     margin: 0px;
     position: absolute;
     top: 50%;
@@ -515,6 +534,7 @@ html,body,.col-lg-12,.row{
 }
 
 #h2_leaderboard_timer{
+    font-size: 60px;
     margin: 0px;
     position: absolute;
     top: 50%;
