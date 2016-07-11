@@ -31,6 +31,7 @@ var FB_stationPlayers_url = "https://mantrodev.firebaseio.com/STATIONS/" + stati
 var FB_stationCurrentQuestion_url = "https://mantrodev.firebaseio.com/STATIONS/" + station_id + "/CURRENT_QUESTION";
 var FB_stationQuestionHistory_url = "https://mantrodev.firebaseio.com/STATIONS/" + station_id + "/QUESTION_HISTORY";
 var FB_OPTIONICON_URL = "https://mantrodev.firebaseio.com/OPTION_ICONS";
+var FB_stationUsers_url = "https://mantrodev.firebaseio.com/USERS";
 
 // Constants for station states
 var WAITING_STATE = "waiting";
@@ -110,16 +111,7 @@ function answering_countdown_20sec_timer(id, duration, ref1){
             clearInterval(interval);
             
             // Stop firebase event listeners related to answering_question state
-            stop_answering_qns(ref1);
-            
-            // Clear display of <div id="getready">
-            document.getElementById("answering_questions").style.display = "none";
-
-            // Make display of <div id="answering_questions"> visible
-            document.getElementById("answered").style.display = "block";
-            
-            // Call function for answered state
-            start_answered();
+            stop_answering_countdown_20sec_timer(ref1);
         }
         second++;
     }, 1000);
@@ -131,14 +123,13 @@ function stop_answering_countdown_20sec_timer(ref1){
     stop_answering_qns(ref1);
     clearInterval(interval);
     
-    // Clear display of <div id="getready">
-    document.getElementById("answering_questions").style.display = "none";
+    // Retrieve posting time from current question node
+    var station_qns_posttime_ref = new Firebase(FB_stationCurrentQuestion_url);
+    station_qns_posttime_ref.child("posting_time").once("value", function(snapshot){
+        var posting_time = snapshot.val();
+        update_player_score(posting_time);
+    });    
 
-    // Make display of <div id="answering_questions"> visible
-    document.getElementById("answered").style.display = "block";
-
-    // Call function for answered state
-    start_answered();
 }
 
 
@@ -164,6 +155,7 @@ function answered_countdown_10sec_timer(id){
                 document.getElementById("leaderboard").style.display = "block";
                 start_leaderboard();
             }
+            
             // If there is no next question make display of <div id="leaderboard"> visible
             else{
                 console.log(curr_qns_index + " " + questionBank.length);
@@ -229,8 +221,16 @@ function game_over_countdown_10sec_timer(ref1){
             document.getElementById("leaderboard").style.display = "none";
             document.getElementById("game_over").style.display = "none";
             
+            // Remove any existing players before restarting the game
+            var removePlayer_ref = new Firebase(FB_stationPlayers_url);
+            removePlayer_ref.remove();
+            
             // Transit to waiting state
             document.getElementById("waiting_for_players").style.display = "block";
+            
+            // Remove any players in player list on web app
+            document.getElementById("player_name").innerHTML = "";
+            document.getElementById("waiting_for_player_seconds").innerHTML = "";
             start_waiting_for_players();
         }
         second++;
@@ -285,19 +285,20 @@ function update_user_node(){
     var stationPlayers_ref = new Firebase(FB_stationPlayers_url);
     stationPlayers_ref.once("value", function(AllPlayerSnapshot){
         AllPlayerSnapshot.forEach(function(PlayerSnapshot){
+            console.log("Updateing user's score....");
             var value = PlayerSnapshot.val();
             
             // Update score in users node with player score earned from the game
-            var stationPlayer_score_ref = new Firebase(FB_stationPlayers_url + "/" + PlayerSnapshot.key() + "/scores/" + station_id + "/score");
-            stationPlayer_score_ref.child("score").set(value.score);
+            var stationPlayer_score_ref = new Firebase(FB_stationUsers_url).child(PlayerSnapshot.key()).child("scores").child(station_id).child("score");
+            stationPlayer_score_ref.set(value.score);
             
             // Update total_correct_answer in users node with total_correct_answer earned from the game
-            var stationPlayer_total_correct_ref = new Firebase(FB_stationPlayers_url + "/" + PlayerSnapshot.key() + "/scores/" + station_id + "/total_correct_answer");
-            stationPlayer_total_correct_ref.child("total_correct_answer").set(value.total_correct_answer);
+            var stationPlayer_total_correct_ref = new Firebase(FB_stationUsers_url).child(PlayerSnapshot.key()).child("scores").child(station_id).child("total_correct_answer");
+            stationPlayer_total_correct_ref.set(value.total_correct_answer);
             
             // Update total_incorrect_answer in users node with total_incorrect_answer earned from the game
-            var stationPlayer_total_incorrect_ref = new Firebase(FB_stationPlayers_url + "/" + PlayerSnapshot.key() + "/scores/" + station_id + "/total_incorrect_answer");
-            stationPlayer_total_incorrect_ref.child("total_incorrect_answer").set(value.total_incorrect_answer);
+            var stationPlayer_total_incorrect_ref = new Firebase(FB_stationUsers_url).child(PlayerSnapshot.key()).child("scores").child(station_id).child("total_incorrect_answer");
+            stationPlayer_total_incorrect_ref.set(value.total_incorrect_answer);
         });
     });
 }
@@ -320,11 +321,11 @@ function start_waiting_for_players(){
         stop_countdown_60sec_timer();
         var removePlayer_ref = new Firebase(FB_stationPlayers_url);
         removePlayer_ref.remove();
-        
+
         var p = document.getElementById("state_ref");
         p.innerHTML = "Waiting for players...";
     };
-
+    
     // Update state of station to "waiting_for_players" when entering
     // waiting_for_players.html for the first time
     var station_ref = new Firebase(FB_STATION_URL);
@@ -551,20 +552,19 @@ function start_answering_qns(){
     document.getElementById("answering_option_3").style.backgroundColor = optionicon_list[2].bgcolor;
     document.getElementById("answering_option_4").style.backgroundColor = optionicon_list[3].bgcolor;
         
-    // Retrieve posting time from current question node
-    station_qns_posttime_ref.child("posting_time").once("value", function(snapshot){
-        posting_time = snapshot.val();
-        update_player_score(posting_time);
-    });
+    update_answers_num();
 }
 
-// Function to update player score after choosing an option
-function update_player_score(posting_time){
+// Function to update number of answers during answering question state 
+function update_answers_num(){
     
     // Local variables
     var checked_players = [];
-    var answers = 0, player_score = 0, player_count = 0, player_gained_score = 0;
-    var stationPlayer_ref, stationPlayers_ref, stationPlayer_scoreGained_ref;
+    var answers = 0, player_count = 0;
+    var stationPlayers_ref;
+    
+    // Reset the number of answers to 0
+    document.getElementById("ans_num").innerHTML = "0 answers";
     
     // Event when player has selected their answer
     stationPlayers_ref = new Firebase(FB_stationPlayers_url);
@@ -577,37 +577,13 @@ function update_player_score(posting_time){
                 if (checked_players.hasOwnProperty(childSnapshot.key())) return;
                 checked_players[childSnapshot.key()] = childSnapshot.key();
                 
-                // Retrieve total score for each player
-                stationPlayer_scoreGained_ref = new Firebase(FB_stationPlayers_url + "/" + childSnapshot.key() + "/score");
-                stationPlayer_scoreGained_ref.once("value", function(snapshot){
-                    player_score = snapshot.val();
-                    
-                    // Update number of answers answered by players
-                    document.getElementById("ans_num").innerHTML = ++answers + "answers";
-
-                    stationPlayer_ref = new Firebase(FB_stationPlayers_url + "/" + childSnapshot.key());
-
-                    // Update is_correct_answer to true when it is the correct option
-                    if (value.answer === curr_qns.correct_option){
-                        stationPlayer_ref.child("is_correct_answer").set(true);
-                        stationPlayer_ref.child("total_correct_answer").set(++value.total_correct_answer);
-
-                        // Calculate score for player for current question and update Firebase
-                        player_gained_score = (1 - ((parseInt(value.answering_time) - parseInt(posting_time)) / parseInt(curr_qns.answering_duration * 1000))) * 1000;
-                        stationPlayer_ref.child("score_gained").set(player_gained_score);
-                        stationPlayer_ref.child("score").set(player_score + player_gained_score);
-                    }
-                    // Update is_correct_answer to false when it is not the correct option
-                    else{
-                        stationPlayer_ref.child("is_correct_answer").set(false);
-                        stationPlayer_ref.child("total_incorrect_answer").set(++value.total_incorrect_answer);
-                    }
-
-                    // Go to answered state if all players have answered
-                    if (player_count === answers){
-                        stop_answering_countdown_20sec_timer(stationPlayers_ref);
-                    }
-                });
+                // Update number of answers answered by players
+                document.getElementById("ans_num").innerHTML = ++answers + " answers";
+                
+                // Go to answered state if all players have answered
+                if (player_count === answers){
+                    stop_answering_countdown_20sec_timer(stationPlayers_ref);
+                }
             }
         });
     });
@@ -615,6 +591,82 @@ function update_player_score(posting_time){
     // Display 20sec countdown timer
     answering_countdown_20sec_timer("h3_answering_countdown_timer", curr_qns.answering_duration, stationPlayers_ref);
 }
+
+
+// Function to update player score
+function update_player_score(posting_time){
+    
+    // Local variables
+    var checked_players = [];
+    var player_score = 0, player_gained_score = 0, player_count = 0, total_players = 0;
+    var stationPlayer_ref, stationPlayers_ref;
+    
+    // Reset the number of answers to 0
+    document.getElementById("ans_num").innerHTML = "0 answers";
+    
+    // Event when player has selected their answer
+    stationPlayers_ref = new Firebase(FB_stationPlayers_url);
+    stationPlayers_ref.once("value", function(snapshot){
+        total_players = Object.keys(snapshot.val()).length;
+        snapshot.forEach(function(childSnapshot) {
+            console.log("Inside every player");
+            var value = childSnapshot.val();
+              
+            if (checked_players.hasOwnProperty(childSnapshot.key())) return;
+            checked_players[childSnapshot.key()] = childSnapshot.key();
+            player_count = player_count + 1;
+            
+            stationPlayer_ref = new Firebase(FB_stationPlayers_url + "/" + childSnapshot.key());
+            
+            if (value.answer !== undefined & value.answer !== null){
+                console.log("answer not null");
+                
+                if (value.answer === curr_qns.correct_option)
+                {
+                    console.log("answer correct");
+                    stationPlayer_ref.child("is_correct_answer").set(true);
+                    stationPlayer_ref.child("total_correct_answer").set(++value.total_correct_answer);
+
+                    // Calculate score for player for current question and update Firebase
+                    player_gained_score = (1 - ((parseInt(value.answering_time) - parseInt(posting_time)) / parseInt(curr_qns.answering_duration * 1000))) * 1000;
+                    stationPlayer_ref.child("score_gained").set(parseInt(player_gained_score));
+                    player_score = parseInt(value.score);
+                    stationPlayer_ref.child("score").set(parseInt(player_score + player_gained_score));
+                }
+                // Update is_correct_answer to false when it is not the correct option
+                else
+                {
+                    console.log("answer incorrect");
+                    stationPlayer_ref.child("is_correct_answer").set(false);
+                    stationPlayer_ref.child("total_incorrect_answer").set(++value.total_incorrect_answer);
+                    stationPlayer_ref.child("score_gained").set(0);
+                }
+            }
+            else
+            {
+                console.log("answer null");
+                //stationPlayer_ref = new Firebase(FB_stationPlayers_url + "/" + childSnapshot.key());
+                stationPlayer_ref.child("is_correct_answer").set(false);
+                stationPlayer_ref.child("total_incorrect_answer").set(++value.total_incorrect_answer);
+                stationPlayer_ref.child("score_gained").set(0);
+            }
+            
+            if (player_count === total_players){
+                console.log("state changed");
+                // Clear display of <div id="getready">
+                document.getElementById("answering_questions").style.display = "none";
+
+                // Make display of <div id="answering_questions"> visible
+                document.getElementById("answered").style.display = "block";
+
+                // Call function for answered state
+                start_answered();
+            }
+        });
+        
+    });
+}
+
 
 // Stop all functions related to answering questions state
 function stop_answering_qns(Players_ref){
@@ -694,10 +746,10 @@ function start_answered(){
             console.log("Option 4 stats = " + curr_option4_stats);
             
             // Display option icon statistics
-            document.getElementById("answered_option_1_stats").innerHTML = curr_option1_stats + "answers";
-            document.getElementById("answered_option_2_stats").innerHTML = curr_option2_stats + "answers";
-            document.getElementById("answered_option_3_stats").innerHTML = curr_option3_stats + "answers";
-            document.getElementById("answered_option_4_stats").innerHTML = curr_option4_stats + "answers";
+            document.getElementById("answered_option_1_stats").innerHTML = curr_option1_stats + " answered";
+            document.getElementById("answered_option_2_stats").innerHTML = curr_option2_stats + " answered";
+            document.getElementById("answered_option_3_stats").innerHTML = curr_option3_stats + " answered";
+            document.getElementById("answered_option_4_stats").innerHTML = curr_option4_stats + " answered";
             
         });
     });
@@ -818,7 +870,7 @@ function start_game_over(){
                 document.getElementById("h2_game_over_nickname").innerHTML = "Rank 1: " + value.nickname;
                 document.getElementById("game_over_points").innerHTML = value.score + " points";
                 document.getElementById("game_over_correct").innerHTML = value.total_correct_answer + " correct";
-                document.getElementById("game_over_incorrect").innerHTML = value.total_correct_answer + " incorrect";
+                document.getElementById("game_over_incorrect").innerHTML = value.total_incorrect_answer + " incorrect";
             }
         });
     });

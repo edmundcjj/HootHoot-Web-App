@@ -345,11 +345,12 @@ html,body,.col-lg-12,.row{
     background: #00C957;
 }
 
-#answered_options_images{
-}
-
-#answered_options_stats{
-}
+/*#answered_option_1_icon, #answered_option_2_icon, #answered_option_3_icon, #answered_option_4_icon{
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}*/
 
 #get_ready_h2_qns_name{
     word-wrap: break-word;
