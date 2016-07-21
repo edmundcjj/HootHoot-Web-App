@@ -7,7 +7,7 @@
 // Global Variables
 var questionBank = [];                                                                  // Pool of questions for a specific station
 var curr_qns, interval;                                                                 // Variable that contains details of current question
-var curr_qns_index = 9;                                                                 // Current index of current question
+var curr_qns_index = 0;                                                                 // Current index of current question
 var qns_num_icon = 0;                                                                   // Qns number icon
 var current_state = "";                                                                 // Current state of the station
 var optionicon_list = [];                                                               // Array that contains icon_url for the different question options
@@ -308,20 +308,22 @@ function update_user_node(){
     var stationPlayers_ref = new Firebase(FB_stationPlayers_url);
     stationPlayers_ref.once("value", function(AllPlayerSnapshot){
         AllPlayerSnapshot.forEach(function(PlayerSnapshot){
-            console.log("Updateing user's score....");
+            console.log("Updating user's score....");
             var value = PlayerSnapshot.val();
             
-            // Update score in users node with player score earned from the game
-            var stationPlayer_score_ref = new Firebase(FB_stationUsers_url).child(PlayerSnapshot.key()).child("scores").child(station_id).child("score");
-            stationPlayer_score_ref.set(value.score);
-            
-            // Update total_correct_answer in users node with total_correct_answer earned from the game
-            var stationPlayer_total_correct_ref = new Firebase(FB_stationUsers_url).child(PlayerSnapshot.key()).child("scores").child(station_id).child("total_correct_answer");
-            stationPlayer_total_correct_ref.set(value.total_correct_answer);
-            
-            // Update total_incorrect_answer in users node with total_incorrect_answer earned from the game
-            var stationPlayer_total_incorrect_ref = new Firebase(FB_stationUsers_url).child(PlayerSnapshot.key()).child("scores").child(station_id).child("total_incorrect_answer");
-            stationPlayer_total_incorrect_ref.set(value.total_incorrect_answer);
+            if (value.connected === true){
+                // Update score in users node with player score earned from the game
+                var stationPlayer_score_ref = new Firebase(FB_stationUsers_url).child(PlayerSnapshot.key()).child("scores").child(station_id).child("score");
+                stationPlayer_score_ref.set(value.score);
+
+                // Update total_correct_answer in users node with total_correct_answer earned from the game
+                var stationPlayer_total_correct_ref = new Firebase(FB_stationUsers_url).child(PlayerSnapshot.key()).child("scores").child(station_id).child("total_correct_answer");
+                stationPlayer_total_correct_ref.set(value.total_correct_answer);
+
+                // Update total_incorrect_answer in users node with total_incorrect_answer earned from the game
+                var stationPlayer_total_incorrect_ref = new Firebase(FB_stationUsers_url).child(PlayerSnapshot.key()).child("scores").child(station_id).child("total_incorrect_answer");
+                stationPlayer_total_incorrect_ref.set(value.total_incorrect_answer);
+            }
         });
     });
 }
@@ -1565,7 +1567,6 @@ function start_game_over(){
         document.getElementById("gameover_player_icon1").src = all_scores[0].icon_url;
         document.getElementById("h2_game_over_nickname1").innerHTML = all_scores[0].nickname;
         document.getElementById("game_over_points1").innerHTML = all_scores[0].score + " pts";
-        
     });
     
     // Play a sound whenever a new player join the game

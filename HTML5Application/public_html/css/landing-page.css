@@ -304,13 +304,13 @@ html,body,.col-lg-12,.row{
     background: #00EE76;
     padding: 0px;
     text-align: center;
-    height: 90%;
+    height: 80%;
 }
 
 #waiting_timer_column{
     background: #00EE76;
     padding: 0px;
-    height: 90%;
+    height: 80%;
 }
 
 #waiting_for_player_seconds{
@@ -339,6 +339,14 @@ html,body,.col-lg-12,.row{
     top: 50%;
     left:50%;
     transform: translate(-50%,-50%);
+}
+
+#waiting_progress_bar_row{
+    height: 10%;
+}
+
+#waiting_progress_bar_row > div{
+    height: 100%;
 }
 /* ___________________________ waiting state ________________________________ */
 
