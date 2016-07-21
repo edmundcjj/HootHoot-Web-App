@@ -28,28 +28,72 @@ and open the template in the editor.
     <body>
         <div class="answered_page">
             <div class="col-lg-12">
-                <div class="answered_qns_header_row col-md-11">
+                <div class="answered_qns_header_row col-md-12">
                     <div class="col-md-12" id="answered_qns_header">
-                        <h2 id="answered_h1_qns_header">QUESTION #</h2>
+                        <div class="col-md-1"></div>
+                        <div class="col-md-1">
+                            <img src="" alt="" id="Qns_1_answered">
+                        </div>
+                        <div class="col-md-1">
+                            <img src="" alt="" id="Qns_2_answered">
+                        </div>
+                        <div class="col-md-1">
+                            <img src="" alt="" id="Qns_3_answered">
+                        </div>
+                        <div class="col-md-1">
+                            <img src="" alt="" id="Qns_4_answered">
+                        </div>
+                        <div class="col-md-1">
+                            <img src="" alt="" id="Qns_5_answered">
+                        </div>
+                        <div class="col-md-1">
+                            <img src="" alt="" id="Qns_6_answered">
+                        </div>
+                        <div class="col-md-1">
+                            <img src="" alt="" id="Qns_7_answered">
+                        </div>
+                        <div class="col-md-1">
+                            <img src="" alt="" id="Qns_8_answered">
+                        </div>
+                        <div class="col-md-1">
+                            <img src="" alt="" id="Qns_9_answered">
+                        </div>
+                        <div class="col-md-1">
+                            <img src="" alt="" id="Qns_10_answered">
+                        </div>
+                        <div class="col-md-1"></div>
                     </div>
                 </div>
                 
-                <div class="answered_timer_row col-md-1">
+<!--                <div class="answered_timer_row col-md-1">
                     <div id="answered_timer">
                         <h2 id="answered_countdown_timer">Timer</h2>
                     </div>
-                </div>
+                </div>-->
                 
-                <div class="answered_qns_name_row col-md-12">
-                    <div class="col-md-12" id="answered_qns_name">
-                        <h2 id="answered_h2_qns_name">Question Name</h2>
+                <div class="answered_qns_ticks_row col-md-12">
+                    <div class="col-md-12" id="answered_qns_ticks">
+                        <div class="row" id="answered_options_ticks">
+                            <div class="col-md-3">
+                                <img id="answered_option_1_tick" class="col-md-3 col-md-offset-5" src="img/correct_answer_tick.png" alt="" style="visibility: hidden">
+                            </div>
+                            <div class="col-md-3">
+                                <img id="answered_option_2_tick" class="col-md-3 col-md-offset-5" src="img/correct_answer_tick.png" alt="" style="visibility: hidden">
+                            </div>
+                            <div class="col-md-3">
+                                <img id="answered_option_3_tick" class="col-md-3 col-md-offset-5" src="img/correct_answer_tick.png" alt="" style="visibility: hidden">
+                            </div>
+                            <div class="col-md-3">
+                                <img id="answered_option_4_tick" class="col-md-3 col-md-offset-5" src="img/correct_answer_tick.png" alt="" style="visibility: hidden">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="answered_stats_img_row col-md-12">
                     <div class="col-md-12" id="answered_stats_img">
                         <div class="row" id="answered_options_images">
-                            <img id="answered_option_1_icon" class="col-md-3" height="300" src="https://firebasestorage.googleapis.com/v0/b/mantrodev.appspot.com/o/option_icons%2Fdolphin_icon.png?alt=media&token=2ab3872d-90da-496c-b7ec-5957f6950c0a" alt="">
+                            <img id="answered_option_1_icon" class="col-md-3" height="300" src="" alt="">
                             <img id="answered_option_2_icon" class="col-md-3" height="300" src="" alt="">
                             <img id="answered_option_3_icon" class="col-md-3" height="300" src="" alt="">
                             <img id="answered_option_4_icon" class="col-md-3" height="300" src="" alt="">
@@ -72,25 +116,25 @@ and open the template in the editor.
                     <div class="answered_row1">
                         <div class="col-md-6" id="answered_option_1">
                             <img id="answered_option_1_img" class="col-md-3" src="" alt="">
-                            <h3 id="answered_option_1_text" class="col-md-7">Option 1</h3>
-                            <img id="answered_option_1_correct" class="col-md-2" src="" alt="">
+                            <h3 id="answered_option_1_text" class="col-md-6" style="visibility: visible">Option 1</h3>
+                            <img id="answered_option_1_optionimg" class="col-md-3" src="" alt="" style="visibility: visible">
                         </div>
                         <div class="col-md-6" id="answered_option_2">
                             <img id="answered_option_2_img" class="col-md-3" src="" alt="">
-                            <h3 id="answered_option_2_text" class="col-md-7">Option 2</h3>
-                            <img id="answered_option_2_correct" class="col-md-2" src="" alt="">
+                            <h3 id="answered_option_2_text" class="col-md-6" style="visibility: visible">Option 2</h3>
+                            <img id="answered_option_2_optionimg" class="col-md-3" src="" alt="" style="visibility: visible">
                         </div>
                     </div>
                     <div class="answered_row2">
                         <div class="col-md-6" id="answered_option_3">
                             <img id="answered_option_3_img" class="col-md-3" src="" alt="">
-                            <h3 id="answered_option_3_text" class="col-md-7">Option 3</h3>
-                            <img id="answered_option_3_correct" class="col-md-2" src="" alt="">
+                            <h3 id="answered_option_3_text" class="col-md-6" style="visibility: visible">Option 3</h3>
+                            <img id="answered_option_3_optionimg" class="col-md-3" src="" alt="" style="visibility: visible">
                         </div>
                         <div class="col-md-6" id="answered_option_4">
                             <img id="answered_option_4_img" class="col-md-3" src="" alt="">
-                            <h3 id="answered_option_4_text" class="col-md-7">Option 4</h3>
-                            <img id="answered_option_4_correct" class="col-md-2" src="" alt="">
+                            <h3 id="answered_option_4_text" class="col-md-6" style="visibility: visible">Option 4</h3>
+                            <img id="answered_option_4_optionimg" class="col-md-3" src="" alt="" style="visibility: visible">
                         </div>
                     </div>
                 </div>
