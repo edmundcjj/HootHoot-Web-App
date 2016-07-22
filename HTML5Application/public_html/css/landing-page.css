@@ -74,17 +74,26 @@ html,body,.col-lg-12,.row{
 }
 .get_ready_read_qns_row{
     height: 8%;
+    padding: 0px;
 }
 .get_ready_read_qns_row > div{
     height: 100%;
 }
+.get_ready_progress_bar_row{
+    height: 3%;
+    padding: 0px;
+}
+.get_ready_progress_bar_row > div{
+    height: 100%;
+}
 .get_ready_qns_name_row{
-    height: 81%;
+    height: 78%;
 }
 .get_ready_qns_name_row > div{
     height: 100%;
 }
-#Qns_1_not_yet_answered, #Qns_2_not_yet_answered, #Qns_3_not_yet_answered, #Qns_4_not_yet_answered, #Qns_5_not_yet_answered{
+
+/*#Qns_1_not_yet_answered, #Qns_2_not_yet_answered, #Qns_3_not_yet_answered, #Qns_4_not_yet_answered, #Qns_5_not_yet_answered{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -93,7 +102,7 @@ html,body,.col-lg-12,.row{
     display: flex;
     align-items: center;
     justify-content: center;
-}
+}*/
 
 .answering_qns_header_row{
     padding: 0px;
@@ -102,16 +111,23 @@ html,body,.col-lg-12,.row{
 .answering_qns_header_row > div{
     height: 100%;
 }
+.answering_progress_bar_row{
+    height: 3%;
+    padding: 0px;
+}
+.answering_progress_bar_row > div{
+    height: 100%;
+}
 .answering_qns_name_row{
     padding: 0px;
-    height: 49%; 
+    height: 46%; 
 }
 .answering_qns_name_row > div{
     height: 100%;
 }
 .answering_side_column{
     padding: 0px;
-    height: 49%; 
+    height: 46%; 
 }
 .answering_side_column_top_row{
     height: 50%;
@@ -148,16 +164,16 @@ html,body,.col-lg-12,.row{
 .answered_qns_header_row > div{
     height: 100%;
 }
-/*.answered_timer_row{
+.answered_progress_bar_row{
+    height: 3%;
     padding: 0px;
-    height: 8%; 
 }
-.answered_timer_row > div{
+.answered_progress_bar_row > div{
     height: 100%;
-}*/
+}
 .answered_qns_ticks_row{
     padding: 0px;
-    height: 7%; 
+    height: 4%; 
 }
 .answered_qns_ticks_row > div{
     height: 100%;
@@ -202,9 +218,16 @@ html,body,.col-lg-12,.row{
 .leaderboard_header_row > div{
     height: 100%;
 }
+.leaderboard_progress_bar_row{
+    height: 3%;
+    padding: 0px;
+}
+.leaderboard_progress_bar_row > div{
+    height: 100%;
+}
 .leader_empty_space{
     background: #00BF96;
-    height: 5%;
+    height: 4.4%;
 }
 .leaderboard_nickname_row{
     background: #00BF96;
@@ -222,13 +245,7 @@ html,body,.col-lg-12,.row{
 .leaderboard_stats_row > div{
     height: 100%;
 }
-/*.leaderboard_timer_row{
-    padding: 0px;
-    height: 7%;
-}
-.leaderboard_timer_row > div{
-    height: 100%;
-}*/
+
 
 .gameover_header_row{
     padding: 0px;
@@ -237,14 +254,17 @@ html,body,.col-lg-12,.row{
 .gameover_header_row > div{
     height: 100%;
 }
-.gameover_empty_space{
-    background: #00BF96;
-    height: 5%;
+.gameover_progress_bar_row{
+    height: 3%;
+    padding: 0px;
+}
+.gameover_progress_bar_row > div{
+    height: 100%;
 }
 .gameover_nickname_row{
     background: #00BF96;
     padding: 0px;
-    height: 85%;
+    height: 87%;
 }
 .gameover_nickname_row > div{
     height: 100%;
@@ -252,7 +272,7 @@ html,body,.col-lg-12,.row{
 .gameover_stats_row{
     background: #00BF96;
     padding: 0px;
-    height: 85%;
+    height: 87%;
 }
 .gameover_stats_row > div{
     height: 100%;
@@ -297,27 +317,14 @@ html,body,.col-lg-12,.row{
     background: #00BF96;
     text-align: center;
     padding: 0px;
-    height: 90%;
+    height: 87%;
 }
 
 #waiting_station_column{
     background: #00EE76;
     padding: 0px;
     text-align: center;
-    height: 80%;
-}
-
-#waiting_timer_column{
-    background: #00EE76;
-    padding: 0px;
-    height: 80%;
-}
-
-#waiting_for_player_seconds{
-    position: absolute;
-    top: 50%;
-    left:50%;
-    transform: translate(-50%,-50%);
+    height: 87%;
 }
 
 #waiting_station_name{
@@ -342,11 +349,33 @@ html,body,.col-lg-12,.row{
 }
 
 #waiting_progress_bar_row{
-    height: 10%;
+    height: 3%;
+    padding: 0px;
 }
 
 #waiting_progress_bar_row > div{
     height: 100%;
+}
+
+
+.waiting_skillbar, .get_ready_skillbar, .answering_skillbar, .answered_skillbar, .leaderboard_skillbar, .gameover_skillbar {
+	background:#eee;
+	-webkit-transition:0.4s linear;
+	-moz-transition:0.4s linear;
+	-ms-transition:0.4s linear;
+	-o-transition:0.4s linear;
+	transition:0.4s linear;
+	-webkit-transition-property:width, background-color;
+	-moz-transition-property:width, background-color;
+	-ms-transition-property:width, background-color;
+	-o-transition-property:width, background-color;
+	transition-property:width, background-color;
+}
+
+.waiting_skillbar-bar, .get_ready_skillbar-bar, .answering_skillbar-bar, .answered_skillbar-bar, .leaderboard_skillbar-bar, .gameover_skillbar-bar {
+	height:100%;
+	width:0px;
+	background:#6adcfa;
 }
 /* ___________________________ waiting state ________________________________ */
 

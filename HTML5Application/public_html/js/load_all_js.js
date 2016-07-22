@@ -59,12 +59,17 @@ document.getElementById("mario_main_music").appendChild(main_audio);
 
 // 60 seconds countdown timer function
 function countdown_60sec_timer(ref1, ref2){
-//    var countdownElement = document.getElementById("waiting_for_player_seconds"),
-    seconds = 10,
+    // Reset get_ready state progress bar's width to 0px
+    console.log("Before waiting reset");
+    document.getElementById("waiting_skillbar-bar_width").setAttribute("style", "width:0px");
+    console.log("After waiting reset");
+    
+    var seconds = 10,
+    timer = 12000,
     second = 0;
 
     interval = setInterval(function() {
-//        countdownElement.innerHTML = (seconds - second) + ' secs';
+        console.log((seconds - second) + ' secs');
         if (second >= seconds) {
             clearInterval(interval);
             
@@ -76,29 +81,38 @@ function countdown_60sec_timer(ref1, ref2){
         }
         second++;
     }, 1000);
+    
+    jQuery(document).ready(function(){
+        jQuery('.waiting_skillbar').each(function(){
+            jQuery(this).find('.waiting_skillbar-bar').animate({
+              width:jQuery(this).attr('data-percent')
+            },timer);
+        });
+    });
 }
 
 // Stop 60 seconds countdown timer function when state changed back to waiting
 function stop_countdown_60sec_timer(){
     clearInterval(interval);
-//    document.getElementById("waiting_for_player_seconds").innerHTML = null;
 }
 
 
 // 10 seconds countdown timer function for getready state
-function get_ready_countdown_10sec_timer(ref1){
-//    var countdownElement = document.getElementById(id),
-    seconds = 10,
+function get_ready_countdown_10sec_timer(){
+    // Reset get_ready state progress bar's width to 0px
+    console.log("Before getready reset");
+    document.getElementById("get_ready_skillbar-bar_width").setAttribute("style", "width:0px");
+    console.log("After getready reset");
+    
+    var seconds = 10,
+    timer = 12000,
     second = 0;
 
     interval = setInterval(function() {
-//        countdownElement.innerHTML = (seconds - second) + ' secs';
+        console.log((seconds - second) + ' secs');
         if (second >= seconds) {
             clearInterval(interval);
             
-            // Stop all firebase event listeners related to getready state
-            stop_get_ready(ref1);
-
             // Clear display of <div id="getready">
             document.getElementById("get_ready").style.display = "none";
 
@@ -110,13 +124,26 @@ function get_ready_countdown_10sec_timer(ref1){
         }
         second++;
     }, 1000);
+    
+    jQuery(document).ready(function(){
+        jQuery('.get_ready_skillbar').each(function(){
+            jQuery(this).find('.get_ready_skillbar-bar').animate({
+              width:jQuery(this).attr('data-percent')
+            },timer);
+        });
+    });
 }
 
 
 // 20 seconds countdown timer function for answering state
 function answering_countdown_20sec_timer(duration, ref1){
-//    var countdownElement = document.getElementById(id),
-    seconds = duration,
+    // Reset get_ready state progress bar's width to 0px
+    console.log("Before answering reset");
+    document.getElementById("answering_skillbar-bar_width").setAttribute("style", "width:0px");
+    console.log("After answering reset");
+    
+    var seconds = duration,
+    timer = 22000,
     second = 0;
 
     interval = setInterval(function() {
@@ -129,8 +156,17 @@ function answering_countdown_20sec_timer(duration, ref1){
         }
         second++;
     }, 1000);
+    
+    jQuery(document).ready(function(){
+        jQuery('.answering_skillbar').each(function(){
+            jQuery(this).find('.answering_skillbar-bar').animate({
+              width:jQuery(this).attr('data-percent')
+            },timer);
+        });
+    });
 }
 
+// Stop 20 seconds timer
 function stop_answering_countdown_20sec_timer(ref1){
     
     // Stop firebase event listeners related to answering_question state
@@ -149,8 +185,13 @@ function stop_answering_countdown_20sec_timer(ref1){
 
 // 10 seconds countdown timer function for answered state
 function answered_countdown_10sec_timer(){
-//    var countdownElement = document.getElementById(id),
-    seconds = 10,
+    // Reset get_ready state progress bar's width to 0px
+    console.log("Before answered reset");
+    document.getElementById("answered_skillbar-bar_width").setAttribute("style", "width:0px");
+    console.log("After answered reset");
+    
+    var seconds = 10,
+    timer = 11000,
     second = 0;
 
     interval = setInterval(function() {
@@ -192,13 +233,26 @@ function answered_countdown_10sec_timer(){
         }
         second++;
     }, 1000);
+    
+    jQuery(document).ready(function(){
+        jQuery('.answered_skillbar').each(function(){
+            jQuery(this).find('.answered_skillbar-bar').animate({
+              width:jQuery(this).attr('data-percent')
+            },timer);
+        });
+    });
 }
 
 
 // 10 seconds countdown timer function for leaderboard state
 function leaderboard_countdown_10sec_timer(ref1){
-//    var countdownElement = document.getElementById(id),
-    seconds = 10,
+    // Reset get_ready state progress bar's width to 0px
+    console.log("Before leaderboard reset");
+    document.getElementById("leaderboard_skillbar-bar_width").setAttribute("style", "width:0px");
+    console.log("After leaderboard reset");
+    
+    var seconds = 10,
+    timer = 11000,
     second = 0;
 
     interval = setInterval(function() {
@@ -223,12 +277,26 @@ function leaderboard_countdown_10sec_timer(ref1){
         }
         second++;
     }, 1000);
+    
+    jQuery(document).ready(function(){
+        jQuery('.leaderboard_skillbar').each(function(){
+            jQuery(this).find('.leaderboard_skillbar-bar').animate({
+              width:jQuery(this).attr('data-percent')
+            },timer);
+        });
+    });
 }
 
 
 // 60 seconds countdown timer function for gameover state before returning to waiting state
 function game_over_countdown_10sec_timer(ref1){
+    // Reset get_ready state progress bar's width to 0px
+    console.log("Before gameover reset");
+    document.getElementById("gameover_skillbar-bar_width").setAttribute("style", "width:0px");
+    console.log("After gameover reset");
+    
     var seconds = 10,
+    timer = 11000,
     second = 0;
 
     interval = setInterval(function() {
@@ -258,6 +326,14 @@ function game_over_countdown_10sec_timer(ref1){
         }
         second++;
     }, 1000);
+    
+    jQuery(document).ready(function(){
+        jQuery('.gameover_skillbar').each(function(){
+            jQuery(this).find('.gameover_skillbar-bar').animate({
+              width:jQuery(this).attr('data-percent')
+            },timer);
+        });
+    });
 }
 
 
@@ -303,7 +379,6 @@ function remove_players_ans_ansduration(){
 }
 
 
-// Update user's score, total_correct_answer & total_incorrect_answer
 function update_user_node(){
     var stationPlayers_ref = new Firebase(FB_stationPlayers_url);
     stationPlayers_ref.once("value", function(AllPlayerSnapshot){
@@ -437,7 +512,7 @@ function start_waiting_for_players(){
     var stationPlayer_ref;
     var newPlayer, deletedPlayer, player_count, list, pname, text_li, user_icon, values;
     var AddChild, RemoveChild;
-    
+        
     // Update list of players after deletion
     RemoveChild = stationPlayers_ref.on("child_removed", function(snapshot) {
         console.log("Child removed");
@@ -562,7 +637,7 @@ function start_get_ready(){
     
     // Toggle get ready state qns number icons to visible
     toggle_getready_qns_icons_invisibility();
-    
+        
     // Check if station node has QUESTION_HISTORY node
     station_ref = new Firebase(FB_STATION_URL);
     station_ref.once("value", function(snapshot){
@@ -588,9 +663,9 @@ function start_get_ready(){
         }
     });
 
-    // Update firebase CURRENT_QUESTION node with a random question from question bank
+    // Update firebase CURRENT_QUESTION node with one question from question bank
     curr_qns = questionBank[curr_qns_index++];
-    station_ref.on("value", function(){
+    station_ref.once("value", function(){
         var qns_curr_ref = station_ref.child("CURRENT_QUESTION");
         qns_curr_ref.set({
             question_id: curr_qns.question_id,
@@ -649,14 +724,9 @@ function start_get_ready(){
         document.getElementById("answering_option_3_text").style.visibility = "hidden";
         document.getElementById("answering_option_4_text").style.visibility = "hidden";
     }
-    
+        
     // Countdown timer of 10 secs for players to read
-    get_ready_countdown_10sec_timer(station_ref);
-}
-
-// Stop all functions related to getready state
-function stop_get_ready(station_ref){
-    station_ref.off();
+    get_ready_countdown_10sec_timer();
 }
 
 
@@ -902,7 +972,7 @@ function start_answering_qns(){
     document.getElementById("answering_option_2").style.backgroundColor = optionicon_list[1].bgcolor;
     document.getElementById("answering_option_3").style.backgroundColor = optionicon_list[2].bgcolor;
     document.getElementById("answering_option_4").style.backgroundColor = optionicon_list[3].bgcolor;
-        
+    
     update_answers_num();
 }
 
@@ -1473,7 +1543,7 @@ function start_leaderboard(){
     // Local variable
     var all_scores = [];
     var station_state_ref, stationPlayers_ref;
-    
+        
     // Change station state to gameover
     station_state_ref = new Firebase(FB_STATION_URL);
     current_state = LEADERBOARD_STATE;
@@ -1540,7 +1610,7 @@ function start_game_over(){
     // Local variable
     var all_scores = [];
     var station_state_ref, stationPlayers_ref;
-    
+        
     // Change station state to gameover
     station_state_ref = new Firebase(FB_STATION_URL);
     current_state = GAMEOVER_STATE;
