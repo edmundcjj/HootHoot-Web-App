@@ -171,12 +171,15 @@ html,body,.col-lg-12,.row{
 .answered_progress_bar_row > div{
     height: 100%;
 }
-.answered_qns_ticks_row{
+.answered_empty_space{
     padding: 0px;
-    height: 4%; 
+    background: #00BF96;
+    height: 5%
 }
-.answered_qns_ticks_row > div{
-    height: 100%;
+.overlayImage{
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 .answered_stats_number_row{
     padding: 0px;
@@ -189,7 +192,7 @@ html,body,.col-lg-12,.row{
 .answered_stats_img_row{
     padding: 0px;
     margin: 0px;
-    height: 32%;
+    height: 31%;
 }
 .answered_stats_img_row > div{
     height: 100%;

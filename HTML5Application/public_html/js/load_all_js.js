@@ -7,7 +7,7 @@
 // Global Variables
 var questionBank = [];                                                                  // Pool of questions for a specific station
 var curr_qns, interval;                                                                 // Variable that contains details of current question
-var curr_qns_index = 8;                                                                 // Current index of current question
+var curr_qns_index = 0;                                                                 // Current index of current question
 var qns_num_icon = 0;                                                                   // Qns number icon
 var current_state = "";                                                                 // Current state of the station
 var optionicon_list = [];                                                               // Array that contains icon_url for the different question options
@@ -17,15 +17,6 @@ var answering_qns1, answering_qns2, answering_qns3, answering_qns4, answering_qn
 var answering_qns6, answering_qns7, answering_qns8, answering_qns9, answering_qns10;    // Answering_questions State qns number icons
 var answered_qns1, answered_qns2, answered_qns3, answered_qns4, answered_qns5;          // Answered State qns number icons
 var answered_qns6, answered_qns7, answered_qns8, answered_qns9, answered_qns10;         // Answered State qns number icons
-
-// Audio Lists
-var WAITING_AUDIO;
-var STARTING_AUDIO;
-var GET_READY_AUDIO;
-var ANSWERING_AUDIO;
-var ANSWERED_AUDIO;
-var GAME_OVER_AUDIO;
-var NEW_PLAYER_AUDIO;
 
 // Decode url to get station name
 var search_query = window.location.search;
@@ -58,12 +49,24 @@ var ANSWERED_STATE = "answered";
 var LEADERBOARD_STATE = "leaderboard";
 var GAMEOVER_STATE = "gameover";
 
+// Audio Lists
+var WAITING_AUDIO;
+var STARTING_AUDIO;
+var GET_READY_AUDIO;
+var ANSWERING_AUDIO;
+var ANSWERED_AUDIO;
+var GAME_OVER_AUDIO;
+var NEW_PLAYER_AUDIO;
+
+// Start playing an audio sound for a particular state
 function playAudio(audio)
 {
+    console.log("Playing " + current_state + " audio");
     audio.currentTime = 0;
     audio.play();
 }
 
+// Pause all audio sounds
 function pauseAllAudios()
 {
     WAITING_AUDIO = document.getElementById("waiting_audio");
@@ -131,7 +134,7 @@ function get_ready_countdown_10sec_timer(){
     document.getElementById("get_ready_skillbar-bar_width").setAttribute("style", "width:0%");
     console.log("After getready reset");
     
-    // Play music for waiting state
+    // Play music for get_ready state
     pauseAllAudios();
     playAudio(GET_READY_AUDIO);
     
@@ -173,7 +176,7 @@ function answering_countdown_20sec_timer(duration, ref1){
     document.getElementById("answering_skillbar-bar_width").setAttribute("style", "width:0%");
     console.log("After answering reset");
     
-    // Play music for waiting state
+    // Play music for answering_question state
     pauseAllAudios();
     playAudio(ANSWERING_AUDIO);
     
@@ -225,7 +228,7 @@ function answered_countdown_10sec_timer(){
     document.getElementById("answered_skillbar-bar_width").setAttribute("style", "width:0%");
     console.log("After answered reset");
     
-    // Play music for waiting state
+    // Play music for answered and leaderboard state
     pauseAllAudios();
     playAudio(ANSWERED_AUDIO);
     
@@ -1698,7 +1701,7 @@ function start_game_over(){
         document.getElementById("game_over_points1").innerHTML = all_scores[0].score + " pts";
     });
     
-    // Play music for waiting state
+    // Play music for gameover state
     pauseAllAudios();
     playAudio(GAME_OVER_AUDIO);
     
