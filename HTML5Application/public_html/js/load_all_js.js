@@ -7,7 +7,7 @@
 // Global Variables
 var questionBank = [];                                                                  // Pool of questions for a specific station
 var curr_qns, interval;                                                                 // Variable that contains details of current question
-var curr_qns_index = 0;                                                                 // Current index of current question
+var curr_qns_index = 8;                                                                 // Current index of current question
 var qns_num_icon = 0;                                                                   // Qns number icon
 var current_state = "";                                                                 // Current state of the station
 var optionicon_list = [];                                                               // Array that contains icon_url for the different question options
@@ -17,6 +17,15 @@ var answering_qns1, answering_qns2, answering_qns3, answering_qns4, answering_qn
 var answering_qns6, answering_qns7, answering_qns8, answering_qns9, answering_qns10;    // Answering_questions State qns number icons
 var answered_qns1, answered_qns2, answered_qns3, answered_qns4, answered_qns5;          // Answered State qns number icons
 var answered_qns6, answered_qns7, answered_qns8, answered_qns9, answered_qns10;         // Answered State qns number icons
+
+// Audio Lists
+var WAITING_AUDIO;
+var STARTING_AUDIO;
+var GET_READY_AUDIO;
+var ANSWERING_AUDIO;
+var ANSWERED_AUDIO;
+var GAME_OVER_AUDIO;
+var NEW_PLAYER_AUDIO;
 
 // Decode url to get station name
 var search_query = window.location.search;
@@ -49,19 +58,37 @@ var ANSWERED_STATE = "answered";
 var LEADERBOARD_STATE = "leaderboard";
 var GAMEOVER_STATE = "gameover";
 
+function playAudio(audio)
+{
+    audio.currentTime = 0;
+    audio.play();
+}
 
-// Play mario main music, this music will last be on loop playing repeatedly
-var main_audio = document.createElement("audio");
-main_audio.src = "music/Underworld.mp3";
-main_audio.autoplay = "true";
-main_audio.loop = "true";
-document.getElementById("mario_main_music").appendChild(main_audio);
+function pauseAllAudios()
+{
+    WAITING_AUDIO = document.getElementById("waiting_audio");
+    STARTING_AUDIO = document.getElementById("starting_audio");
+    GET_READY_AUDIO = document.getElementById("getready_audio");
+    ANSWERING_AUDIO = document.getElementById("answering_audio");
+    ANSWERED_AUDIO = document.getElementById("answered_audio");
+    GAME_OVER_AUDIO = document.getElementById("gameover_audio");
+    NEW_PLAYER_AUDIO = document.getElementById("newplayer_audio");
+        
+    WAITING_AUDIO.pause();
+    STARTING_AUDIO.pause();
+    GET_READY_AUDIO.pause();
+    ANSWERING_AUDIO.pause();
+    ANSWERED_AUDIO.pause();
+    GAME_OVER_AUDIO.pause();
+    NEW_PLAYER_AUDIO.pause();
+
+}
 
 // 60 seconds countdown timer function
 function countdown_60sec_timer(ref1, ref2){
     // Reset get_ready state progress bar's width to 0px
     console.log("Before waiting reset");
-    document.getElementById("waiting_skillbar-bar_width").setAttribute("style", "width:0px");
+    document.getElementById("waiting_skillbar-bar_width").setAttribute("style", "width:0%");
     console.log("After waiting reset");
     
     var seconds = 10,
@@ -101,8 +128,12 @@ function stop_countdown_60sec_timer(){
 function get_ready_countdown_10sec_timer(){
     // Reset get_ready state progress bar's width to 0px
     console.log("Before getready reset");
-    document.getElementById("get_ready_skillbar-bar_width").setAttribute("style", "width:0px");
+    document.getElementById("get_ready_skillbar-bar_width").setAttribute("style", "width:0%");
     console.log("After getready reset");
+    
+    // Play music for waiting state
+    pauseAllAudios();
+    playAudio(GET_READY_AUDIO);
     
     var seconds = 10,
     timer = 12000,
@@ -139,8 +170,12 @@ function get_ready_countdown_10sec_timer(){
 function answering_countdown_20sec_timer(duration, ref1){
     // Reset get_ready state progress bar's width to 0px
     console.log("Before answering reset");
-    document.getElementById("answering_skillbar-bar_width").setAttribute("style", "width:0px");
+    document.getElementById("answering_skillbar-bar_width").setAttribute("style", "width:0%");
     console.log("After answering reset");
+    
+    // Play music for waiting state
+    pauseAllAudios();
+    playAudio(ANSWERING_AUDIO);
     
     var seconds = duration,
     timer = 22000,
@@ -187,8 +222,12 @@ function stop_answering_countdown_20sec_timer(ref1){
 function answered_countdown_10sec_timer(){
     // Reset get_ready state progress bar's width to 0px
     console.log("Before answered reset");
-    document.getElementById("answered_skillbar-bar_width").setAttribute("style", "width:0px");
+    document.getElementById("answered_skillbar-bar_width").setAttribute("style", "width:0%");
     console.log("After answered reset");
+    
+    // Play music for waiting state
+    pauseAllAudios();
+    playAudio(ANSWERED_AUDIO);
     
     var seconds = 10,
     timer = 11000,
@@ -248,7 +287,7 @@ function answered_countdown_10sec_timer(){
 function leaderboard_countdown_10sec_timer(ref1){
     // Reset get_ready state progress bar's width to 0px
     console.log("Before leaderboard reset");
-    document.getElementById("leaderboard_skillbar-bar_width").setAttribute("style", "width:0px");
+    document.getElementById("leaderboard_skillbar-bar_width").setAttribute("style", "width:0%");
     console.log("After leaderboard reset");
     
     var seconds = 10,
@@ -292,7 +331,7 @@ function leaderboard_countdown_10sec_timer(ref1){
 function game_over_countdown_10sec_timer(ref1){
     // Reset get_ready state progress bar's width to 0px
     console.log("Before gameover reset");
-    document.getElementById("gameover_skillbar-bar_width").setAttribute("style", "width:0px");
+    document.getElementById("gameover_skillbar-bar_width").setAttribute("style", "width:0%");
     console.log("After gameover reset");
     
     var seconds = 10,
@@ -322,6 +361,10 @@ function game_over_countdown_10sec_timer(ref1){
             
             // Remove any players in player list on web app
             document.getElementById("player_name").innerHTML = "";
+            var p = document.getElementById("state_reference");
+            p.innerHTML = "Waiting for players...";
+            console.log("P = " + p.innerHTML);
+            document.getElementById("waiting_skillbar-bar_width").setAttribute("style", "width:0%");
             start_waiting_for_players();
         }
         second++;
@@ -508,6 +551,10 @@ function start_waiting_for_players(){
         "state": current_state
     });
     
+    // Play music for waiting state
+    pauseAllAudios();
+    playAudio(WAITING_AUDIO);
+    
     var stationPlayers_ref = new Firebase(FB_stationPlayers_url);
     var stationPlayer_ref;
     var newPlayer, deletedPlayer, player_count, list, pname, text_li, user_icon, values;
@@ -544,6 +591,17 @@ function start_waiting_for_players(){
                 station_ref.update({
                     "state": current_state
                 });
+                
+                pauseAllAudios();
+                playAudio(WAITING_AUDIO);
+                
+                jQuery(document).ready(function(){
+                    jQuery('.waiting_skillbar').each(function(){
+                        jQuery(this).find('.waiting_skillbar-bar').stop();
+                    });
+                });
+                document.getElementById("waiting_skillbar-bar_width").setAttribute("style", "width:0%");
+                
                 var p = document.getElementById("state_reference");
                 p.innerHTML = "Waiting for players...";
                 stop_countdown_60sec_timer();
@@ -589,6 +647,10 @@ function start_waiting_for_players(){
                 if (current_state === WAITING_STATE){
                     countdown_60sec_timer(stationPlayers_ref, station_ref);
                     current_state = STARTING_STATE;
+                    
+                    // Play music for waiting state
+                    pauseAllAudios();
+                    playAudio(STARTING_AUDIO);
                 }
             }
             
@@ -600,10 +662,7 @@ function start_waiting_for_players(){
         stationPlayer_ref.child("total_incorrect_answer").set(0);
         
         // Play a sound whenever a new player join the game
-        var new_player_sound = document.createElement("audio");
-        new_player_sound.src = "music/Coin_sound.mp3";
-        new_player_sound.autoplay = "true";
-        document.getElementById("player_join_music").appendChild(new_player_sound);
+        playAudio(NEW_PLAYER_AUDIO);
     });
 }
 
@@ -1639,11 +1698,9 @@ function start_game_over(){
         document.getElementById("game_over_points1").innerHTML = all_scores[0].score + " pts";
     });
     
-    // Play a sound whenever a new player join the game
-    var clear_game_sound = document.createElement("audio");
-    clear_game_sound.src = "music/Stage_clear_sound.mp3";
-    clear_game_sound.autoplay = "true";
-    document.getElementById("clear_game_sound").appendChild(clear_game_sound);
+    // Play music for waiting state
+    pauseAllAudios();
+    playAudio(GAME_OVER_AUDIO);
     
     // Call countdown timer function
     game_over_countdown_10sec_timer(stationPlayers_ref);

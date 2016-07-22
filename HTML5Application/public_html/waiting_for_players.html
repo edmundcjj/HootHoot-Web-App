@@ -29,7 +29,15 @@
     
     <body>
         
-        <div id="mario_main_music"></div>
+        <div id="mario_main_music">
+            <audio id="waiting_audio" src="music/waiting.mp3"/>
+            <audio id="starting_audio" src="music/starting.mp3"/>
+            <audio id="getready_audio" src="music/get_ready_sound.mp3"/>
+            <audio id="answering_audio" src="music/Answering_Question.mp3"/>
+            <audio id="answered_audio" src="music/answered_leaderboard_sound.mp3"/>
+            <audio id="gameover_audio" src="music/Stage_clear_sound.mp3"/>
+            <audio id="newplayer_audio" src="music/Coin_sound.mp3"/>
+        </div>
         
         <!-- _____________________________________________________  state = waiting_for_players ___________________________________________________________________________ -->
         <div class="waiting_players_page" id="waiting_for_players">
@@ -48,10 +56,6 @@
                         <div class="waiting_skillbar-bar" id="waiting_skillbar-bar_width" style="background: #000000;"></div>
                     </div>
                 </div>
-                
-                <script>
-                    document.getElementById("waiting_skillbar-bar_width").style.width= "0px";
-                </script>
 
                 <!-- Player Column -->
                 <div class="col-md-4" id="waiting_player_column">
@@ -122,17 +126,12 @@
                 </div>
             </div>
             
-            <!-- 10 sec time progress bar -->
             <div class="get_ready_progress_bar_row col-md-12">
                 <div class="get_ready_skillbar clearfix " data-percent="100%">
                     <div class="get_ready_skillbar-bar" id="get_ready_skillbar-bar_width" style="background: #000000;"></div>
                 </div>
             </div>
             
-            <script>
-                document.getElementById("get_ready_skillbar-bar_width").style.width= "0px";
-            </script>
-
             <div class="get_ready_qns_name_row">
                 <!-- Question Name -->
                 <div class="col-md-12" id="get_ready_qns_name">
@@ -191,10 +190,6 @@
                     </div>
                 </div>
                 
-                <script>
-                    document.getElementById("answering_skillbar-bar_width").style.width= "0px";
-                </script>
-                
                 <div class="answering_qns_name_row col-md-11">
                     <div class="col-md-12" id="answering_qns_name">
                         <h2 id="answering_h2_qns_name">Question Name</h2>
@@ -208,7 +203,7 @@
                         </div>
                     </div>
                 </div>
-
+                
                 <div class="answering_row col-md-12 " style="padding: 0px">
                     <div class="answering_row1">
                         <div class="col-md-6" id="answering_option_1">
@@ -218,20 +213,20 @@
                         </div>
                         <div class="col-md-6" id="answering_option_2">
                             <img id="answering_option_2_img" class="col-md-3" src="" alt="">
-                            <h3 id="answering_option_2_text" class="col-md-9" style="visibility: hidden">Option 2</h3>
-                            <img id="answering_option_2_optionimg" class="col-md-9" src="" alt="" style="visibility: hidden">
+                            <h3 id="answering_option_2_text" class="col-md-6" style="visibility: hidden">Option 2</h3>
+                            <img id="answering_option_2_optionimg" class="col-md-3" src="" alt="" style="visibility: hidden">
                         </div>
                     </div>
                     <div class="answering_row2">
                         <div class="col-md-6" id="answering_option_3">
                             <img id="answering_option_3_img" class="col-md-3" src="" alt="">
-                            <h3 id="answering_option_3_text" class="col-md-9" style="visibility: hidden">Option 3</h3>
-                            <img id="answering_option_3_optionimg" class="col-md-9" src="" alt="" style="visibility: hidden">
+                            <h3 id="answering_option_3_text" class="col-md-6" style="visibility: hidden">Option 3</h3>
+                            <img id="answering_option_3_optionimg" class="col-md-3" src="" alt="" style="visibility: hidden">
                         </div>
                         <div class="col-md-6" id="answering_option_4">
                             <img id="answering_option_4_img" class="col-md-3" src="" alt="">
-                            <h3 id="answering_option_4_text" class="col-md-9" style="visibility: hidden">Option 4</h3>
-                            <img id="answering_option_4_optionimg" class="col-md-9" src="" alt="" style="visibility: hidden">
+                            <h3 id="answering_option_4_text" class="col-md-6" style="visibility: hidden">Option 4</h3>
+                            <img id="answering_option_4_optionimg" class="col-md-3" src="" alt="" style="visibility: hidden">
                         </div>
                     </div>
                 </div>
@@ -289,10 +284,6 @@
                     </div>
                 </div>
                 
-                <script>
-                    document.getElementById("answered_skillbar-bar_width").style.width= "0px";
-                </script>
-
                 <div class="answered_qns_ticks_row col-md-12">
                     <div class="col-md-12" id="answered_qns_ticks">
                         <div class="row" id="answered_options_ticks">
@@ -381,10 +372,6 @@
                         <div class="leaderboard_skillbar-bar" id="leaderboard_skillbar-bar_width" style="background: #000000;"></div>
                     </div>
                 </div>
-                
-                <script>
-                    document.getElementById("leaderboard_skillbar-bar_width").style.width= "0px";
-                </script>
                 
                 <!-- Top Player 1 -->
                 <div class="leader_empty_space col-md-12"></div>
@@ -477,7 +464,6 @@
         
         <!-- ______________________________________________________ state = game_over _____________________________________________________________________________________ -->
         <div class="game_over_page" id="game_over" style = "display:none">
-            <div id="clear_game_sound"></div>
             <div class="col-lg-12">
                 <div class="gameover_header_row col-md-12">
                     <div id="game_over_header">
@@ -491,11 +477,7 @@
                         <div class="gameover_skillbar-bar" id="gameover_skillbar-bar_width" style="background: #000000;"></div>
                     </div>
                 </div>
-                
-                <script>
-                    document.getElementById("gameover_skillbar-bar_width").style.width= "0px";
-                </script>
-                
+                                
                 <!-- Top Player 1 -->
                 <div class="gameover_nickname_row col-md-6">
                     <div class="col-md-offset-6" id="gameover_nickname">
