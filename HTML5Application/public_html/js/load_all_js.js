@@ -7,7 +7,7 @@
 // Global Variables
 var questionBank = [];                                                                  // Pool of questions for a specific station
 var curr_qns, interval;                                                                 // Variable that contains details of current question
-var curr_qns_index = 0;                                                                 // Current index of current question
+var curr_qns_index = 8;                                                                 // Current index of current question
 var qns_num_icon = 0;                                                                   // Qns number icon
 var current_state = "";                                                                 // Current state of the station
 var optionicon_list = [];                                                               // Array that contains icon_url for the different question options
@@ -69,7 +69,9 @@ function playAudio(audio)
 // Pause all audio sounds
 function pauseAllAudios()
 {
+    console.log("Pausing all audios");
     WAITING_AUDIO = document.getElementById("waiting_audio");
+    WAITING_AUDIO.loop = "true";
     STARTING_AUDIO = document.getElementById("starting_audio");
     GET_READY_AUDIO = document.getElementById("getready_audio");
     ANSWERING_AUDIO = document.getElementById("answering_audio");
@@ -91,11 +93,12 @@ function pauseAllAudios()
 function countdown_60sec_timer(ref1, ref2){
     // Reset get_ready state progress bar's width to 0px
     console.log("Before waiting reset");
-    document.getElementById("waiting_skillbar-bar_width").setAttribute("style", "width:0%");
+//    document.getElementById("waiting_skillbar-bar_width").setAttribute("style", "width:0%");
+    document.getElementById("waiting_skillbar-bar_width").style.width = "0%";
     console.log("After waiting reset");
     
     var seconds = 10,
-    timer = 12000,
+    timer = 11000,
     second = 0;
 
     interval = setInterval(function() {
@@ -131,7 +134,8 @@ function stop_countdown_60sec_timer(){
 function get_ready_countdown_10sec_timer(){
     // Reset get_ready state progress bar's width to 0px
     console.log("Before getready reset");
-    document.getElementById("get_ready_skillbar-bar_width").setAttribute("style", "width:0%");
+//    document.getElementById("get_ready_skillbar-bar_width").setAttribute("style", "width:0%");
+    document.getElementById("get_ready_skillbar-bar_width").style.width = "0%";
     console.log("After getready reset");
     
     // Play music for get_ready state
@@ -173,7 +177,8 @@ function get_ready_countdown_10sec_timer(){
 function answering_countdown_20sec_timer(duration, ref1){
     // Reset get_ready state progress bar's width to 0px
     console.log("Before answering reset");
-    document.getElementById("answering_skillbar-bar_width").setAttribute("style", "width:0%");
+//    document.getElementById("answering_skillbar-bar_width").setAttribute("style", "width:0%");
+    document.getElementById("answering_skillbar-bar_width").style.width = "0%";
     console.log("After answering reset");
     
     // Play music for answering_question state
@@ -225,7 +230,8 @@ function stop_answering_countdown_20sec_timer(ref1){
 function answered_countdown_10sec_timer(){
     // Reset get_ready state progress bar's width to 0px
     console.log("Before answered reset");
-    document.getElementById("answered_skillbar-bar_width").setAttribute("style", "width:0%");
+//    document.getElementById("answered_skillbar-bar_width").setAttribute("style", "width:0%");
+    document.getElementById("answered_skillbar-bar_width").style.width = "0%";
     console.log("After answered reset");
     
     // Play music for answered and leaderboard state
@@ -290,7 +296,8 @@ function answered_countdown_10sec_timer(){
 function leaderboard_countdown_10sec_timer(ref1){
     // Reset get_ready state progress bar's width to 0px
     console.log("Before leaderboard reset");
-    document.getElementById("leaderboard_skillbar-bar_width").setAttribute("style", "width:0%");
+//    document.getElementById("leaderboard_skillbar-bar_width").setAttribute("style", "width:0%");
+    document.getElementById("leaderboard_skillbar-bar_width").style.width = "0%";
     console.log("After leaderboard reset");
     
     var seconds = 10,
@@ -334,7 +341,8 @@ function leaderboard_countdown_10sec_timer(ref1){
 function game_over_countdown_10sec_timer(ref1){
     // Reset get_ready state progress bar's width to 0px
     console.log("Before gameover reset");
-    document.getElementById("gameover_skillbar-bar_width").setAttribute("style", "width:0%");
+//    document.getElementById("gameover_skillbar-bar_width").setAttribute("style", "width:0%");
+    document.getElementById("gameover_skillbar-bar_width").style.width = "0%";
     console.log("After gameover reset");
     
     var seconds = 10,
@@ -977,10 +985,12 @@ function start_answering_qns(){
     station_qns_posttime_ref.child("posting_time").set(posting_time);
     
     // Display current qns number
-//    document.getElementById("answering_h1_qns_header").innerHTML = "QUESTION " + curr_qns.question_no;
     qns_num_icon = curr_qns_index;
     console.log("qns index = " + qns_num_icon);
     display_answering_qns_icons(qns_num_icon);
+    
+    // Reset the number of answers to 0
+    document.getElementById("ans_num").innerHTML = "0 answers";
     
     // Display current qns name
     document.getElementById("answering_h2_qns_name").innerHTML = curr_qns.question_name;
@@ -1190,17 +1200,18 @@ function update_answers_num(){
     
     // Local variables
     var checked_players = [];
-    var answers = 0, player_count = 0;
+    var answers = 0;
     var stationPlayers_ref;
     
-    // Reset the number of answers to 0
-    document.getElementById("ans_num").innerHTML = "0 answers";
+//    // Reset the number of answers to 0
+//    document.getElementById("ans_num").innerHTML = "0 answers";
     
     // Event when player has selected their answer
     stationPlayers_ref = new Firebase(FB_stationPlayers_url);
     stationPlayers_ref.on("value", function(snapshot){
         var values = snapshot.val();
-        player_count = Object.keys(values).length;
+        var player_count = Object.keys(values).length;
+        console.log("There are " + player_count + " players");
         snapshot.forEach(function(childSnapshot) {
             var value = childSnapshot.val();
             if (value.answer !== undefined & value.answer !== null){
@@ -1633,7 +1644,7 @@ function start_leaderboard(){
             document.getElementById("leaderboard_points" + (count+1)).style.visibility = "visible";
             document.getElementById("leaderboard_player_icon" + (count+1)).src = all_scores[count].icon_url;
             document.getElementById("h2_leaderboard_nickname" + (count+1)).innerHTML = all_scores[count].nickname;
-            document.getElementById("leaderboard_points" + (count+1)).innerHTML = all_scores[count].score + " points";
+            document.getElementById("leaderboard_points" + (count+1)).innerHTML = all_scores[count].score + " pts";
         }
         
     });

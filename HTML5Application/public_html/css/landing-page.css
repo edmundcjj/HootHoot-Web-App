@@ -42,6 +42,7 @@ h6 {
 .station_config {
     background: url(../img/zoo_wallpaper.jpg) no-repeat center center;
     height: 100%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -92,17 +93,6 @@ html,body,.col-lg-12,.row{
 .get_ready_qns_name_row > div{
     height: 100%;
 }
-
-/*#Qns_1_not_yet_answered, #Qns_2_not_yet_answered, #Qns_3_not_yet_answered, #Qns_4_not_yet_answered, #Qns_5_not_yet_answered{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-#Qns_6_not_yet_answered, #Qns_7_not_yet_answered, #Qns_8_not_yet_answered, #Qns_9_not_yet_answered, #Qns_10_not_yet_answered{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}*/
 
 .answering_qns_header_row{
     padding: 0px;
@@ -174,7 +164,7 @@ html,body,.col-lg-12,.row{
 .answered_empty_space{
     padding: 0px;
     background: #00BF96;
-    height: 5%
+    height: 2%
 }
 .overlayImage{
     position: absolute;
@@ -184,7 +174,7 @@ html,body,.col-lg-12,.row{
 .answered_stats_number_row{
     padding: 0px;
     margin: 0px;
-    height: 10%;
+    height: 14%;
 }
 .answered_stats_number_row > div{
     height: 100%;
@@ -192,7 +182,7 @@ html,body,.col-lg-12,.row{
 .answered_stats_img_row{
     padding: 0px;
     margin: 0px;
-    height: 31%;
+    height: 30%;
 }
 .answered_stats_img_row > div{
     height: 100%;
@@ -384,6 +374,7 @@ html,body,.col-lg-12,.row{
 
 
 #get_ready_qns_header, #answering_qns_header, #answered_qns_header{
+    padding-top: 0.3%;
     background: #00816A;
     text-align: center;
 }
@@ -442,20 +433,17 @@ html,body,.col-lg-12,.row{
     word-wrap: break-word;
     margin: 0px;
     font-size: 120px;
-    position: absolute;
-    top: 50%;
-    left:50%;
-    transform: translate(-50%,-50%);
+    position: relative;
+    top: 25%;
+    text-align: center;
 }
 
 #answering_h2_qns_name{
     text-align: center;
     font-size: 100px;
     margin: 0px;
-    position: absolute;
-    top: 50%;
-    left:50%;
-    transform: translate(-50%,-50%);
+    position: relative;
+    top: 25%;
 }
 
 #answering_side_column{
@@ -505,14 +493,12 @@ html,body,.col-lg-12,.row{
 }
 
 #ans_num{
-/*    display: flex;
-    align-items: center;
-    justify-content: center;*/
     position: absolute;
     top: 90%;
     left:50%;
     transform: translate(-50%,-50%);
-    font-size: 38px;
+    font-size: 42px;
+    text-align: center;
 }
 
 #h3_answering_countdown_timer{
@@ -529,9 +515,9 @@ html,body,.col-lg-12,.row{
 }
 
 #answered_options_stats{
-    display: flex;
+/*    display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center;*/
 }
 
 #answered_option_1_stats, #answered_option_2_stats, #answered_option_3_stats, #answered_option_4_stats{
@@ -540,7 +526,7 @@ html,body,.col-lg-12,.row{
 }
 
 #answered_option_1_text, #answered_option_2_text, #answered_option_3_text, #answered_option_4_text{
-    font-size: 60px;
+    font-size: 80px;
 }
 
 #answered_option_1_optionimg, #answered_option_2_optionimg, #answered_option_3_optionimg, #answered_option_4_optionimg{
@@ -557,7 +543,8 @@ html,body,.col-lg-12,.row{
     padding: 0px;
 }
 
-#answering_option_1_text{
+#answering_option_1_text, #answering_option_2_text, #answering_option_3_text, #answering_option_4_text{
+    font-size: 80px;
     word-wrap: break-word;
 }
 
@@ -605,25 +592,25 @@ html,body,.col-lg-12,.row{
     font-size: 70px;
     margin-bottom: 0px;
     margin-top: 0px;
-    padding-top: 10px;
+    padding-top: 3%;
 }
 
 #h2_game_over_nickname1{
     font-size: 70px;
     margin-bottom: 0px;
     margin-top: 0px;
-    padding-top: 10px;
+    padding-top: 3%;
 }
 
 #leaderboard_nickname_container1, #leaderboard_nickname_container2, #leaderboard_nickname_container3, #leaderboard_nickname_container4, #leaderboard_nickname_container5{
     background: #00816A;
-    height: 100px;
+    height: 120px;
     margin: 0px;
 }
 
 #gameover_nickname_container{
     background: #00816A;
-    height: 100px;
+    height: 120px;
     margin: 0px;
 }
 
@@ -633,15 +620,16 @@ html,body,.col-lg-12,.row{
     justify-content: center;
     margin: 0px;
     font-size: 70px;
+    padding-top: 3%;
 }
 
 #game_over_points1{
-    position: absolute;
+    position: relative;
     top: 50%;
-    left:50%;
+    left: 60%;
     transform: translate(-50%,-50%);
     margin: 0px;
-    font-size: 65px;
+    font-size: 70px;
 }
 
 #h2_leaderboard_next_qns{

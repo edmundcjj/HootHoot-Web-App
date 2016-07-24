@@ -68,7 +68,7 @@ and open the template in the editor.
                 <!-- 10 sec time progress bar -->
                 <div class="answered_progress_bar_row col-md-12">
                     <div class="answered_skillbar clearfix " data-percent="100%">
-                        <div class="answered_skillbar-bar" style="background: #000000;"></div>
+                        <div class="answered_skillbar-bar" id="answered_skillbar-bar_width" style="background: #000000;"></div>
                     </div>
                 </div>
                 
@@ -77,21 +77,21 @@ and open the template in the editor.
                 <div class="answered_stats_img_row col-md-12">
                     <div class="col-md-12" id="answered_stats_img">
                         <div class="row" id="answered_options_images">
-                            <div class="col-md-3 imageWrapper" style="padding: 0px; background: #1565C0">
-                                <img id="answered_option_1_icon" class="col-md-12 overlayImage" height="300" style="padding: 0px" src="https://firebasestorage.googleapis.com/v0/b/mantrodev.appspot.com/o/option_icons%2Fdolphin_icon.png?alt=media&token=2ab3872d-90da-496c-b7ec-5957f6950c0a" alt="">
-                                <img id="answered_option_1_tick" class="overlayImage" src="img/correct_answer_tick.png" alt="" style="visibility: hidden; padding-left: 5px">
+                            <div class="col-md-3 imageWrapper" style="padding: 0px; background: #1565C0; margin-left: 10px">
+                                <img id="answered_option_1_icon" class="col-md-9 col-md-offset-1 overlayImage" height="300" style="padding: 0px" src="https://firebasestorage.googleapis.com/v0/b/mantrodev.appspot.com/o/option_icons%2Fdolphin_icon.png?alt=media&token=2ab3872d-90da-496c-b7ec-5957f6950c0a" alt="">
+                                <img id="answered_option_1_tick" class="overlayImage" src="img/correct_answer_tick.png" alt="" style="visibility: visible; padding-left: 5px">
                             </div>
-                            <div class="col-md-3 imageWrapper" style="padding: 0px; background: #757575; margin-left: 10px">
-                                <img id="answered_option_2_icon" class="col-md-12 overlayImage" height="300" style="padding: 0px" src="https://firebasestorage.googleapis.com/v0/b/mantrodev.appspot.com/o/option_icons%2Fdolphin_icon.png?alt=media&token=2ab3872d-90da-496c-b7ec-5957f6950c0a" alt="">
-                                <img id="answered_option_2_tick" class="overlayImage" src="img/correct_answer_tick.png" alt="" style="visibility: hidden; padding-left: 5px">
+                            <div class="col-md-3 imageWrapper" style="padding: 0px; background: #757575; margin-left: 40px">
+                                <img id="answered_option_2_icon" class="col-md-9 col-md-offset-1 overlayImage" height="300" style="padding: 0px" src="https://firebasestorage.googleapis.com/v0/b/mantrodev.appspot.com/o/option_icons%2Fdolphin_icon.png?alt=media&token=2ab3872d-90da-496c-b7ec-5957f6950c0a" alt="">
+                                <img id="answered_option_2_tick" class="overlayImage" src="img/correct_answer_tick.png" alt="" style="visibility: visible; padding-left: 5px">
                             </div>
-                            <div class="col-md-3 imageWrapper" style="padding: 0px; background: #F57C00; margin-left: 10px">
-                                <img id="answered_option_3_icon" class="col-md-12 overlayImage" height="300" style="padding: 0px" src="https://firebasestorage.googleapis.com/v0/b/mantrodev.appspot.com/o/option_icons%2Fdolphin_icon.png?alt=media&token=2ab3872d-90da-496c-b7ec-5957f6950c0a" alt="">
-                                <img id="answered_option_3_tick" class="overlayImage" src="img/correct_answer_tick.png" alt="" style="visibility: hidden; padding-left: 5px">
+                            <div class="col-md-3 imageWrapper" style="padding: 0px; background: #F57C00; margin-left: 40px">
+                                <img id="answered_option_3_icon" class="col-md-9 col-md-offset-1 overlayImage" height="300" style="padding: 0px" src="https://firebasestorage.googleapis.com/v0/b/mantrodev.appspot.com/o/option_icons%2Fdolphin_icon.png?alt=media&token=2ab3872d-90da-496c-b7ec-5957f6950c0a" alt="">
+                                <img id="answered_option_3_tick" class="overlayImage" src="img/correct_answer_tick.png" alt="" style="visibility: visible; padding-left: 5px">
                             </div>
-                            <div class="col-md-3 imageWrapper" style="padding: 0px; background: #558B2F; margin-left: 10px">
-                                <img id="answered_option_4_icon" class="col-md-12 overlayImage" height="300" style="padding: 0px" src="https://firebasestorage.googleapis.com/v0/b/mantrodev.appspot.com/o/option_icons%2Fdolphin_icon.png?alt=media&token=2ab3872d-90da-496c-b7ec-5957f6950c0a" alt="">
-                                <img id="answered_option_4_tick" class="overlayImage" src="img/correct_answer_tick.png" alt="" style="visibility: hidden; padding-left: 5px">
+                            <div class="col-md-3 imageWrapper" style="padding: 0px; background: #558B2F; margin-left: 40px; margin-right: 10px">
+                                <img id="answered_option_4_icon" class="col-md-9 col-md-offset-1 overlayImage" height="300" style="padding: 0px" src="https://firebasestorage.googleapis.com/v0/b/mantrodev.appspot.com/o/option_icons%2Fdolphin_icon.png?alt=media&token=2ab3872d-90da-496c-b7ec-5957f6950c0a" alt="">
+                                <img id="answered_option_4_tick" class="overlayImage" src="img/correct_answer_tick.png" alt="" style="visibility: visible; padding-left: 5px">
                             </div>
                         </div>
                     </div>
@@ -100,10 +100,10 @@ and open the template in the editor.
                 <div class="answered_stats_number_row col-md-12">
                     <div class="col-md-12" id="answered_stats_num">
                         <div class="row" id="answered_options_stats">
-                            <h3 id="answered_option_1_stats" class="col-md-3">0</h3>
-                            <h3 id="answered_option_2_stats" class="col-md-3">0</h3>
-                            <h3 id="answered_option_3_stats" class="col-md-3">0</h3>
-                            <h3 id="answered_option_4_stats" class="col-md-3">0</h3>
+                            <h3 id="answered_option_1_stats" class="col-md-3">0 answered</h3>
+                            <h3 id="answered_option_2_stats" class="col-md-3">0 answered</h3>
+                            <h3 id="answered_option_3_stats" class="col-md-3">0 answered</h3>
+                            <h3 id="answered_option_4_stats" class="col-md-3">0 answered</h3>
                         </div>
                     </div>
                 </div>
