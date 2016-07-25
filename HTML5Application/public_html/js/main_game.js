@@ -3,11 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+/* 
+    Created on : 1 Jun, 2016, 3:32:21 AM
+    Author     : Chow Jie Jin Edmund
+*/
 
+//--------------------------------------------------------------------------- Variables ---------------------------------------------------------------------------------------------
 // Global Variables
 var questionBank = [];                                                                  // Pool of questions for a specific station
 var curr_qns, interval;                                                                 // Variable that contains details of current question
-var curr_qns_index = 8;                                                                 // Current index of current question
+var curr_qns_index = 0;                                                                 // Current index of current question
 var qns_num_icon = 0;                                                                   // Qns number icon
 var current_state = "";                                                                 // Current state of the station
 var optionicon_list = [];                                                               // Array that contains icon_url for the different question options
@@ -34,11 +39,10 @@ station_id = decode_station_id[0];
     
 // Constants for firebase url
 var FB_STATION_URL = "https://mantrodev.firebaseio.com/STATIONS/" + station_id;
-var FB_stationPlayers_url = "https://mantrodev.firebaseio.com/STATIONS/" + station_id + "/PLAYERS";
-var FB_stationCurrentQuestion_url = "https://mantrodev.firebaseio.com/STATIONS/" + station_id + "/CURRENT_QUESTION";
-var FB_stationQuestionHistory_url = "https://mantrodev.firebaseio.com/STATIONS/" + station_id + "/QUESTION_HISTORY";
+var FB_STATIONPLAYERS_URL = "https://mantrodev.firebaseio.com/STATIONS/" + station_id + "/PLAYERS";
+var FB_STATIONCURRENTQUESTION_URL = "https://mantrodev.firebaseio.com/STATIONS/" + station_id + "/CURRENT_QUESTION";
 var FB_OPTIONICON_URL = "https://mantrodev.firebaseio.com/OPTION_ICONS";
-var FB_stationUsers_url = "https://mantrodev.firebaseio.com/USERS";
+var FB_STATIONUSERS_URL = "https://mantrodev.firebaseio.com/USERS";
 
 // Constants for station states
 var WAITING_STATE = "waiting";
@@ -57,7 +61,10 @@ var ANSWERING_AUDIO;
 var ANSWERED_AUDIO;
 var GAME_OVER_AUDIO;
 var NEW_PLAYER_AUDIO;
+//--------------------------------------------------------------------------- Variables ---------------------------------------------------------------------------------------------
 
+
+//--------------------------------------------------------------------------- Functions for Audio ---------------------------------------------------------------------------------------------
 // Start playing an audio sound for a particular state
 function playAudio(audio)
 {
@@ -88,17 +95,20 @@ function pauseAllAudios()
     NEW_PLAYER_AUDIO.pause();
 
 }
+//--------------------------------------------------------------------------- Functions for Audio ---------------------------------------------------------------------------------------------
 
-// 60 seconds countdown timer function
-function countdown_60sec_timer(ref1, ref2){
+
+//--------------------------------------------------------------------------- Functions for waiting state timer ---------------------------------------------------------------------------------------------
+// 60 seconds countdown timer function for waiting state
+function waiting_countdown_60sec_timer(ref1, ref2){
     // Reset get_ready state progress bar's width to 0px
     console.log("Before waiting reset");
 //    document.getElementById("waiting_skillbar-bar_width").setAttribute("style", "width:0%");
     document.getElementById("waiting_skillbar-bar_width").style.width = "0%";
     console.log("After waiting reset");
     
-    var seconds = 10,
-    timer = 11000,
+    var seconds = 60,
+    timer = 62000,
     second = 0;
 
     interval = setInterval(function() {
@@ -124,12 +134,14 @@ function countdown_60sec_timer(ref1, ref2){
     });
 }
 
-// Stop 60 seconds countdown timer function when state changed back to waiting
-function stop_countdown_60sec_timer(){
+// Stop 60 seconds countdown timer function
+function stop_waiting_countdown_60sec_timer(){
     clearInterval(interval);
 }
+//--------------------------------------------------------------------------- Functions for waiting state timer ---------------------------------------------------------------------------------------------
 
 
+//--------------------------------------------------------------------------- Functions for getready state timer ---------------------------------------------------------------------------------------------
 // 10 seconds countdown timer function for getready state
 function get_ready_countdown_10sec_timer(){
     // Reset get_ready state progress bar's width to 0px
@@ -142,6 +154,7 @@ function get_ready_countdown_10sec_timer(){
     pauseAllAudios();
     playAudio(GET_READY_AUDIO);
     
+    // 10 sec timer running
     var seconds = 10,
     timer = 12000,
     second = 0;
@@ -163,6 +176,7 @@ function get_ready_countdown_10sec_timer(){
         second++;
     }, 1000);
     
+    // 10 sec progress bar
     jQuery(document).ready(function(){
         jQuery('.get_ready_skillbar').each(function(){
             jQuery(this).find('.get_ready_skillbar-bar').animate({
@@ -171,13 +185,14 @@ function get_ready_countdown_10sec_timer(){
         });
     });
 }
+//--------------------------------------------------------------------------- Functions for getready state timer ---------------------------------------------------------------------------------------------
 
 
+//--------------------------------------------------------------------------- Functions for answering_question state timer ---------------------------------------------------------------------------------------------
 // 20 seconds countdown timer function for answering state
 function answering_countdown_20sec_timer(duration, ref1){
     // Reset get_ready state progress bar's width to 0px
     console.log("Before answering reset");
-//    document.getElementById("answering_skillbar-bar_width").setAttribute("style", "width:0%");
     document.getElementById("answering_skillbar-bar_width").style.width = "0%";
     console.log("After answering reset");
     
@@ -185,12 +200,12 @@ function answering_countdown_20sec_timer(duration, ref1){
     pauseAllAudios();
     playAudio(ANSWERING_AUDIO);
     
+    // 20 sec timer
     var seconds = duration,
     timer = 22000,
     second = 0;
 
     interval = setInterval(function() {
-//        countdownElement.innerHTML = (seconds - second) + ' secs';
         if (second >= seconds) {
             clearInterval(interval);
             
@@ -200,6 +215,7 @@ function answering_countdown_20sec_timer(duration, ref1){
         second++;
     }, 1000);
     
+    // 20 sec progress bar
     jQuery(document).ready(function(){
         jQuery('.answering_skillbar').each(function(){
             jQuery(this).find('.answering_skillbar-bar').animate({
@@ -217,20 +233,21 @@ function stop_answering_countdown_20sec_timer(ref1){
     clearInterval(interval);
     
     // Retrieve posting time from current question node
-    var station_qns_posttime_ref = new Firebase(FB_stationCurrentQuestion_url);
+    var station_qns_posttime_ref = new Firebase(FB_STATIONCURRENTQUESTION_URL);
     station_qns_posttime_ref.child("posting_time").once("value", function(snapshot){
         var posting_time = snapshot.val();
         update_player_score(posting_time);
     });    
 
 }
+//--------------------------------------------------------------------------- Functions for answering_question state timer ---------------------------------------------------------------------------------------------
 
 
+//--------------------------------------------------------------------------- Functions for answered state timer ---------------------------------------------------------------------------------------------
 // 10 seconds countdown timer function for answered state
 function answered_countdown_10sec_timer(){
     // Reset get_ready state progress bar's width to 0px
     console.log("Before answered reset");
-//    document.getElementById("answered_skillbar-bar_width").setAttribute("style", "width:0%");
     document.getElementById("answered_skillbar-bar_width").style.width = "0%";
     console.log("After answered reset");
     
@@ -238,12 +255,12 @@ function answered_countdown_10sec_timer(){
     pauseAllAudios();
     playAudio(ANSWERED_AUDIO);
     
+    // 10 sec timer
     var seconds = 10,
     timer = 11000,
     second = 0;
 
     interval = setInterval(function() {
-//        countdownElement.innerHTML = (seconds - second) + ' secs';
         if (second >= seconds) {
             clearInterval(interval);
             
@@ -282,6 +299,7 @@ function answered_countdown_10sec_timer(){
         second++;
     }, 1000);
     
+    // 10 sec progress bar
     jQuery(document).ready(function(){
         jQuery('.answered_skillbar').each(function(){
             jQuery(this).find('.answered_skillbar-bar').animate({
@@ -290,22 +308,23 @@ function answered_countdown_10sec_timer(){
         });
     });
 }
+//--------------------------------------------------------------------------- Functions for answered state timer ---------------------------------------------------------------------------------------------
 
 
+//--------------------------------------------------------------------------- Functions for leaderboard state timer ---------------------------------------------------------------------------------------------
 // 10 seconds countdown timer function for leaderboard state
 function leaderboard_countdown_10sec_timer(ref1){
     // Reset get_ready state progress bar's width to 0px
     console.log("Before leaderboard reset");
-//    document.getElementById("leaderboard_skillbar-bar_width").setAttribute("style", "width:0%");
     document.getElementById("leaderboard_skillbar-bar_width").style.width = "0%";
     console.log("After leaderboard reset");
     
+    // 10 sec timer
     var seconds = 10,
     timer = 11000,
     second = 0;
 
     interval = setInterval(function() {
-//        countdownElement.innerHTML = (seconds - second) + ' secs';
         if (second >= seconds) {
             clearInterval(interval);
             
@@ -327,6 +346,7 @@ function leaderboard_countdown_10sec_timer(ref1){
         second++;
     }, 1000);
     
+    // 10 sec progress bar
     jQuery(document).ready(function(){
         jQuery('.leaderboard_skillbar').each(function(){
             jQuery(this).find('.leaderboard_skillbar-bar').animate({
@@ -335,16 +355,18 @@ function leaderboard_countdown_10sec_timer(ref1){
         });
     });
 }
+//--------------------------------------------------------------------------- Functions for leaderboard state timer ---------------------------------------------------------------------------------------------
 
 
-// 60 seconds countdown timer function for gameover state before returning to waiting state
+//--------------------------------------------------------------------------- Functions for gameover state timer ---------------------------------------------------------------------------------------------
+// 10 seconds countdown timer function for gameover state before returning to waiting state
 function game_over_countdown_10sec_timer(ref1){
     // Reset get_ready state progress bar's width to 0px
     console.log("Before gameover reset");
-//    document.getElementById("gameover_skillbar-bar_width").setAttribute("style", "width:0%");
     document.getElementById("gameover_skillbar-bar_width").style.width = "0%";
     console.log("After gameover reset");
     
+    // 10 sec timer
     var seconds = 10,
     timer = 11000,
     second = 0;
@@ -364,7 +386,7 @@ function game_over_countdown_10sec_timer(ref1){
             document.getElementById("game_over").style.display = "none";
             
             // Remove any existing players before restarting the game
-            var removePlayer_ref = new Firebase(FB_stationPlayers_url);
+            var removePlayer_ref = new Firebase(FB_STATIONPLAYERS_URL);
             removePlayer_ref.remove();
             
             // Transit to waiting state
@@ -376,11 +398,14 @@ function game_over_countdown_10sec_timer(ref1){
             p.innerHTML = "Waiting for players...";
             console.log("P = " + p.innerHTML);
             document.getElementById("waiting_skillbar-bar_width").setAttribute("style", "width:0%");
+            
+            // start function for waiting state
             start_waiting_for_players();
         }
         second++;
     }, 1000);
     
+    // 10 sec progress bar
     jQuery(document).ready(function(){
         jQuery('.gameover_skillbar').each(function(){
             jQuery(this).find('.gameover_skillbar-bar').animate({
@@ -389,9 +414,11 @@ function game_over_countdown_10sec_timer(ref1){
         });
     });
 }
+//--------------------------------------------------------------------------- Functions for gameover state timer ---------------------------------------------------------------------------------------------
 
 
-// Function to retrieve all questions from CMS
+//--------------------------------------------------------------------------- CMS retrieve qns function ---------------------------------------------------------------------------------------------
+// Function to retrieve all questions from Content Management System
 function get_qns_from_CMS(){
     
         // Retrieve all questions from CMS and save it to QNS_BANK array
@@ -417,11 +444,13 @@ function get_qns_from_CMS(){
         xmlhttp.open("GET", url, true);
         xmlhttp.send(); 
 }
+//--------------------------------------------------------------------------- CMS retrieve qns function ---------------------------------------------------------------------------------------------
 
 
+//--------------------------------------------------------------------------- Remove player's answering duration  ---------------------------------------------------------------------------------------------
 // Function to remove player's answer and answering_duration
 function remove_players_ans_ansduration(){
-    var stationPlayers_ref = new Firebase(FB_stationPlayers_url);
+    var stationPlayers_ref = new Firebase(FB_STATIONPLAYERS_URL);
     stationPlayers_ref.once("value", function(AllPlayerssnapshot){
         AllPlayerssnapshot.forEach(function(PlayerSnapshot){
             stationPlayers_ref.child(PlayerSnapshot.key()).child("answer").remove();
@@ -431,10 +460,12 @@ function remove_players_ans_ansduration(){
         });
     });
 }
+//--------------------------------------------------------------------------- Remove player's answering duration function ---------------------------------------------------------------------------------------------
 
 
+//--------------------------------------------------------------------------- Updating scores of players to user node function ---------------------------------------------------------------------------------------------
 function update_user_node(){
-    var stationPlayers_ref = new Firebase(FB_stationPlayers_url);
+    var stationPlayers_ref = new Firebase(FB_STATIONPLAYERS_URL);
     stationPlayers_ref.once("value", function(AllPlayerSnapshot){
         AllPlayerSnapshot.forEach(function(PlayerSnapshot){
             console.log("Updating user's score....");
@@ -442,22 +473,24 @@ function update_user_node(){
             
             if (value.connected === true){
                 // Update score in users node with player score earned from the game
-                var stationPlayer_score_ref = new Firebase(FB_stationUsers_url).child(PlayerSnapshot.key()).child("scores").child(station_id).child("score");
+                var stationPlayer_score_ref = new Firebase(FB_STATIONUSERS_URL).child(PlayerSnapshot.key()).child("scores").child(station_id).child("score");
                 stationPlayer_score_ref.set(value.score);
 
                 // Update total_correct_answer in users node with total_correct_answer earned from the game
-                var stationPlayer_total_correct_ref = new Firebase(FB_stationUsers_url).child(PlayerSnapshot.key()).child("scores").child(station_id).child("total_correct_answer");
+                var stationPlayer_total_correct_ref = new Firebase(FB_STATIONUSERS_URL).child(PlayerSnapshot.key()).child("scores").child(station_id).child("total_correct_answer");
                 stationPlayer_total_correct_ref.set(value.total_correct_answer);
 
                 // Update total_incorrect_answer in users node with total_incorrect_answer earned from the game
-                var stationPlayer_total_incorrect_ref = new Firebase(FB_stationUsers_url).child(PlayerSnapshot.key()).child("scores").child(station_id).child("total_incorrect_answer");
+                var stationPlayer_total_incorrect_ref = new Firebase(FB_STATIONUSERS_URL).child(PlayerSnapshot.key()).child("scores").child(station_id).child("total_incorrect_answer");
                 stationPlayer_total_incorrect_ref.set(value.total_incorrect_answer);
             }
         });
     });
 }
+//--------------------------------------------------------------------------- Updating scores of players to user node function ---------------------------------------------------------------------------------------------
 
 
+//--------------------------------------------------------------------------- Functions for waiting state ---------------------------------------------------------------------------------------------
 // Function to make all qns number icons invisible
 function initialize_qns_icons(){
     // Get Ready state
@@ -527,7 +560,6 @@ function initialize_qns_icons(){
     answered_qns10.style.visibility = "hidden";
 }
 
-
 // Start all functions related to waiting_for_players state
 function start_waiting_for_players(){
     
@@ -542,8 +574,8 @@ function start_waiting_for_players(){
         });
         
         // Remove any unwanted players before listening to any new incoming players
-        stop_countdown_60sec_timer();
-        var removePlayer_ref = new Firebase(FB_stationPlayers_url);
+        stop_waiting_countdown_60sec_timer();
+        var removePlayer_ref = new Firebase(FB_STATIONPLAYERS_URL);
         removePlayer_ref.remove();
 
         var p = document.getElementById("state_reference");
@@ -566,7 +598,7 @@ function start_waiting_for_players(){
     pauseAllAudios();
     playAudio(WAITING_AUDIO);
     
-    var stationPlayers_ref = new Firebase(FB_stationPlayers_url);
+    var stationPlayers_ref = new Firebase(FB_STATIONPLAYERS_URL);
     var stationPlayer_ref;
     var newPlayer, deletedPlayer, player_count, list, pname, text_li, user_icon, values;
     var AddChild, RemoveChild;
@@ -588,7 +620,7 @@ function start_waiting_for_players(){
         }
         
         // Update state of station to "waiting_for_players" when player count < 1
-        //ref = new Firebase(FB_stationPlayers_url);
+        //ref = new Firebase(FB_STATIONPLAYERS_URL);
         stationPlayers_ref.once("value", function(snapshot) {
             values = snapshot.val();
             if (values !== null){
@@ -615,7 +647,7 @@ function start_waiting_for_players(){
                 
                 var p = document.getElementById("state_reference");
                 p.innerHTML = "Waiting for players...";
-                stop_countdown_60sec_timer();
+                stop_waiting_countdown_60sec_timer();
             }
         });
     });
@@ -656,7 +688,7 @@ function start_waiting_for_players(){
                 p.innerHTML = "Game starting soon...";
                 console.log("P inner HTML = " + p.innerHTML);
                 if (current_state === WAITING_STATE){
-                    countdown_60sec_timer(stationPlayers_ref, station_ref);
+                    waiting_countdown_60sec_timer(stationPlayers_ref, station_ref);
                     current_state = STARTING_STATE;
                     
                     // Play music for waiting state
@@ -668,7 +700,7 @@ function start_waiting_for_players(){
         });
         
         // Add total_correct_answer and total_incorrect_answer child node for every player joined
-        stationPlayer_ref = new Firebase(FB_stationPlayers_url + "/" + snapshot.key());
+        stationPlayer_ref = new Firebase(FB_STATIONPLAYERS_URL + "/" + snapshot.key());
         stationPlayer_ref.child("total_correct_answer").set(0);
         stationPlayer_ref.child("total_incorrect_answer").set(0);
         
@@ -682,8 +714,10 @@ function stop_waiting_for_players(FB_stationPlayer_ref, FB_station_ref){
     FB_stationPlayer_ref.off();
     FB_station_ref.off();
 }
+//--------------------------------------------------------------------------- Functions for waiting state ---------------------------------------------------------------------------------------------
 
 
+//--------------------------------------------------------------------------- Functions for getready state ---------------------------------------------------------------------------------------------
 // Function to toggle getready state qns number icons
 function toggle_getready_qns_icons_invisibility(){
     getready_qns1.style.visibility = "visible";
@@ -697,7 +731,6 @@ function toggle_getready_qns_icons_invisibility(){
     getready_qns9.style.visibility = "visible";
     getready_qns10.style.visibility = "visible";
 }
-
 
 // Start all functions related to getready state
 function start_get_ready(){
@@ -798,7 +831,6 @@ function start_get_ready(){
     // Countdown timer of 10 secs for players to read
     get_ready_countdown_10sec_timer();
 }
-
 
 // Function to toggle qns number icon invisibility
 function display_getready_qns_num_icons(getready_index){
@@ -945,8 +977,10 @@ function display_getready_qns_num_icons(getready_index){
             break;
     }
 }
+//--------------------------------------------------------------------------- Functions for getready state ---------------------------------------------------------------------------------------------
 
 
+//--------------------------------------------------------------------------- Functions for answering_question state ---------------------------------------------------------------------------------------------
 // Function to toggle answering_question state qns number icons
 function toggle_answering_qns_icons_visibility(){
     answering_qns1.style.visibility = "visible";
@@ -960,7 +994,6 @@ function toggle_answering_qns_icons_visibility(){
     answering_qns9.style.visibility = "visible";
     answering_qns10.style.visibility = "visible";
 }
-
 
 // Start all functions related to answering questions state
 function start_answering_qns(){
@@ -980,7 +1013,7 @@ function start_answering_qns(){
     });
     
     // Set current question posting time
-    station_qns_posttime_ref = new Firebase(FB_stationCurrentQuestion_url);
+    station_qns_posttime_ref = new Firebase(FB_STATIONCURRENTQUESTION_URL);
     posting_time = Firebase.ServerValue.TIMESTAMP;
     station_qns_posttime_ref.child("posting_time").set(posting_time);
     
@@ -1047,7 +1080,6 @@ function start_answering_qns(){
     
     update_answers_num();
 }
-
 
 // Function to display answering_question qns number icons
 function display_answering_qns_icons(answering_index){
@@ -1194,7 +1226,6 @@ function display_answering_qns_icons(answering_index){
     }
 }
 
-
 // Function to update number of answers during answering question state 
 function update_answers_num(){
     
@@ -1203,11 +1234,8 @@ function update_answers_num(){
     var answers = 0;
     var stationPlayers_ref;
     
-//    // Reset the number of answers to 0
-//    document.getElementById("ans_num").innerHTML = "0 answers";
-    
     // Event when player has selected their answer
-    stationPlayers_ref = new Firebase(FB_stationPlayers_url);
+    stationPlayers_ref = new Firebase(FB_STATIONPLAYERS_URL);
     stationPlayers_ref.on("value", function(snapshot){
         var values = snapshot.val();
         var player_count = Object.keys(values).length;
@@ -1233,7 +1261,6 @@ function update_answers_num(){
     answering_countdown_20sec_timer(curr_qns.answering_duration, stationPlayers_ref);
 }
 
-
 // Function to update player score
 function update_player_score(posting_time){
     
@@ -1246,7 +1273,7 @@ function update_player_score(posting_time){
     document.getElementById("ans_num").innerHTML = "0 answers";
     
     // Event when player has selected their answer
-    stationPlayers_ref = new Firebase(FB_stationPlayers_url);
+    stationPlayers_ref = new Firebase(FB_STATIONPLAYERS_URL);
     stationPlayers_ref.once("value", function(snapshot){
         total_players = Object.keys(snapshot.val()).length;
         snapshot.forEach(function(childSnapshot) {
@@ -1257,7 +1284,7 @@ function update_player_score(posting_time){
             checked_players[childSnapshot.key()] = childSnapshot.key();
             player_count = player_count + 1;
             
-            stationPlayer_ref = new Firebase(FB_stationPlayers_url + "/" + childSnapshot.key());
+            stationPlayer_ref = new Firebase(FB_STATIONPLAYERS_URL + "/" + childSnapshot.key());
             
             if (value.answer !== undefined & value.answer !== null){
                 console.log("answer not null");
@@ -1286,7 +1313,7 @@ function update_player_score(posting_time){
             else
             {
                 console.log("answer null");
-                //stationPlayer_ref = new Firebase(FB_stationPlayers_url + "/" + childSnapshot.key());
+                //stationPlayer_ref = new Firebase(FB_STATIONPLAYERS_URL + "/" + childSnapshot.key());
                 stationPlayer_ref.child("is_correct_answer").set(false);
                 stationPlayer_ref.child("total_incorrect_answer").set(++value.total_incorrect_answer);
                 stationPlayer_ref.child("score_gained").set(0);
@@ -1308,13 +1335,14 @@ function update_player_score(posting_time){
     });
 }
 
-
 // Stop all functions related to answering questions state
 function stop_answering_qns(Players_ref){
     Players_ref.off();
 }
+//--------------------------------------------------------------------------- Functions for answering_question state ---------------------------------------------------------------------------------------------
 
 
+//--------------------------------------------------------------------------- Functions for answered state ---------------------------------------------------------------------------------------------
 // Function to toggle invisibility for answered state qns number icons
 function toggle_answered_qns_icons_visibility(){
     answered_qns1.style.visibility = "visible";
@@ -1328,7 +1356,6 @@ function toggle_answered_qns_icons_visibility(){
     answered_qns9.style.visibility = "visible";
     answered_qns10.style.visibility = "visible";
 }
-
 
 // Start all functions related to answered state
 function start_answered(){
@@ -1391,7 +1418,7 @@ function start_answered(){
     document.getElementById("answered_option_4_icon").style.backgroundColor = optionicon_list[3].bgcolor;
     
     // Retrieve option statistics
-    stationPlayers_ref = new Firebase(FB_stationPlayers_url);
+    stationPlayers_ref = new Firebase(FB_STATIONPLAYERS_URL);
     stationPlayers_ref.once("value", function(snapshot){
         snapshot.forEach(function(childSnapshot) {
             var value = childSnapshot.val();
@@ -1421,7 +1448,7 @@ function start_answered(){
     });
     
     // Display correct answer with a tick beside the correct option
-    stationCurrentQns_ref = new Firebase(FB_stationCurrentQuestion_url);
+    stationCurrentQns_ref = new Firebase(FB_STATIONCURRENTQUESTION_URL);
     stationCurrentQns_ref.once("value", function(snapshot){
         var value = snapshot.val();
         if (value.correct_answer === "option_1"){
@@ -1462,7 +1489,6 @@ function start_answered(){
 
 // Stop all functions related to answered state
 function stop_answered(){}
-
 
 // Function to display answered state qns number icons
 function display_answered_qns_icons(answered_index){
@@ -1608,8 +1634,10 @@ function display_answered_qns_icons(answered_index){
             break;
     }
 }
+//--------------------------------------------------------------------------- Functions for answered state ---------------------------------------------------------------------------------------------
 
 
+//--------------------------------------------------------------------------- Functions for leaderboard state ---------------------------------------------------------------------------------------------
 // Start all functions related to leaderboard state
 function start_leaderboard(){
     
@@ -1625,7 +1653,7 @@ function start_leaderboard(){
     });
     
     // Retrieve all player scores
-    stationPlayers_ref = new Firebase(FB_stationPlayers_url);
+    stationPlayers_ref = new Firebase(FB_STATIONPLAYERS_URL);
     stationPlayers_ref.orderByChild("score").limitToLast(5).once("value", function(All_Players_Snapshot){
         All_Players_Snapshot.forEach(function(Player_Snapshot){
             var value = Player_Snapshot.val();
@@ -1657,8 +1685,10 @@ function start_leaderboard(){
 function stop_leaderboard(Players_ref){
     Players_ref.off();
 }
+//--------------------------------------------------------------------------- Functions for leaderboard state ---------------------------------------------------------------------------------------------
 
 
+//--------------------------------------------------------------------------- Functions for both leaderboard and gameover states ---------------------------------------------------------------------------------------------
 // Function to sort player's score in descending order using bubble sort
 function bubbleSort(a, par)
 {
@@ -1675,8 +1705,10 @@ function bubbleSort(a, par)
         }
     } while (swapped);
 }
+//--------------------------------------------------------------------------- Functions for both leaderboard and gameover states ---------------------------------------------------------------------------------------------
 
 
+//--------------------------------------------------------------------------- Functions for gameover states ---------------------------------------------------------------------------------------------
 // Start all functions related to game over state
 function start_game_over(){
     
@@ -1692,7 +1724,7 @@ function start_game_over(){
     });
     
     // Retrieve all player scores
-    stationPlayers_ref = new Firebase(FB_stationPlayers_url);
+    stationPlayers_ref = new Firebase(FB_STATIONPLAYERS_URL);
     stationPlayers_ref.orderByChild("score").once("value", function(All_Players_Snapshot){
         All_Players_Snapshot.forEach(function(Player_Snapshot){
             var value = Player_Snapshot.val();
@@ -1724,3 +1756,4 @@ function start_game_over(){
 function stop_game_over(Players_ref){
     Players_ref.off();
 }
+//--------------------------------------------------------------------------- Functions for gameover states ---------------------------------------------------------------------------------------------

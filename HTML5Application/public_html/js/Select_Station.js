@@ -3,6 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+/* 
+    Created on : 1 Jun, 2016, 3:32:21 AM
+    Author     : Chow Jie Jin Edmund
+*/
+
+// Retrieve all the stations of type "HOOT HOOT"
 var ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS");
 	var values, dropdown, count, option, selected_val;
         
