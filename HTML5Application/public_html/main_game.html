@@ -14,14 +14,21 @@
         <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
         <!-- Custom CSS -->
-        <link href="css/landing-page.css" rel="stylesheet">
+        <link href="css/general.css" rel="stylesheet">
+        <link href="css/waiting_state.css" rel="stylesheet">
+        <link href="css/get_ready_state.css" rel="stylesheet">
+        <link href="css/answering_question_state.css" rel="stylesheet">
+        <link href="css/answered_state.css" rel="stylesheet">
+        <link href="css/leaderboard_state.css" rel="stylesheet">
+        <link href="css/gameover_state.css" rel="stylesheet">
+        <link href="css/station_states_visibility.css" rel="stylesheet">
 
         <!-- Custom Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy|Lobster+Two" rel="stylesheet">
-
         <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
 
+        <!-- Custom Javascript -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
         <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
         <script src="js/load_all_js.js"></script>
@@ -29,6 +36,7 @@
     
     <body>
         
+        <!-- Music for different states -->
         <div id="mario_main_music">
             <audio id="waiting_audio" src="music/waiting.mp3"></audio>
             <audio id="starting_audio" src="music/starting.mp3"></audio>
@@ -38,6 +46,7 @@
             <audio id="gameover_audio" src="music/game_over.mp3"></audio>
             <audio id="newplayer_audio" src="music/new_player.mp3"></audio>
         </div>
+        <!-- Music for different states -->
         
         <!-- _____________________________________________________  state = waiting_for_players ___________________________________________________________________________ -->
         <div class="waiting_players_page" id="waiting_for_players">
@@ -46,18 +55,21 @@
             <script>start_waiting_for_players();</script>
             
             <div class="col-lg-12" id="waiting_players_body">
+                <!-- Station Name -->
                 <div class="luckyGuyFont col-md-12" id="waiting_station_name"> 
                     <p id="stn_name"></p>
                 </div>
+                <!-- Station Name -->
                 
                 <!-- 60 sec time progress bar -->
                 <div class="col-md-12" id="waiting_progress_bar_row">
                     <div class="waiting_skillbar clearfix " data-percent="100%">
-                        <div class="waiting_skillbar-bar" id="waiting_skillbar-bar_width" style="background: #6adcfa;"></div>
+                        <div class="waiting_skillbar-bar" id="waiting_skillbar-bar_width" style="background: #00BFFF;"></div>
                     </div>
                 </div>
+                <!-- 60 sec time progress bar -->
 
-                <!-- Player Column -->
+                <!-- Player List Column -->
                 <div class="col-md-4" id="waiting_player_column">
                     <p class="robotoFont" style="font-size: 50px; font-weight: 100;">Players</p>
 
@@ -65,8 +77,9 @@
                     <ul id="player_name" style="list-style: none; font-size: 50px;"></ul>
                     <div id="player_join_music"></div>
                 </div>
+                <!-- Player List Column -->
 
-                <!-- Station Column -->
+                <!-- Status Column -->
                 <div class="col-md-8" id="waiting_station_column">
                     <!-- Loading Gif -->
                     <div class="col-md-12" id="waiting_station_container">
@@ -74,6 +87,8 @@
                         <iframe class="col-md-6 col-md-offset-3" src="//giphy.com/embed/4AGlRfJwFDW00" width="500" height="400" frameBorder="0" allowFullScreen></iframe>
                     </div>
                 </div>
+                <!-- Status Column -->
+                
             </div>
         </div>
         <!-- _____________________________________________________ end of state = waiting_for_players _____________________________________________________________________ -->
@@ -82,7 +97,7 @@
         <!-- ______________________________________________________ state = get_ready _____________________________________________________________________________________ -->
         <!-- Display the question -->
         <div class="col-lg-12 get_ready_page" id="get_ready" style="display:none">
-            <!-- Question Header -->
+            <!-- Question Number Header -->
             <div class="get_ready_qns_header_row">
                 <div class="col-md-12 " id="get_ready_qns_header">
                     <div class="col-md-1"></div>
@@ -119,33 +134,40 @@
                     <div class="col-md-1"></div>
                 </div>
             </div>
+            <!-- Question Number Header -->
 
+            <!-- Read question reminder -->
             <div class="get_ready_read_qns_row col-md-12">
                 <div class="col-md-12" id="get_ready_read_qns">
                     <h3 id="get_ready_h1_read_qns">Read the question before answering</h3>
                 </div>
             </div>
+            <!-- Read question reminder -->
             
+            <!-- 10 sec progress bar -->
             <div class="get_ready_progress_bar_row col-md-12">
                 <div class="get_ready_skillbar clearfix " data-percent="100%">
-                    <div class="get_ready_skillbar-bar" id="get_ready_skillbar-bar_width" style="background: #6adcfa;"></div>
+                    <div class="get_ready_skillbar-bar" id="get_ready_skillbar-bar_width" style="background: #00BFFF;"></div>
                 </div>
             </div>
+            <!-- 10 sec progress bar -->
             
+            <!-- Question Name -->
             <div class="get_ready_qns_name_row">
-                <!-- Question Name -->
                 <div class="col-md-12" id="get_ready_qns_name">
                     <h1 id="get_ready_h2_qns_name">Question Name</h1>
                 </div>
             </div>
+            <!-- Question Name -->
+            
         </div>
         <!-- ______________________________________________________ end of state = get_ready ______________________________________________________________________________ -->
         
         
         <!-- ______________________________________________________ state = answering_questions ___________________________________________________________________________ -->
-        <!-- Update the number of answers being answered -->
         <div class="answering_qns_page" id="answering_questions" style = "display:none">
             <div class="col-lg-12">
+                <!-- Question Number Header -->
                 <div class="answering_qns_header_row col-md-12">
                     <div id="answering_qns_header">
                         <div class="col-md-1"></div>
@@ -182,20 +204,25 @@
                         <div class="col-md-1"></div>
                     </div>
                 </div>
+                <!-- Question Number Header -->
                 
                 <!-- 10 sec time progress bar -->
                 <div class="answering_progress_bar_row col-md-12">
                     <div class="answering_skillbar clearfix " data-percent="100%">
-                        <div class="answering_skillbar-bar" id="answering_skillbar-bar_width" style="background: #6adcfa;"></div>
+                        <div class="answering_skillbar-bar" id="answering_skillbar-bar_width" style="background: #00BFFF;"></div>
                     </div>
                 </div>
-                
+                <!-- 10 sec time progress bar -->
+
+                <!-- Question Name -->
                 <div class="answering_qns_name_row col-md-11">
                     <div class="col-md-12" id="answering_qns_name">
                         <h2 id="answering_h2_qns_name">Question Name</h2>
                     </div>
                 </div>
-                
+                <!-- Question Name -->
+
+                <!-- Number of answers chosen by players -->
                 <div class="answering_side_column col-md-1"  style="padding: 0px">
                     <div class="answering_side_column_bottom_row">
                         <div class="col-md-12" id="answering_num">
@@ -203,7 +230,9 @@
                         </div>
                     </div>
                 </div>
-                
+                <!-- Number of answers chosen by players -->
+
+                <!-- Question options -->
                 <div class="answering_row col-md-12 " style="padding: 0px">
                     <div class="answering_row1">
                         <div class="col-md-6" id="answering_option_1">
@@ -230,6 +259,8 @@
                         </div>
                     </div>
                 </div>
+                <!-- Question options -->
+                
             </div>
         </div>
         <!-- ______________________________________________________ end of state = answering_questions ____________________________________________________________________ -->
@@ -240,6 +271,7 @@
         <div class="answered_page" id="answered" style = "display:none">
             <div id="qns_answered_music"></div>
             <div class="col-lg-12">
+                <!-- Question Number Header -->
                 <div class="answered_qns_header_row col-md-12">
                     <div class="col-md-12" id="answered_qns_header">
                         <div class="col-md-1"></div>
@@ -276,39 +308,41 @@
                         <div class="col-md-1"></div>
                     </div>
                 </div>
+                <!-- Question Number Header -->
                 
                 <!-- 10 sec time progress bar -->
                 <div class="answered_progress_bar_row col-md-12">
                     <div class="answered_skillbar clearfix " data-percent="100%">
-                        <div class="answered_skillbar-bar" id="answered_skillbar-bar_width" style="background: #6adcfa;"></div>
+                        <div class="answered_skillbar-bar" id="answered_skillbar-bar_width" style="background: #00BFFF;"></div>
                     </div>
                 </div>
+                <!-- 10 sec time progress bar -->
                 
                 <div class="answered_empty_space col-md-12"></div>
 
+                <!-- Question Options Statistics -->
                 <div class="answered_stats_img_row col-md-12">
                     <div class="col-md-12" id="answered_stats_img">
                         <div class="row" id="answered_options_images">
                             <div class="col-md-3 imageWrapper" style="padding: 0px; background: #1565C0; margin-left: 10px">
-                                <img id="answered_option_1_icon" class="col-md-9 col-md-offset-1 overlayImage" height="300" style="padding: 0px" src="https://firebasestorage.googleapis.com/v0/b/mantrodev.appspot.com/o/option_icons%2Fdolphin_icon.png?alt=media&token=2ab3872d-90da-496c-b7ec-5957f6950c0a" alt="">
+                                <img id="answered_option_1_icon" class="col-md-9 col-md-offset-1 overlayImage" height="300" style="padding: 0px" src="" alt="">
                                 <img id="answered_option_1_tick" class="overlayImage" src="img/correct_answer_tick.png" alt="" style="visibility: hidden; padding-left: 5px">
                             </div>
                             <div class="col-md-3 imageWrapper" style="padding: 0px; background: #757575; margin-left: 40px">
-                                <img id="answered_option_2_icon" class="col-md-9 col-md-offset-1 overlayImage" height="300" style="padding: 0px" src="https://firebasestorage.googleapis.com/v0/b/mantrodev.appspot.com/o/option_icons%2Fdolphin_icon.png?alt=media&token=2ab3872d-90da-496c-b7ec-5957f6950c0a" alt="">
+                                <img id="answered_option_2_icon" class="col-md-9 col-md-offset-1 overlayImage" height="300" style="padding: 0px" src="" alt="">
                                 <img id="answered_option_2_tick" class="overlayImage" src="img/correct_answer_tick.png" alt="" style="visibility: hidden; padding-left: 5px">
                             </div>
                             <div class="col-md-3 imageWrapper" style="padding: 0px; background: #F57C00; margin-left: 40px">
-                                <img id="answered_option_3_icon" class="col-md-9 col-md-offset-1 overlayImage" height="300" style="padding: 0px" src="https://firebasestorage.googleapis.com/v0/b/mantrodev.appspot.com/o/option_icons%2Fdolphin_icon.png?alt=media&token=2ab3872d-90da-496c-b7ec-5957f6950c0a" alt="">
+                                <img id="answered_option_3_icon" class="col-md-9 col-md-offset-1 overlayImage" height="300" style="padding: 0px" src="" alt="">
                                 <img id="answered_option_3_tick" class="overlayImage" src="img/correct_answer_tick.png" alt="" style="visibility: hidden; padding-left: 5px">
                             </div>
                             <div class="col-md-3 imageWrapper" style="padding: 0px; background: #558B2F; margin-left: 40px; margin-right: 10px">
-                                <img id="answered_option_4_icon" class="col-md-9 col-md-offset-1 overlayImage" height="300" style="padding: 0px" src="https://firebasestorage.googleapis.com/v0/b/mantrodev.appspot.com/o/option_icons%2Fdolphin_icon.png?alt=media&token=2ab3872d-90da-496c-b7ec-5957f6950c0a" alt="">
+                                <img id="answered_option_4_icon" class="col-md-9 col-md-offset-1 overlayImage" height="300" style="padding: 0px" src="" alt="">
                                 <img id="answered_option_4_tick" class="overlayImage" src="img/correct_answer_tick.png" alt="" style="visibility: hidden; padding-left: 5px">
                             </div>
                         </div>
                     </div>
                 </div>
-                
                 <div class="answered_stats_number_row col-md-12">
                     <div class="col-md-12" id="answered_stats_num">
                         <div class="row" id="answered_options_stats">
@@ -319,7 +353,9 @@
                         </div>
                     </div>
                 </div>
-                
+                <!-- Question Options Statistics -->
+
+                <!-- Question Options -->
                 <div class="answered_row col-md-12">
                     <div class="answered_row1">
                         <div class="col-md-6" id="answered_option_1">
@@ -346,6 +382,8 @@
                         </div>
                     </div>
                 </div>
+                <!-- Question Options -->
+                
             </div>
         </div>
         <!-- ______________________________________________________ end of state = answered _______________________________________________________________________________ -->
@@ -355,18 +393,21 @@
         <!-- Display the top scorer statistics, will be shown if there is a next question otherwise go to game over state -->
         <div class="leaderboard_page" id="leaderboard" style = "display:none">
             <div class="col-lg-12">
+                <!-- Leaderboard Header -->
                 <div class="leaderboard_header_row col-md-12">
                     <div id="leaderboard_header">
                         <h1 id="leaderboard_h1_scorer_header">LEADERBOARD</h1>
                     </div>
                 </div>
+                <!-- Leaderboard Header -->
                 
                 <!-- 10 sec time progress bar -->
                 <div class="leaderboard_progress_bar_row col-md-12">
                     <div class="leaderboard_skillbar clearfix " data-percent="100%">
-                        <div class="leaderboard_skillbar-bar" id="leaderboard_skillbar-bar_width" style="background: #6adcfa;"></div>
+                        <div class="leaderboard_skillbar-bar" id="leaderboard_skillbar-bar_width" style="background: #00BFFF;"></div>
                     </div>
                 </div>
+                <!-- 10 sec time progress bar -->
                 
                 <!-- Top 1st Player -->
                 <div class="leader_empty_space col-md-12"></div>
@@ -452,6 +493,7 @@
                     </div>
                 </div>
                 <!-- Top 5th Player -->
+                
             </div>
         </div>
         <!-- ______________________________________________________ end of state = Leaderboard ____________________________________________________________________________ -->
@@ -460,18 +502,21 @@
         <!-- ______________________________________________________ state = game_over _____________________________________________________________________________________ -->
         <div class="game_over_page" id="game_over" style = "display:none">
             <div class="col-lg-12">
+                <!-- Gameover Header -->
                 <div class="gameover_header_row col-md-12">
                     <div id="game_over_header">
                         <h1 id="game_over_h1_header">GAME OVER</h1>
                     </div>
                 </div>
+                <!-- Gameover Header -->
                 
                 <!-- 10 sec time progress bar -->
                 <div class="gameover_progress_bar_row col-md-12">
                     <div class="gameover_skillbar clearfix " data-percent="100%">
-                        <div class="gameover_skillbar-bar" id="gameover_skillbar-bar_width" style="background: #6adcfa;"></div>
+                        <div class="gameover_skillbar-bar" id="gameover_skillbar-bar_width" style="background: #00BFFF;"></div>
                     </div>
                 </div>
+                <!-- 10 sec time progress bar -->
                 
                 <!-- Top Player -->
                 <div class="gameover_nickname_row col-md-6">

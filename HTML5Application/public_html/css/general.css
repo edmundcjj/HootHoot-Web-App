@@ -1,0 +1,110 @@
+/*!
+ * Start Bootstrap - Landing Page Bootstrap Theme (http://startbootstrap.com)
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ */
+
+body, html {
+    width: 100%;
+    height: 100%;
+}
+
+/*Station_Configuration.html css configuration*/
+.station_config {
+    background: url(../img/zoo_wallpaper.jpg) no-repeat center center;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/*Station_Configuration.html css configuration*/
+
+/*Multiple html pages css configuration*/
+.waiting_players_page, .get_ready_page, .answering_qns_page, .answered_page, .game_over_page, .leaderboard_page{
+    background-color: #32CD32;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 100%;
+    height: 100%;
+}
+.waiting_skillbar, .get_ready_skillbar, .answering_skillbar, .answered_skillbar, .leaderboard_skillbar, .gameover_skillbar {
+	background:#eee;
+	-webkit-transition:0.4s linear;
+	-moz-transition:0.4s linear;
+	-ms-transition:0.4s linear;
+	-o-transition:0.4s linear;
+	transition:0.4s linear;
+	-webkit-transition-property:width, background-color;
+	-moz-transition-property:width, background-color;
+	-ms-transition-property:width, background-color;
+	-o-transition-property:width, background-color;
+	transition-property:width, background-color;
+}
+.waiting_skillbar-bar, .get_ready_skillbar-bar, .answering_skillbar-bar, .answered_skillbar-bar, .leaderboard_skillbar-bar, .gameover_skillbar-bar {
+	height:100%;
+	width:0px;
+	background:00BFFF;
+}
+.col-lg-12,.row{
+    padding-left: 0px;
+    padding-right: 0px;
+    height:100%;
+}
+.row > div {
+  height:100%;
+}
+#get_ready_qns_header, #answering_qns_header, #answered_qns_header{
+    padding-top: 0.3%;
+    background: #00816A;
+    text-align: center;
+}
+#h1_qns_header, #get_ready_h1_qns_header, #answering_h1_qns_header, #answered_h1_qns_header{
+    margin-bottom: 0px;
+    margin-top: 0px;
+    font-size: 50px;
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+#answering_qns_name, #answered_stats_num, #answered_stats_img, #answered_qns_ticks{
+    background: #00BF96;
+    text-align: center;
+}
+#answered_options_ticks, #answered_options_images{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/*Multiple html pages common css configuration*/
+
+/* Custom Fonts */ 
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: 700;
+}
+
+.luckyGuyFont {
+    font-size: 85px; 
+    font-family: 'Luckiest Guy', cursive;
+}
+
+.lob2Font{
+    font-size: 55px; 
+    font-family: 'Lobster Two', cursive;
+}
+
+.robotoFont{
+    font-family: 'Roboto', sans-serif;
+    color: white;
+}
+/* Custom Fonts */ 

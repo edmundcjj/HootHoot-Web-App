@@ -1,0 +1,139 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 25 Jul, 2016, 3:33:59 AM
+    Author     : Chow Jie Jin Edmund
+*/
+
+/*Layout Configuration*/
+.answering_qns_header_row{
+    padding: 0px;
+    height: 11%;
+}
+.answering_qns_header_row > div{
+    height: 100%;
+}
+.answering_progress_bar_row{
+    height: 3%;
+    padding: 0px;
+}
+.answering_progress_bar_row > div{
+    height: 100%;
+}
+.answering_qns_name_row{
+    padding: 0px;
+    height: 46%; 
+}
+.answering_qns_name_row > div{
+    height: 100%;
+}
+.answering_side_column{
+    padding: 0px;
+    height: 46%; 
+}
+.answering_side_column_top_row{
+    height: 50%;
+}
+.answering_side_column_top_row > div{
+    height: 100%;
+}
+.answering_side_column_bottom_row{
+    height: 50%;
+}
+.answering_side_column_bottom_row > div{
+    height: 100%;
+}
+.answering_row{
+    height: 40%;
+}
+.answering_row1{
+    height: 50%;
+}
+.answering_row1 > div{
+    height: 100%;
+}
+.answering_row2{
+    height: 50%;
+}
+.answering_row2 > div{
+    height: 100%;
+}
+/*Layout Configuration*/
+
+/*Question Name*/
+#answering_h2_qns_name{
+    text-align: center;
+    font-size: 100px;
+    margin: 0px;
+    position: relative;
+    top: 25%;
+}
+/*Question Name*/
+
+/*Number of answers chosen by players*/
+#answering_side_column{
+    text-align: center;
+    background: #00C957;
+    height: 560px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+#ans_num{
+    position: absolute;
+    top: 90%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    font-size: 42px;
+    text-align: center;
+}
+/*Number of answers chosen by players*/
+
+/*Question Options*/
+#answering_option_1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #008B45;
+    padding: 0px;
+}
+#answering_option_2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #00CD66;
+}
+#answering_option_3{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #00EE76;
+}
+#answering_option_4{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #00FF7F;
+}
+#answering_option_1_img{
+    align-content: flex-start;
+    padding: 0px;
+}
+#answering_option_1_text, #answering_option_2_text, #answering_option_3_text, #answering_option_4_text{
+    font-size: 80px;
+    word-wrap: break-word;
+}
+#answering_option_1_optionimg, #answering_option_2_optionimg, #answering_option_3_optionimg, #answering_option_4_optionimg{
+    align-content: center;
+    height: 190px;
+    width: 225px;
+}
+/*Question Options*/
+
+
+
+
+
+

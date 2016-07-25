@@ -1,0 +1,115 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 25 Jul, 2016, 3:32:43 AM
+    Author     : Chow Jie Jin Edmund
+*/
+
+/*Layout Configuration*/
+.answered_qns_header_row{
+    padding: 0px;
+    height: 11%; 
+}
+.answered_qns_header_row > div{
+    height: 100%;
+}
+.answered_progress_bar_row{
+    height: 3%;
+    padding: 0px;
+}
+.answered_progress_bar_row > div{
+    height: 100%;
+}
+.answered_empty_space{
+    padding: 0px;
+    background: #00BF96;
+    height: 2%
+}
+.overlayImage{
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.answered_stats_number_row{
+    padding: 0px;
+    margin: 0px;
+    height: 14%;
+}
+.answered_stats_number_row > div{
+    height: 100%;
+}
+.answered_stats_img_row{
+    padding: 0px;
+    margin: 0px;
+    height: 30%;
+}
+.answered_stats_img_row > div{
+    height: 100%;
+}
+.answered_row{
+    padding: 0px;
+    height: 40%;
+}
+.answered_row1{
+    height: 50%;
+}
+.answered_row1 > div{
+    height: 100%;
+}
+.answered_row2{
+    height: 50%;
+}
+.answered_row2 > div{
+    height: 100%;
+}
+/*Layout Configuration*/
+
+/*Question Option Stats*/
+#answered_option_1_stats, #answered_option_2_stats, #answered_option_3_stats, #answered_option_4_stats{
+    margin: 0px;
+    font-size: 80px;
+}
+/*Question Option Stats*/
+
+/*Question Option*/
+#answered_option_1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #008B45;
+    padding: 0px;
+}
+
+#answered_option_2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #00CD66;
+}
+
+#answered_option_3{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #00EE76;
+}
+
+#answered_option_4{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #00FF7F;
+}
+#answered_option_1_text, #answered_option_2_text, #answered_option_3_text, #answered_option_4_text{
+    font-size: 80px;
+}
+
+#answered_option_1_optionimg, #answered_option_2_optionimg, #answered_option_3_optionimg, #answered_option_4_optionimg{
+    align-content: center;
+    height: 190px;
+    width: 225px;
+}
+/*Question Option*/

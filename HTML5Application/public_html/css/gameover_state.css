@@ -1,0 +1,88 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 25 Jul, 2016, 3:32:58 AM
+    Author     : Chow Jie Jin Edmund
+*/
+
+/*Layout Configuration*/
+.gameover_header_row{
+    padding: 0px;
+    height: 10%;
+}
+.gameover_header_row > div{
+    height: 100%;
+}
+.gameover_progress_bar_row{
+    height: 3%;
+    padding: 0px;
+}
+.gameover_progress_bar_row > div{
+    height: 100%;
+}
+.gameover_nickname_row{
+    background: #00BF96;
+    padding: 0px;
+    height: 87%;
+}
+.gameover_nickname_row > div{
+    height: 100%;
+}
+.gameover_stats_row{
+    background: #00BF96;
+    padding: 0px;
+    height: 87%;
+}
+.gameover_stats_row > div{
+    height: 100%;
+}
+/*Layout Configuration*/
+
+/*Gameover Header*/
+#game_over_header{
+    background: #00816A;
+    text-align: center;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    font-size: 60px;
+}
+#game_over_h1_header{
+    margin-bottom: 0px;
+    margin-top: 0px;
+    font-size: 85px;
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+/*Gameover Header*/
+
+/*Top Player nickname and points*/
+#gameover_nickname{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#gameover_nickname_container{
+    background: #00816A;
+    height: 120px;
+    margin: 0px;
+}
+#h2_game_over_nickname1{
+    font-size: 70px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    padding-top: 3%;
+}
+#game_over_points1{
+    position: relative;
+    top: 50%;
+    left: 60%;
+    transform: translate(-50%,-50%);
+    margin: 0px;
+    font-size: 70px;
+}
+/*Top Player nickname and points*/

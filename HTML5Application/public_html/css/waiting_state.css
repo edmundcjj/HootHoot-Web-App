@@ -1,0 +1,61 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 25 Jul, 2016, 3:32:21 AM
+    Author     : Chow Jie Jin Edmund
+*/
+
+#waiting_players_body{
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+}
+
+#waiting_player_column{
+    background: #00BF96;
+    text-align: center;
+    padding: 0px;
+    height: 87%;
+}
+
+#waiting_station_column{
+    background: #00EE76;
+    padding: 0px;
+    text-align: center;
+    height: 87%;
+}
+
+#waiting_station_name{
+    background: #00816A;
+    height: 10%;
+    margin: 0px;
+    padding: 0px;
+}
+
+#stn_name{
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
+#waiting_station_container{
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
+#waiting_progress_bar_row{
+    height: 3%;
+    padding: 0px;
+}
+
+#waiting_progress_bar_row > div{
+    height: 100%;
+}
+
+

@@ -1,0 +1,70 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 25 Jul, 2016, 3:32:13 AM
+    Author     : Chow Jie Jin Edmund
+*/
+
+/*Get Ready Layout Configuration*/
+.get_ready_qns_header_row{
+    height: 11%;
+}
+.get_ready_qns_header_row > div{
+    height: 100%;
+}
+.get_ready_read_qns_row{
+    height: 8%;
+    padding: 0px;
+}
+.get_ready_read_qns_row > div{
+    height: 100%;
+}
+.get_ready_progress_bar_row{
+    height: 3%;
+    padding: 0px;
+}
+.get_ready_progress_bar_row > div{
+    height: 100%;
+}
+.get_ready_qns_name_row{
+    height: 78%;
+}
+.get_ready_qns_name_row > div{
+    height: 100%;
+}
+/*Get Ready Layout Configuration*/
+
+/*Read question reminder css*/
+#get_ready_read_qns{
+    background: #00C957;
+    padding: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#get_ready_h1_read_qns{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 50px;
+}
+/*Read question reminder css*/
+
+/*Question name css*/
+#get_ready_qns_name{
+    background: #00BF96;
+    text-align: center;
+}
+#get_ready_h2_qns_name{
+    word-wrap: break-word;
+    margin: 0px;
+    font-size: 120px;
+    position: relative;
+    top: 25%;
+    text-align: center;
+}
+/*Question name css*/
+
+

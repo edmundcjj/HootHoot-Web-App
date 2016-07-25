@@ -1,0 +1,91 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 25 Jul, 2016, 3:32:50 AM
+    Author     : Chow Jie Jin Edmund
+*/
+
+/*Layout Configuration*/
+.leaderboard_header_row{
+    padding: 0px;
+    height: 8%;
+}
+.leaderboard_header_row > div{
+    height: 100%;
+}
+.leaderboard_progress_bar_row{
+    height: 3%;
+    padding: 0px;
+}
+.leaderboard_progress_bar_row > div{
+    height: 100%;
+}
+.leader_empty_space{
+    background: #00BF96;
+    height: 4.4%;
+}
+.leaderboard_nickname_row{
+    background: #00BF96;
+    padding: 0px;
+    height: 13.4%;
+}
+.leaderboard_nickname_row > div{
+    height: 100%;
+}
+.leaderboard_stats_row{
+    background: #00BF96;
+    padding: 0px;
+    height: 13.4%;
+}
+.leaderboard_stats_row > div{
+    height: 100%;
+}
+/*Layout Configuration*/
+
+/*Leaderboard Header*/
+#leaderboard_header{
+    background: #00816A;
+    text-align: center;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    font-size: 60px;
+}
+#leaderboard_h1_scorer_header{
+    margin-bottom: 0px;
+    margin-top: 0px;
+    font-size: 85px;
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+/*Leaderboard Header*/
+
+/*Display Top 5 Nicknames and points*/
+#leaderboard_nickname{
+    background: #00BF96;
+    text-align: center;
+}
+#leaderboard_nickname_container1, #leaderboard_nickname_container2, #leaderboard_nickname_container3, #leaderboard_nickname_container4, #leaderboard_nickname_container5{
+    background: #00816A;
+    height: 120px;
+    margin: 0px;
+}
+#h2_leaderboard_nickname1, #h2_leaderboard_nickname2, #h2_leaderboard_nickname3, #h2_leaderboard_nickname4, #h2_leaderboard_nickname5{
+    font-size: 70px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    padding-top: 3%;
+}
+#leaderboard_points1, #leaderboard_points2, #leaderboard_points3, #leaderboard_points4, #leaderboard_points5{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px;
+    font-size: 70px;
+    padding-top: 3%;
+}
+/*Display Top 5 Nicknames and points*/

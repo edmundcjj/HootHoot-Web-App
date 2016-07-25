@@ -1,0 +1,35 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 26 Jul, 2016, 1:55:31 AM
+    Author     : Chow Jie Jin Edmund
+*/
+
+/* ___________________________ station states visibility________________________________ */
+#waiting_for_players{
+    display: block;
+}
+
+#get_ready{
+    display: none;
+}
+
+#answering_questions{
+    display: none;
+}
+
+#answered{
+    display: none;
+}
+
+#game_over{
+    display: none;
+}
+
+#leaderboard{
+    display: none;
+}
+/* ___________________________ station states visibility________________________________ */
