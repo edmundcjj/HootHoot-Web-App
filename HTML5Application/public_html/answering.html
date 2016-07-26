@@ -36,6 +36,7 @@ and open the template in the editor.
         <div class="answering_qns_page">
             
             <div class="col-lg-12">
+                <!-- Question Number Header -->
                 <div class="answering_qns_header_row col-md-12">
                     <div id="answering_qns_header">
                         <div class="col-md-1"></div>
@@ -72,54 +73,62 @@ and open the template in the editor.
                         <div class="col-md-1"></div>
                     </div>
                 </div>
+                <!-- Question Number Header -->
                 
                 <!-- 10 sec time progress bar -->
                 <div class="answering_progress_bar_row col-md-12">
                     <div class="answering_skillbar clearfix " data-percent="100%">
-                        <div class="answering_skillbar-bar" style="background: #000000;"></div>
+                        <div class="answering_skillbar-bar" id="answering_skillbar-bar_width" style="background: #00BFFF;"></div>
                     </div>
                 </div>
-                
-                <div class="answering_qns_name_row col-md-11">
+                <!-- 10 sec time progress bar -->
+
+                <!-- Question Name -->
+                <div class="answering_qns_name_row col-md-10">
                     <div class="col-md-12" id="answering_qns_name">
-                        <h2 id="answering_h2_qns_name">What is the animal that can run as fast as 55 km per hour?</h2>
+                        <h2 id="answering_h2_qns_name">Question Name</h2>
                     </div>
                 </div>
-                
-                <div class="answering_side_column col-md-1"  style="padding: 0px">
+                <!-- Question Name -->
+
+                <!-- Number of answers chosen by players -->
+                <div class="answering_side_column col-md-2"  style="padding: 0px">
                     <div class="answering_side_column_bottom_row">
                         <div class="col-md-12" id="answering_num">
-                            <h3 id="ans_num"></h3>
+                            <h3 id="ans_num">0 answered</h3>
                         </div>
                     </div>
                 </div>
-                
+                <!-- Number of answers chosen by players -->
+
+                <!-- Question options -->
                 <div class="answering_row col-md-12 " style="padding: 0px">
                     <div class="answering_row1">
                         <div class="col-md-6" id="answering_option_1">
-                            <img id="answering_option_1_img" class="col-lg-3" src="https://firebasestorage.googleapis.com/v0/b/mantrodev.appspot.com/o/option_icons%2Fdolphin_icon.png?alt=media&token=2ab3872d-90da-496c-b7ec-5957f6950c0a" alt="">
-                            <h3 id="answering_option_1_text" class="col-md-6" style="visibility: visible">Option 1</h3>
-                            <img id="answering_option_1_optionimg" class="col-md-3" src="https://hootsqpicturestorage.blob.core.windows.net/hootsq-image-options/img-langur.png" alt="" style="visibility: visible">
+                            <img id="answering_option_1_img" class="col-md-3" src="" alt="">
+                            <h3 id="answering_option_1_text" class="col-md-6" style="visibility: hidden">Option 1</h3>
+                            <img id="answering_option_1_optionimg" class="col-md-3" src="" alt="" style="visibility: hidden">
                         </div>
                         <div class="col-md-6" id="answering_option_2">
                             <img id="answering_option_2_img" class="col-md-3" src="" alt="">
-                            <h3 id="answering_option_2_text" class="col-md-6" style="visibility: visible">Option 2</h3>
-                            <img id="answering_option_2_optionimg" class="col-md-3" src="" alt="" style="visibility: visible">
+                            <h3 id="answering_option_2_text" class="col-md-6" style="visibility: hidden">Option 2</h3>
+                            <img id="answering_option_2_optionimg" class="col-md-3" src="" alt="" style="visibility: hidden">
                         </div>
                     </div>
                     <div class="answering_row2">
                         <div class="col-md-6" id="answering_option_3">
                             <img id="answering_option_3_img" class="col-md-3" src="" alt="">
-                            <h3 id="answering_option_3_text" class="col-md-6" style="visibility: visible">Option 3</h3>
-                            <img id="answering_option_3_optionimg" class="col-md-3" src="" alt="" style="visibility: visible">
+                            <h3 id="answering_option_3_text" class="col-md-6" style="visibility: hidden">Option 3</h3>
+                            <img id="answering_option_3_optionimg" class="col-md-3" src="" alt="" style="visibility: hidden">
                         </div>
                         <div class="col-md-6" id="answering_option_4">
                             <img id="answering_option_4_img" class="col-md-3" src="" alt="">
-                            <h3 id="answering_option_4_text" class="col-md-6" style="visibility: visible">Option 4</h3>
-                            <img id="answering_option_4_optionimg" class="col-md-3" src="" alt="" style="visibility: visible">
+                            <h3 id="answering_option_4_text" class="col-md-6" style="visibility: hidden">Option 4</h3>
+                            <img id="answering_option_4_optionimg" class="col-md-3" src="" alt="" style="visibility: hidden">
                         </div>
                     </div>
                 </div>
+                <!-- Question options -->
                 
             </div>
         </div>

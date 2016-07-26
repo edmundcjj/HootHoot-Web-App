@@ -107,8 +107,8 @@ function waiting_countdown_60sec_timer(ref1, ref2){
     document.getElementById("waiting_skillbar-bar_width").style.width = "0%";
     console.log("After waiting reset");
     
-    var seconds = 60,
-    timer = 62000,
+    var seconds = 10,
+    timer = 12000,
     second = 0;
 
     interval = setInterval(function() {
@@ -468,17 +468,28 @@ function update_user_node(){
             var value = PlayerSnapshot.val();
             
             if (value.connected === true){
-                // Update score in users node with player score earned from the game
-                var stationPlayer_score_ref = new Firebase(FB_STATIONUSERS_URL).child(PlayerSnapshot.key()).child("scores").child(station_id).child("score");
-                stationPlayer_score_ref.set(value.score);
+                var stationUser_score = new Firebase(FB_STATIONUSERS_URL).child(PlayerSnapshot.key()).child("scores").child(station_id).child("score");
+                stationUser_score.once("value", function(snapshot){
+                   var user_score = snapshot.val();
+                   var current_high_score = value.score;
+                   if (user_score !== null || user_score !== undefined){
+                       current_high_score = user_score;
+                       if (current_high_score < value.score){
+                           current_high_score = value.score;
+                       }
+                   }
+                   // Update score in users node with player score earned from the game
+                   var stationPlayer_score_ref = new Firebase(FB_STATIONUSERS_URL).child(PlayerSnapshot.key()).child("scores").child(station_id).child("score");
+                   stationPlayer_score_ref.set(current_high_score);
 
-                // Update total_correct_answer in users node with total_correct_answer earned from the game
-                var stationPlayer_total_correct_ref = new Firebase(FB_STATIONUSERS_URL).child(PlayerSnapshot.key()).child("scores").child(station_id).child("total_correct_answer");
-                stationPlayer_total_correct_ref.set(value.total_correct_answer);
+                   // Update total_correct_answer in users node with total_correct_answer earned from the game
+                   var stationPlayer_total_correct_ref = new Firebase(FB_STATIONUSERS_URL).child(PlayerSnapshot.key()).child("scores").child(station_id).child("total_correct_answer");
+                   stationPlayer_total_correct_ref.set(value.total_correct_answer);
 
-                // Update total_incorrect_answer in users node with total_incorrect_answer earned from the game
-                var stationPlayer_total_incorrect_ref = new Firebase(FB_STATIONUSERS_URL).child(PlayerSnapshot.key()).child("scores").child(station_id).child("total_incorrect_answer");
-                stationPlayer_total_incorrect_ref.set(value.total_incorrect_answer);
+                   // Update total_incorrect_answer in users node with total_incorrect_answer earned from the game
+                   var stationPlayer_total_incorrect_ref = new Firebase(FB_STATIONUSERS_URL).child(PlayerSnapshot.key()).child("scores").child(station_id).child("total_incorrect_answer");
+                   stationPlayer_total_incorrect_ref.set(value.total_incorrect_answer);
+                });
             }
         });
     });
@@ -569,7 +580,14 @@ function start_waiting_for_players(){
             });
         });
         
-        // Remove any unwanted players before listening to any new incoming players
+        // Update state of station to "waiting_for_players" when entering
+        var station_ref = new Firebase(FB_STATION_URL);
+        current_state = WAITING_STATE;
+        station_ref.update({
+            "state": current_state
+        });
+        
+        // Stop 60 sec timer
         stop_waiting_countdown_60sec_timer();
 
         var p = document.getElementById("state_reference");
@@ -580,126 +598,137 @@ function start_waiting_for_players(){
         initialize_qns_icons();
     };
     
-    // Update state of station to "waiting_for_players" when entering
-    // waiting_for_players.html for the first time
-    var station_ref = new Firebase(FB_STATION_URL);
-    current_state = WAITING_STATE;
-    station_ref.update({
-        "state": current_state
-    });
-    
-    // Play music for waiting state
-    pauseAllAudios();
-    playAudio(WAITING_AUDIO);
-    
-    var stationPlayers_ref = new Firebase(FB_STATIONPLAYERS_URL);
-    var stationPlayer_ref;
-    var newPlayer, deletedPlayer, player_count, list, pname, text_li, user_icon, values;
-    var AddChild, RemoveChild;
-        
-    // Update list of players after deletion
-    RemoveChild = stationPlayers_ref.on("child_removed", function(snapshot) {
-        console.log("Child removed");
-        // Snapshot of the deleted player values
-        deletedPlayer = snapshot.val();
+    var removePlayer_ref = new Firebase(FB_STATIONPLAYERS_URL);
+    removePlayer_ref.remove(function(error){
+        if(!error){
+            // Update state of station to "waiting_for_players" when this function is run
+            var station_ref = new Firebase(FB_STATION_URL);
+            current_state = WAITING_STATE;
+            station_ref.update({
+                "state": current_state
+            });
 
-        // Remove player from list when deleted in firebase
-        var ul = document.getElementById("player_name");
-        var items = ul.getElementsByTagName("li");
-        var k;
-        for (k = 0; k < items.length; k++){
-            if (snapshot.key() === ul.childNodes[k].id){
-               ul.removeChild(ul.childNodes[k]);
-            }
-        }
-        
-        // Update state of station to "waiting_for_players" when player count < 1
-        //ref = new Firebase(FB_STATIONPLAYERS_URL);
-        stationPlayers_ref.once("value", function(snapshot) {
-            values = snapshot.val();
-            if (values !== null){
-                player_count = Object.keys(values).length;
-            }
-            else{
-                player_count = 0;
-            }
-            if (player_count < 1){
-                current_state = WAITING_STATE;
-                station_ref.update({
-                    "state": current_state
-                });
-                
-                pauseAllAudios();
-                playAudio(WAITING_AUDIO);
-                
-                jQuery(document).ready(function(){
-                    jQuery('.waiting_skillbar').each(function(){
-                        jQuery(this).find('.waiting_skillbar-bar').stop();
-                    });
-                });
-                document.getElementById("waiting_skillbar-bar_width").setAttribute("style", "width:0%");
-                
-                var p = document.getElementById("state_reference");
-                p.innerHTML = "Waiting for players...";
-                stop_waiting_countdown_60sec_timer();
-            }
-        });
-    });
+            // Play music for waiting state
+            pauseAllAudios();
+            playAudio(WAITING_AUDIO);
 
-    // Retrieve & display new players as they are added to firebase
-    AddChild = stationPlayers_ref.on("child_added", function(snapshot) {
-        console.log("Child added");
-        // Extract out player nickname
-        newPlayer = snapshot.val();
+            var stationPlayers_ref = new Firebase(FB_STATIONPLAYERS_URL);
+            var stationPlayer_ref;
+            var newPlayer, deletedPlayer, player_count, list, pname, text_li, user_icon, values;
+            var AddChild, RemoveChild;
 
-        list = document.createElement("li");                        // Create a <li> element
-        list.id = snapshot.key() + "";                              // Tag the id to li element
+            // Update list of players after deletion
+            RemoveChild = stationPlayers_ref.on("child_removed", function(snapshot) {
+                console.log("Child removed");
+                // Snapshot of the deleted player values
+                deletedPlayer = snapshot.val();
 
-        var div = document.createElement("div");                    // Create <div> element
-        user_icon = document.createElement("img");                  // Create <img> element
-        user_icon.width = 50;                                       // Set picture width to 50
-        user_icon.src = newPlayer.icon_url;                         // Set picture source to icon_url obtained from firebase
-        div.appendChild(user_icon);                                 // Append user_icon to <div> element
-
-        pname = newPlayer.nickname;
-        text_li = document.createTextNode(pname);                   // Create a text node
-        div.appendChild(text_li);                                   // Append the text to <li>
-
-        list.appendChild(div);                                      // Append <div> element to <li> element
-        document.getElementById("player_name").appendChild(list);   // Append <li> to <ul> with id="player_name"
-
-        // Update state of station to "starting" when player count > 0
-        // Start countdown timer when state = starting
-        stationPlayers_ref.once("value", function(snapshot) {
-            values = snapshot.val();
-            player_count = Object.keys(values).length;
-            if (player_count >= 1){
-                station_ref.update({
-                    "state": STARTING_STATE 
-                });
-                console.log("Changing state");
-                var p = document.getElementById("state_reference");
-                p.innerHTML = "Game starting soon...";
-                console.log("P inner HTML = " + p.innerHTML);
-                if (current_state === WAITING_STATE){
-                    waiting_countdown_60sec_timer(stationPlayers_ref, station_ref);
-                    current_state = STARTING_STATE;
-                    
-                    // Play music for waiting state
-                    pauseAllAudios();
-                    playAudio(STARTING_AUDIO);
+                // Remove player from list when deleted in firebase
+                var ul = document.getElementById("player_name");
+                var items = ul.getElementsByTagName("li");
+                var k;
+                for (k = 0; k < items.length; k++){
+                    if (snapshot.key() === ul.childNodes[k].id){
+                       ul.removeChild(ul.childNodes[k]);
+                    }
                 }
-            }
-            
-        });
-        
-        // Add total_correct_answer and total_incorrect_answer child node for every player joined
-        stationPlayer_ref = new Firebase(FB_STATIONPLAYERS_URL + "/" + snapshot.key());
-        stationPlayer_ref.child("total_correct_answer").set(0);
-        stationPlayer_ref.child("total_incorrect_answer").set(0);
-        
-        // Play a sound whenever a new player join the game
-        playAudio(NEW_PLAYER_AUDIO);
+
+                // Update state of station to "waiting_for_players" when player count < 1
+                //ref = new Firebase(FB_STATIONPLAYERS_URL);
+                stationPlayers_ref.once("value", function(snapshot) {
+                    values = snapshot.val();
+                    if (values !== null){
+                        player_count = Object.keys(values).length;
+                    }
+                    else{
+                        player_count = 0;
+                    }
+                    if (player_count < 1){
+                        current_state = WAITING_STATE;
+                        station_ref.update({
+                            "state": current_state
+                        });
+
+                        pauseAllAudios();
+                        playAudio(WAITING_AUDIO);
+
+                        jQuery(document).ready(function(){
+                            jQuery('.waiting_skillbar').each(function(){
+                                jQuery(this).find('.waiting_skillbar-bar').stop();
+                            });
+                        });
+                        document.getElementById("waiting_skillbar-bar_width").setAttribute("style", "width:0%");
+
+                        var p = document.getElementById("state_reference");
+                        p.innerHTML = "Waiting for players...";
+                        stop_waiting_countdown_60sec_timer();
+                    }
+                });
+            });
+
+            // Retrieve & display new players as they are added to firebase
+            AddChild = stationPlayers_ref.on("child_added", function(snapshot) {
+                console.log("Child added");
+                // Extract out player nickname
+                newPlayer = snapshot.val();
+                
+                // Ignore the rest of the code in this function when the player is not connected or when player.connected node is undefined
+                if (newPlayer.connected === null || newPlayer.connected === false) return;
+                
+                list = document.createElement("li");                        // Create a <li> element
+                list.id = snapshot.key() + "";                              // Tag the id to li element
+
+                var div = document.createElement("div");                    // Create <div> element
+                user_icon = document.createElement("img");                  // Create <img> element
+                user_icon.width = 50;                                       // Set picture width to 50
+                user_icon.src = newPlayer.icon_url;                         // Set picture source to icon_url obtained from firebase
+                div.appendChild(user_icon);                                 // Append user_icon to <div> element
+
+                pname = newPlayer.nickname;
+                text_li = document.createTextNode(pname);                   // Create a text node
+                div.appendChild(text_li);                                   // Append the text to <li>
+
+                list.appendChild(div);                                      // Append <div> element to <li> element
+                document.getElementById("player_name").appendChild(list);   // Append <li> to <ul> with id="player_name"
+
+                // Update state of station to "starting" when player count > 0
+                // Start countdown timer when state = starting
+                stationPlayers_ref.once("value", function(snapshot) {
+                    values = snapshot.val();
+                    player_count = Object.keys(values).length;
+                    if (player_count >= 1){
+                        station_ref.update({
+                            "state": STARTING_STATE 
+                        });
+                        console.log("Changing state");
+                        var p = document.getElementById("state_reference");
+                        p.innerHTML = "Game starting soon...";
+                        console.log("P inner HTML = " + p.innerHTML);
+                        if (current_state === WAITING_STATE){
+                            waiting_countdown_60sec_timer(stationPlayers_ref, station_ref);
+                            current_state = STARTING_STATE;
+
+                            // Play music for waiting state
+                            pauseAllAudios();
+                            playAudio(STARTING_AUDIO);
+                        }
+                    }
+
+                });
+
+                // Add total_correct_answer and total_incorrect_answer child node for every player joined
+                stationPlayer_ref = new Firebase(FB_STATIONPLAYERS_URL + "/" + snapshot.key());
+                stationPlayer_ref.child("total_correct_answer").set(0);
+                stationPlayer_ref.child("total_incorrect_answer").set(0);
+
+                // Play a sound whenever a new player join the game
+                playAudio(NEW_PLAYER_AUDIO);
+            });
+        }
+        else
+        {
+            console.log("Players remove error");
+        }
     });
 }
 
@@ -744,6 +773,7 @@ function start_get_ready(){
             console.log("No question history node");
             var qns_history_ref = station_ref.child("QUESTION_HISTORY");
             for (var i = 0; i < questionBank.length; i++){
+                // To be edited----------------------------------------------
                 qns_history_ref.child(questionBank[i].question_id).set({
                     correct_answer: questionBank[i].correct_option,
                     options:{
@@ -776,7 +806,6 @@ function start_get_ready(){
                 option_4: curr_qns.option_4
             },
             question: curr_qns.question_name
-//            question_no: curr_qns.question_no
         },function(error){
             if (!error){
                 // Change station state to getready
@@ -1241,7 +1270,7 @@ function update_answers_num(){
                 checked_players[childSnapshot.key()] = childSnapshot.key();
                 
                 // Update number of answers answered by players
-                document.getElementById("ans_num").innerHTML = ++answers + " answers";
+                document.getElementById("ans_num").innerHTML = ++answers + " answered";
                 
                 // Go to answered state if all players have answered
                 if (player_count === answers){
@@ -1287,8 +1316,13 @@ function update_player_score(posting_time){
                 {
                     console.log("answer correct");
                     stationPlayer_ref.child("is_correct_answer").set(true);
-                    stationPlayer_ref.child("total_correct_answer").set(++value.total_correct_answer);
-
+                    if (value.total_correct_answer === null || value.total_correct_answer === undefined) {
+                        stationPlayer_ref.child("total_correct_answer").set(1);
+                    }
+                    else{
+                        stationPlayer_ref.child("total_correct_answer").set(++value.total_correct_answer);
+                    }
+                    
                     // Calculate score for player for current question and update Firebase
                     player_gained_score = (1 - ((parseInt(value.answering_time) - parseInt(posting_time)) / parseInt(curr_qns.answering_duration * 1000))) * 1000;
                     stationPlayer_ref.child("score_gained").set(parseInt(player_gained_score));
@@ -1309,7 +1343,12 @@ function update_player_score(posting_time){
                 console.log("answer null");
                 //stationPlayer_ref = new Firebase(FB_STATIONPLAYERS_URL + "/" + childSnapshot.key());
                 stationPlayer_ref.child("is_correct_answer").set(false);
-                stationPlayer_ref.child("total_incorrect_answer").set(++value.total_incorrect_answer);
+                if (value.total_correct_answer === null || value.total_correct_answer === undefined) {
+                    stationPlayer_ref.child("total_incorrect_answer").set(1);
+                }
+                else{
+                    stationPlayer_ref.child("total_incorrect_answer").set(++value.total_incorrect_answer);
+                }
                 stationPlayer_ref.child("score_gained").set(0);
             }
             
@@ -1317,6 +1356,12 @@ function update_player_score(posting_time){
                 console.log("state changed");
                 // Clear display of <div id="getready">
                 document.getElementById("answering_questions").style.display = "none";
+                
+                // Hide all the ticks for answered when state still = to answering_question
+                document.getElementById("answered_option_1_tick").style.visibility = "hidden";
+                document.getElementById("answered_option_2_tick").style.visibility = "hidden";
+                document.getElementById("answered_option_3_tick").style.visibility = "hidden";
+                document.getElementById("answered_option_4_tick").style.visibility = "hidden";
 
                 // Make display of <div id="answering_questions"> visible
                 document.getElementById("answered").style.display = "block";
@@ -1447,35 +1492,35 @@ function start_answered(){
         var value = snapshot.val();
         if (value.correct_answer === "option_1"){
             document.getElementById("answered_option_1_tick").style.visibility = "visible";
-            document.getElementById("answered_option_2_tick").style.visibility = "hidden";
-            document.getElementById("answered_option_3_tick").style.visibility = "hidden";
-            document.getElementById("answered_option_4_tick").style.visibility = "hidden";
+//            document.getElementById("answered_option_2_tick").style.visibility = "hidden";
+//            document.getElementById("answered_option_3_tick").style.visibility = "hidden";
+//            document.getElementById("answered_option_4_tick").style.visibility = "hidden";
         }
         else if (value.correct_answer === "option_2"){
             document.getElementById("answered_option_2_tick").style.visibility = "visible";
-            document.getElementById("answered_option_1_tick").style.visibility = "hidden";
-            document.getElementById("answered_option_3_tick").style.visibility = "hidden";
-            document.getElementById("answered_option_4_tick").style.visibility = "hidden";
+//            document.getElementById("answered_option_1_tick").style.visibility = "hidden";
+//            document.getElementById("answered_option_3_tick").style.visibility = "hidden";
+//            document.getElementById("answered_option_4_tick").style.visibility = "hidden";
         }
         else if (value.correct_answer === "option_3"){
             document.getElementById("answered_option_3_tick").style.visibility = "visible";
-            document.getElementById("answered_option_1_tick").style.visibility = "hidden";
-            document.getElementById("answered_option_2_tick").style.visibility = "hidden";
-            document.getElementById("answered_option_4_tick").style.visibility = "hidden";
+//            document.getElementById("answered_option_1_tick").style.visibility = "hidden";
+//            document.getElementById("answered_option_2_tick").style.visibility = "hidden";
+//            document.getElementById("answered_option_4_tick").style.visibility = "hidden";
         }
         else if (value.correct_answer === "option_4"){
             document.getElementById("answered_option_4_tick").style.visibility = "visible";
-            document.getElementById("answered_option_1_tick").style.visibility = "hidden";
-            document.getElementById("answered_option_2_tick").style.visibility = "hidden";
-            document.getElementById("answered_option_3_tick").style.visibility = "hidden";
+//            document.getElementById("answered_option_1_tick").style.visibility = "hidden";
+//            document.getElementById("answered_option_2_tick").style.visibility = "hidden";
+//            document.getElementById("answered_option_3_tick").style.visibility = "hidden";
         }
     });
     
-    // Play a sound whenever a new player join the game
-    var qns_answered_sound = document.createElement("audio");
-    qns_answered_sound.src = "music/";
-    qns_answered_sound.autoplay = "true";
-    document.getElementById("qns_answered_music").appendChild(qns_answered_sound);
+//    // Play a sound whenever a new player join the game
+//    var qns_answered_sound = document.createElement("audio");
+//    qns_answered_sound.src = "music/";
+//    qns_answered_sound.autoplay = "true";
+//    document.getElementById("qns_answered_music").appendChild(qns_answered_sound);
     
     // Display 10 second countdown timer before changing to next state
     answered_countdown_10sec_timer();
@@ -1668,7 +1713,6 @@ function start_leaderboard(){
             document.getElementById("h2_leaderboard_nickname" + (count+1)).innerHTML = all_scores[count].nickname;
             document.getElementById("leaderboard_points" + (count+1)).innerHTML = all_scores[count].score + " pts";
         }
-        
     });
     
     // Call 10 second countdown timer function for leaderboard state
@@ -1729,22 +1773,22 @@ function start_game_over(){
         document.getElementById("h2_game_over_nickname1").innerHTML = all_scores[0].nickname;
         document.getElementById("game_over_points1").innerHTML = all_scores[0].score + " pts";
         
-        var onComplete = function(error) {
-            if (error) {
-              console.log('Gameover Update failed');
-            } else {
-                // Remove any existing players before restarting the game
-                var removePlayer_ref = new Firebase(FB_STATIONPLAYERS_URL);
-                removePlayer_ref.remove();
-            }
-        };
+//        var onComplete = function(error) {
+//            if (error) {
+//              console.log('Gameover Update failed');
+//            } else {
+//                // Remove any existing players before restarting the game
+//                var removePlayer_ref = new Firebase(FB_STATIONPLAYERS_URL);
+//                removePlayer_ref.remove();
+//            }
+//        };
         
         // Change station state to gameover
         station_state_ref = new Firebase(FB_STATION_URL);
         current_state = GAMEOVER_STATE;
         station_state_ref.update({
             "state": current_state 
-        },onComplete());
+        });
     });
     
     // Play music for gameover state
