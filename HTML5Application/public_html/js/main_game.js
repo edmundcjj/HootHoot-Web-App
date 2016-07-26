@@ -630,7 +630,6 @@ function start_waiting_for_players(){
                 }
 
                 // Update state of station to "waiting_for_players" when player count < 1
-                //ref = new Firebase(FB_STATIONPLAYERS_URL);
                 stationPlayers_ref.once("value", function(snapshot) {
                     values = snapshot.val();
                     if (values !== null){
@@ -1337,7 +1336,6 @@ function update_player_score(posting_time){
             else
             {
                 console.log("answer null");
-                //stationPlayer_ref = new Firebase(FB_STATIONPLAYERS_URL + "/" + childSnapshot.key());
                 stationPlayer_ref.child("is_correct_answer").set(false);
                 if (value.total_correct_answer === null || value.total_correct_answer === undefined) {
                     stationPlayer_ref.child("total_incorrect_answer").set(1);
@@ -1413,7 +1411,6 @@ function start_answered(){
     });
     
     // Display current qns number
-//    document.getElementById("answered_h1_qns_header").innerHTML = "QUESTION " + curr_qns.question_no;
     qns_num_icon = curr_qns_index;
     console.log("qns index = " + qns_num_icon);
     display_answered_qns_icons(qns_num_icon);
@@ -1488,35 +1485,17 @@ function start_answered(){
         var value = snapshot.val();
         if (value.correct_answer === "option_1"){
             document.getElementById("answered_option_1_tick").style.visibility = "visible";
-//            document.getElementById("answered_option_2_tick").style.visibility = "hidden";
-//            document.getElementById("answered_option_3_tick").style.visibility = "hidden";
-//            document.getElementById("answered_option_4_tick").style.visibility = "hidden";
         }
         else if (value.correct_answer === "option_2"){
             document.getElementById("answered_option_2_tick").style.visibility = "visible";
-//            document.getElementById("answered_option_1_tick").style.visibility = "hidden";
-//            document.getElementById("answered_option_3_tick").style.visibility = "hidden";
-//            document.getElementById("answered_option_4_tick").style.visibility = "hidden";
         }
         else if (value.correct_answer === "option_3"){
             document.getElementById("answered_option_3_tick").style.visibility = "visible";
-//            document.getElementById("answered_option_1_tick").style.visibility = "hidden";
-//            document.getElementById("answered_option_2_tick").style.visibility = "hidden";
-//            document.getElementById("answered_option_4_tick").style.visibility = "hidden";
         }
         else if (value.correct_answer === "option_4"){
             document.getElementById("answered_option_4_tick").style.visibility = "visible";
-//            document.getElementById("answered_option_1_tick").style.visibility = "hidden";
-//            document.getElementById("answered_option_2_tick").style.visibility = "hidden";
-//            document.getElementById("answered_option_3_tick").style.visibility = "hidden";
         }
     });
-    
-//    // Play a sound whenever a new player join the game
-//    var qns_answered_sound = document.createElement("audio");
-//    qns_answered_sound.src = "music/";
-//    qns_answered_sound.autoplay = "true";
-//    document.getElementById("qns_answered_music").appendChild(qns_answered_sound);
     
     // Display 10 second countdown timer before changing to next state
     answered_countdown_10sec_timer();
@@ -1768,16 +1747,6 @@ function start_game_over(){
         document.getElementById("gameover_player_icon1").src = all_scores[0].icon_url;
         document.getElementById("h2_game_over_nickname1").innerHTML = all_scores[0].nickname;
         document.getElementById("game_over_points1").innerHTML = all_scores[0].score + " pts";
-        
-//        var onComplete = function(error) {
-//            if (error) {
-//              console.log('Gameover Update failed');
-//            } else {
-//                // Remove any existing players before restarting the game
-//                var removePlayer_ref = new Firebase(FB_STATIONPLAYERS_URL);
-//                removePlayer_ref.remove();
-//            }
-//        };
         
         // Change station state to gameover
         station_state_ref = new Firebase(FB_STATION_URL);

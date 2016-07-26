@@ -8,9 +8,11 @@
     Author     : Chow Jie Jin Edmund
 */
 
+//Constants for Firebase URL
 var FB_STATION_URL = "https://mantrodev.firebaseio.com/STATIONS/";
 var FB_STATIONPLAYERS_URL =  "/PLAYERS";
 var FB_STATIONIDPLAYER_URL;
+//Constants for Firebase URL
 
 
 // Retrieve all the stations of type "HOOT HOOT"
@@ -30,8 +32,9 @@ var ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS");
             });
             onOptionChange();
         });
-        
-        
+// Retrieve all the stations of type "HOOT HOOT"
+
+
 // Function to erase any existing players when first launched
 function onSubmit(){
     var removePlayer_ref = new Firebase(FB_STATIONIDPLAYER_URL);
@@ -45,6 +48,7 @@ function onSubmit(){
         }
     });
 }
+// Function to erase any existing players when first launched
 
 
 // Retrieve station names and station ids from form submission
@@ -56,3 +60,4 @@ function onOptionChange(){
     console.log("The value is " + hidden_input.value);
     FB_STATIONIDPLAYER_URL = FB_STATION_URL + station_id + FB_STATIONPLAYERS_URL;
 }
+// Retrieve station names and station ids from form submission
