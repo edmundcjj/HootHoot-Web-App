@@ -385,10 +385,6 @@ function game_over_countdown_10sec_timer(ref1){
             document.getElementById("leaderboard").style.display = "none";
             document.getElementById("game_over").style.display = "none";
             
-            // Remove any existing players before restarting the game
-            var removePlayer_ref = new Firebase(FB_STATIONPLAYERS_URL);
-            removePlayer_ref.remove();
-            
             // Transit to waiting state
             document.getElementById("waiting_for_players").style.display = "block";
             
@@ -575,8 +571,6 @@ function start_waiting_for_players(){
         
         // Remove any unwanted players before listening to any new incoming players
         stop_waiting_countdown_60sec_timer();
-        var removePlayer_ref = new Firebase(FB_STATIONPLAYERS_URL);
-        removePlayer_ref.remove();
 
         var p = document.getElementById("state_reference");
         p.innerHTML = "Waiting for players...";
@@ -1715,13 +1709,6 @@ function start_game_over(){
     // Local variable
     var all_scores = [];
     var station_state_ref, stationPlayers_ref;
-        
-    // Change station state to gameover
-    station_state_ref = new Firebase(FB_STATION_URL);
-    current_state = GAMEOVER_STATE;
-    station_state_ref.update({
-        "state": current_state 
-    });
     
     // Retrieve all player scores
     stationPlayers_ref = new Firebase(FB_STATIONPLAYERS_URL);
@@ -1736,12 +1723,28 @@ function start_game_over(){
         
         // Sort the array of player's score based on descending order
         bubbleSort(all_scores, 'score');
-
-        document.getElementById("gameover_nickname_container").style.visibility = "visible";
-        document.getElementById("gameover_points_container").style.visibility = "visible";
+        
+        // Display top scorer nickname and score
         document.getElementById("gameover_player_icon1").src = all_scores[0].icon_url;
         document.getElementById("h2_game_over_nickname1").innerHTML = all_scores[0].nickname;
         document.getElementById("game_over_points1").innerHTML = all_scores[0].score + " pts";
+        
+        var onComplete = function(error) {
+            if (error) {
+              console.log('Gameover Update failed');
+            } else {
+                // Remove any existing players before restarting the game
+                var removePlayer_ref = new Firebase(FB_STATIONPLAYERS_URL);
+                removePlayer_ref.remove();
+            }
+        };
+        
+        // Change station state to gameover
+        station_state_ref = new Firebase(FB_STATION_URL);
+        current_state = GAMEOVER_STATE;
+        station_state_ref.update({
+            "state": current_state 
+        },onComplete());
     });
     
     // Play music for gameover state
