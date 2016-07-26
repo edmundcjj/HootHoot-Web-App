@@ -103,7 +103,6 @@ function pauseAllAudios()
 function waiting_countdown_60sec_timer(ref1, ref2){
     // Reset get_ready state progress bar's width to 0px
     console.log("Before waiting reset");
-//    document.getElementById("waiting_skillbar-bar_width").setAttribute("style", "width:0%");
     document.getElementById("waiting_skillbar-bar_width").style.width = "0%";
     console.log("After waiting reset");
     
@@ -146,7 +145,6 @@ function stop_waiting_countdown_60sec_timer(){
 function get_ready_countdown_10sec_timer(){
     // Reset get_ready state progress bar's width to 0px
     console.log("Before getready reset");
-//    document.getElementById("get_ready_skillbar-bar_width").setAttribute("style", "width:0%");
     document.getElementById("get_ready_skillbar-bar_width").style.width = "0%";
     console.log("After getready reset");
     
@@ -226,8 +224,7 @@ function answering_countdown_20sec_timer(duration, ref1){
 }
 
 // Stop 20 seconds timer
-function stop_answering_countdown_20sec_timer(ref1){
-    
+function stop_answering_countdown_20sec_timer(ref1){ 
     // Stop firebase event listeners related to answering_question state
     stop_answering_qns(ref1);
     clearInterval(interval);
@@ -416,7 +413,6 @@ function game_over_countdown_10sec_timer(ref1){
 //--------------------------------------------------------------------------- CMS retrieve qns function ---------------------------------------------------------------------------------------------
 // Function to retrieve all questions from Content Management System
 function get_qns_from_CMS(){
-    
         // Retrieve all questions from CMS and save it to QNS_BANK array
         var xmlhttp = new XMLHttpRequest();
         var url = 'http://hootsq-mantro.azurewebsites.net/api/Questions/GetQuestions?station_id=' + station_id;
@@ -1046,7 +1042,7 @@ function start_answering_qns(){
     display_answering_qns_icons(qns_num_icon);
     
     // Reset the number of answers to 0
-    document.getElementById("ans_num").innerHTML = "0 answers";
+    document.getElementById("ans_num").innerHTML = "0 answered";
     
     // Display current qns name
     document.getElementById("answering_h2_qns_name").innerHTML = curr_qns.question_name;

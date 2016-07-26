@@ -51,7 +51,7 @@
         <!-- _____________________________________________________  state = waiting_for_players ___________________________________________________________________________ -->
         <div class="waiting_players_page" id="waiting_for_players">
             
-            <!-- Call "start_waiting_for_players" function in load_all_js.js -->
+            <!-- Call "start_waiting_for_players" function in main_game.js -->
             <script>start_waiting_for_players();</script>
             
             <div class="col-lg-12" id="waiting_players_body">
@@ -73,7 +73,7 @@
                 <div class="col-md-4" id="waiting_player_column">
                     <p class="robotoFont" style="font-size: 50px; font-weight: 100;">Players</p>
 
-                    <!-- Get player names from firebase in waiting_for_player.js -->
+                    <!-- Get player names from firebase in main_game.js -->
                     <ul id="player_name" style="list-style: none; font-size: 50px;"></ul>
                     <div id="player_join_music"></div>
                 </div>
@@ -269,7 +269,6 @@
         <!-- ______________________________________________________ state = answered ______________________________________________________________________________________ -->
         <!-- Show the answer statistics -->
         <div class="answered_page" id="answered" style = "display:none">
-            <div id="qns_answered_music"></div>
             <div class="col-lg-12">
                 <!-- Question Number Header -->
                 <div class="answered_qns_header_row col-md-12">
