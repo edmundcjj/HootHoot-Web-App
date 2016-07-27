@@ -106,8 +106,8 @@ function waiting_countdown_60sec_timer(ref1, ref2){
     document.getElementById("waiting_skillbar-bar_width").style.width = "0%";
     console.log("After waiting reset");
     
-    var seconds = 10,
-    timer = 12000,
+    var seconds = 60,
+    timer = 62000,
     second = 0;
 
     interval = setInterval(function() {
@@ -568,6 +568,10 @@ function start_waiting_for_players(){
     
     // Display station name
     window.onload = function(){
+        // Set active to false when web application stop running or when there is no internet connection
+	var stationactive_ref = new Firebase(FB_STATION_URL + "/active");
+        stationactive_ref.onDisconnect().set(false);
+        
         document.getElementById("stn_name").innerHTML = station_name;
         var optionicon_ref = new Firebase(FB_OPTIONICON_URL);
         optionicon_ref.on("value", function(snapshot){
@@ -1671,6 +1675,7 @@ function start_leaderboard(){
     stationPlayers_ref.orderByChild("score").limitToLast(5).once("value", function(All_Players_Snapshot){
         All_Players_Snapshot.forEach(function(Player_Snapshot){
             var value = Player_Snapshot.val();
+            if (!value.connected) return;
             var score = {icon_url: value.icon_url, nickname: value.nickname, score: value.score};
             all_scores.push(score);
         });
@@ -1686,7 +1691,7 @@ function start_leaderboard(){
             document.getElementById("leaderboard_points" + (count+1)).style.visibility = "visible";
             document.getElementById("leaderboard_player_icon" + (count+1)).src = all_scores[count].icon_url;
             document.getElementById("h2_leaderboard_nickname" + (count+1)).innerHTML = all_scores[count].nickname;
-            document.getElementById("leaderboard_points" + (count+1)).innerHTML = all_scores[count].score + " pts";
+            document.getElementById("leaderboard_points" + (count+1)).innerHTML = all_scores[count].score + " points";
         }
     });
     
@@ -1744,9 +1749,9 @@ function start_game_over(){
         bubbleSort(all_scores, 'score');
         
         // Display top scorer nickname and score
-        document.getElementById("gameover_player_icon1").src = all_scores[0].icon_url;
-        document.getElementById("h2_game_over_nickname1").innerHTML = all_scores[0].nickname;
-        document.getElementById("game_over_points1").innerHTML = all_scores[0].score + " pts";
+        document.getElementById("gameover_player_icon").src = all_scores[0].icon_url;
+        document.getElementById("h2_game_over_nickname").innerHTML = all_scores[0].nickname;
+        document.getElementById("game_over_points").innerHTML = all_scores[0].score + " points";
         
         // Change station state to gameover
         station_state_ref = new Firebase(FB_STATION_URL);

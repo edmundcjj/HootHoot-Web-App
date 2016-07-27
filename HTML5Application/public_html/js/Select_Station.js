@@ -25,6 +25,7 @@ var ref = new Firebase("https://mantrodev.firebaseio.com/STATIONS");
             allStationsSnapshot.forEach(function(childSnapshot) {
                 values = childSnapshot.val();
                 console.log(values);
+                if (values.active) return;                  // Skip below code if active = true
                 option = document.createElement("option");
                 option.text = values.station_name;
                 option.value = childSnapshot.key();
@@ -40,6 +41,11 @@ function onSubmit(){
     var removePlayer_ref = new Firebase(FB_STATIONIDPLAYER_URL);
     removePlayer_ref.remove(function(error){
         if(!error){
+            // Set active to true when station is selected
+            var selected_index = document.getElementById("stn_list").selectedIndex;
+            var station_id = document.getElementsByTagName("option")[selected_index].value;
+            var station_ref = new Firebase(FB_STATION_URL).child(station_id).child("active").set(true);
+            
             document.getElementById("station_form").submit();
         }
         else

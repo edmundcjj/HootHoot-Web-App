@@ -23,21 +23,39 @@ and open the template in the editor.
 .gameover_progress_bar_row > div{
     height: 100%;
 }
-.gameover_nickname_row{
+.gameover_congrats_highest_scorer_row{
+    background: #00BF96;
+    height: 8.5%;
+}
+.gameover_congrats_top_players_row{
+    background: #00BF96;
+    height: 8.5%;
+}
+.gameover_nickname_highest_scorer_row{
     background: #00BF96;
     padding: 0px;
-    height: 87%;
+    height: 15%;
 }
-.gameover_nickname_row > div{
+.gameover_nickname_highest_scorer_row > div{
     height: 100%;
 }
-.gameover_stats_row{
+.gameover_stats_highest_scorer_row{
     background: #00BF96;
     padding: 0px;
-    height: 87%;
+    height: 15%;
 }
-.gameover_stats_row > div{
+.gameover_stats_highest_scorer_row > div{
     height: 100%;
+}
+.gameover_nickname_top_player_row_1, .gameover_nickname_top_player_row_2, .gameover_nickname_top_player_row_3, .gameover_nickname_top_player_row_4{
+    background: #00BF96;
+    padding: 0px;
+    height: 13.75%;
+}
+.gameover_stats_top_player_scorer_row_1, .gameover_stats_top_player_scorer_row_2, .gameover_stats_top_player_scorer_row_3, .gameover_stats_top_player_scorer_row_4{
+    background: #00BF96;
+    padding: 0px;
+    height: 13.75%;
 }
 /*Layout Configuration*/
 
@@ -61,28 +79,46 @@ and open the template in the editor.
 /*Gameover Header*/
 
 /*Top Player nickname and points*/
-#gameover_nickname{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+#gameover_congrats_highest_scorer_text{
+    text-align: center;
+    font-size: 70px;
+    margin-top: 0px;
+    color: white;
 }
-#gameover_nickname_container{
+#gameover_congrats_top_players_text{
+    text-align: center;
+    font-size: 70px;
+    margin-top: 0px;
+}
+#gameover_nickname{
+/*    padding-top: 1%;*/
+}
+#gameover_nickname_container, #gameover_nickname_container1,#gameover_nickname_container2, #gameover_nickname_container3, #gameover_nickname_container4{
     background: #00816A;
     height: 120px;
     margin: 0px;
 }
-#h2_game_over_nickname1{
+#h2_game_over_nickname, #h2_game_over_nickname1, #h2_game_over_nickname2, #h2_game_over_nickname3, #h2_game_over_nickname4{
     font-size: 70px;
     margin-bottom: 0px;
     margin-top: 0px;
     padding-top: 3%;
+    text-align: center;
 }
-#game_over_points1{
+#game_over_points{
     position: relative;
-    top: 50%;
+    top: 38%;
     left: 60%;
     transform: translate(-50%,-50%);
     margin: 0px;
     font-size: 70px;
+}
+#game_over_points1, #game_over_points2, #game_over_points3, #game_over_points4{
+    margin: 0px;
+    font-size: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 6%;
 }
 /*Top Player nickname and points*/
