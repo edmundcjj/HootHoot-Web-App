@@ -273,6 +273,8 @@ function answered_countdown_10sec_timer(){
                 {
                     document.getElementById("leaderboard_nickname_container" + c).style.visibility = "hidden";
                     document.getElementById("leaderboard_points" + c).style.visibility = "hidden";
+                    document.getElementById("leaderboard_nickname" + c).style.visibility = "hidden";
+                    document.getElementById("leaderboard_player_icon" + c).style.visibility = "hidden";
                 }
                 document.getElementById("leaderboard").style.display = "block";
                         
