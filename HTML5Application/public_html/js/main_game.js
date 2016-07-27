@@ -12,7 +12,7 @@
 // Global Variables
 var questionBank = [];                                                                  // Pool of questions for a specific station
 var curr_qns, interval;                                                                 // Variable that contains details of current question
-var curr_qns_index = 0;                                                                 // Current index of current question
+var curr_qns_index = 7;                                                                 // Current index of current question
 var qns_num_icon = 0;                                                                   // Qns number icon
 var current_state = "";                                                                 // Current state of the station
 var optionicon_list = [];                                                               // Array that contains icon_url for the different question options
@@ -43,6 +43,7 @@ var FB_STATIONPLAYERS_URL = "https://mantrodev.firebaseio.com/STATIONS/" + stati
 var FB_STATIONCURRENTQUESTION_URL = "https://mantrodev.firebaseio.com/STATIONS/" + station_id + "/CURRENT_QUESTION";
 var FB_OPTIONICON_URL = "https://mantrodev.firebaseio.com/OPTION_ICONS";
 var FB_STATIONUSERS_URL = "https://mantrodev.firebaseio.com/USERS";
+var FB_STATIONLEADERBOARD_URL = "https://mantrodev.firebaseio.com/STATIONS/" + station_id + "/LEADERBOARD_OF_THE_DAY";
 
 // Constants for station states
 var WAITING_STATE = "waiting";
@@ -106,8 +107,8 @@ function waiting_countdown_60sec_timer(ref1, ref2){
     document.getElementById("waiting_skillbar-bar_width").style.width = "0%";
     console.log("After waiting reset");
     
-    var seconds = 60,
-    timer = 62000,
+    var seconds = 20,
+    timer = 22000,
     second = 0;
 
     interval = setInterval(function() {
@@ -273,7 +274,7 @@ function answered_countdown_10sec_timer(){
                 {
                     document.getElementById("leaderboard_nickname_container" + c).style.visibility = "hidden";
                     document.getElementById("leaderboard_points" + c).style.visibility = "hidden";
-                    document.getElementById("leaderboard_nickname" + c).style.visibility = "hidden";
+                    document.getElementById("h2_leaderboard_nickname" + c).style.visibility = "hidden";
                     document.getElementById("leaderboard_player_icon" + c).style.visibility = "hidden";
                 }
                 document.getElementById("leaderboard").style.display = "block";
@@ -286,13 +287,21 @@ function answered_countdown_10sec_timer(){
                 console.log(curr_qns_index + " " + questionBank.length);
                 console.log("Go to game over");
                 document.getElementById("leaderboard").style.display = "none";
+                for(var count = 0; count < 4; count++)
+                {
+                    document.getElementById("gameover_nickname_container" + (count+1)).style.visibility = "hidden";
+                    document.getElementById("gameover_player_icon" + (count+1)).style.visibility = "hidden";
+                    document.getElementById("h2_gameover_nickname" + (count+1)).style.visibility = "hidden";
+                    document.getElementById("gameover_points" + (count+1)).style.visibility = "hidden";
+                    document.getElementById("gameover_rank_icon" + (count+1)).style.visibility = "hidden";
+                }
                 
                 document.getElementById("gameover_nickname_container").style.visibility = "visible";
                 document.getElementById("gameover_points_container").style.visibility = "visible";
                 document.getElementById("game_over").style.display = "block";
                 update_user_node();
                 
-                start_game_over();
+                update_leaderboard_of_the_day();
             }
         }
         second++;
@@ -415,28 +424,30 @@ function game_over_countdown_10sec_timer(ref1){
 //--------------------------------------------------------------------------- CMS retrieve qns function ---------------------------------------------------------------------------------------------
 // Function to retrieve all questions from Content Management System
 function get_qns_from_CMS(){
-        // Retrieve all questions from CMS and save it to QNS_BANK array
-        var xmlhttp = new XMLHttpRequest();
-        var url = 'http://hootsq-mantro.azurewebsites.net/api/Questions/GetQuestions?station_id=' + station_id;
-        xmlhttp.onreadystatechange = function() {
-                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                        questionBank = JSON.parse(xmlhttp.responseText);
-                        for (var i = 0; i < questionBank.length; i++){
-                            questionBank[i]["question_no"] = i+1;
-                        }
-                        
-                        // Clear display of <div id="waiting_for_players">
-                        document.getElementById("waiting_for_players").style.display = "none";
+    questionBank = [];
+    curr_qns_index = 7;
+    // Retrieve all questions from CMS and save it to QNS_BANK array
+    var xmlhttp = new XMLHttpRequest();
+    var url = 'http://hootsq-mantro.azurewebsites.net/api/Questions/GetQuestions?station_id=' + station_id;
+    xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    questionBank = JSON.parse(xmlhttp.responseText);
+                    for (var i = 0; i < questionBank.length; i++){
+                        questionBank[i]["question_no"] = i+1;
+                    }
 
-                        // Make display of <div id="getready"> visible
-                        document.getElementById("get_ready").style.display = "block";
-                        
-                        // Call start_get_ready function 
-                        start_get_ready();
-                }
-        };
-        xmlhttp.open("GET", url, true);
-        xmlhttp.send(); 
+                    // Clear display of <div id="waiting_for_players">
+                    document.getElementById("waiting_for_players").style.display = "none";
+
+                    // Make display of <div id="getready"> visible
+                    document.getElementById("get_ready").style.display = "block";
+
+                    // Call start_get_ready function 
+                    start_get_ready();
+            }
+    };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send(); 
 }
 //--------------------------------------------------------------------------- CMS retrieve qns function ---------------------------------------------------------------------------------------------
 
@@ -1267,6 +1278,10 @@ function update_answers_num(){
         snapshot.forEach(function(childSnapshot) {
             var value = childSnapshot.val();
             if (value.answer !== undefined & value.answer !== null){
+                if (!value.connected){
+                    player_count = player_count - 1;
+                    return;
+                }
                 if (checked_players.hasOwnProperty(childSnapshot.key())) return;
                 checked_players[childSnapshot.key()] = childSnapshot.key();
                 
@@ -1684,9 +1699,11 @@ function start_leaderboard(){
         
         // Sort the array of player's score based on descending order
         bubbleSort(all_scores, 'score');
-
+        
+        console.log("Before displaying nickname, icons and score");
         for(var count = 0; count < all_scores.length; count++)
         {
+            console.log("After displaying nickname, icons and score");
             document.getElementById("leaderboard_nickname_container" + (count+1)).style.visibility = "visible";
             document.getElementById("leaderboard_player_icon" + (count+1)).style.visibility = "visible";
             document.getElementById("h2_leaderboard_nickname" + (count+1)).style.visibility = "visible";
@@ -1734,7 +1751,8 @@ function start_game_over(){
     
     // Local variable
     var all_scores = [];
-    var station_state_ref, stationPlayers_ref;
+    var leaderboard_scores = [];
+    var station_state_ref, stationPlayers_ref,stationleaderboard_ref;
     
     // Retrieve all player scores
     stationPlayers_ref = new Firebase(FB_STATIONPLAYERS_URL);
@@ -1755,13 +1773,40 @@ function start_game_over(){
         document.getElementById("h2_game_over_nickname").innerHTML = all_scores[0].nickname;
         document.getElementById("game_over_points").innerHTML = all_scores[0].score + " points";
         
-        // Change station state to gameover
-        station_state_ref = new Firebase(FB_STATION_URL);
-        current_state = GAMEOVER_STATE;
-        station_state_ref.update({
-            "state": current_state 
+        stationleaderboard_ref = new Firebase(FB_STATIONLEADERBOARD_URL);
+        stationleaderboard_ref.orderByChild("score").limitToLast(4).once("value", function(All_Players_Snapshot){
+            All_Players_Snapshot.forEach(function(Player_Snapshot){
+                var value = Player_Snapshot.val();
+                console.log("Value = " + Player_Snapshot.val());
+                var score = {icon_url: value.icon_url, nickname: value.nickname, score: value.score};
+                leaderboard_scores.push(score);
+                console.log("Score = " + leaderboard_scores);
+        });
+        
+            // Sort the array of player's score based on descending order
+            bubbleSort(leaderboard_scores, 'score');
+            
+            for(var count = 0; count < leaderboard_scores.length; count++){
+                console.log("After displaying nickname, icons and score");
+                document.getElementById("gameover_nickname_container" + (count+1)).style.visibility = "visible";
+                document.getElementById("gameover_player_icon" + (count+1)).style.visibility = "visible";
+                document.getElementById("h2_gameover_nickname" + (count+1)).style.visibility = "visible";
+                document.getElementById("gameover_points" + (count+1)).style.visibility = "visible";
+                document.getElementById("gameover_rank_icon" + (count+1)).style.visibility = "visible";
+                document.getElementById("gameover_player_icon" + (count+1)).src = leaderboard_scores[count].icon_url;
+                document.getElementById("h2_gameover_nickname" + (count+1)).innerHTML = leaderboard_scores[count].nickname;
+                document.getElementById("gameover_points" + (count+1)).innerHTML = leaderboard_scores[count].score + " points";
+            }
+            
+            // Change station state to gameover
+            station_state_ref = new Firebase(FB_STATION_URL);
+            current_state = GAMEOVER_STATE;
+            station_state_ref.update({
+                "state": current_state 
+            });
         });
     });
+    
     
     // Play music for gameover state
     pauseAllAudios();
@@ -1774,5 +1819,40 @@ function start_game_over(){
 // Stop all functions related to game over state
 function stop_game_over(Players_ref){
     Players_ref.off();
+}
+
+// Function to update leaderboard node for all players
+function update_leaderboard_of_the_day(){
+    var stationPlayers_ref = new Firebase(FB_STATIONPLAYERS_URL);
+    stationPlayers_ref.once("value", function(AllPlayerSnapshot){
+        AllPlayerSnapshot.forEach(function(PlayerSnapshot){
+            var value = PlayerSnapshot.val();
+            
+            if (value.connected === true){
+                var stationUser_score = new Firebase(FB_STATIONLEADERBOARD_URL).child(PlayerSnapshot.key());
+                stationUser_score.once("value", function(snapshot){
+                    var previous_player = snapshot.val();
+                    // Store player details into leaderboard if player does not exist in leaderboard node
+                    if (previous_player === null || previous_player === undefined) {
+                        stationUser_score.set({
+                            icon_url: value.icon_url,
+                            nickname: value.nickname,
+                            score: value.score
+                        });
+                    }
+                    // Player exist in leadeboard, compare score with players in player node and update if lesser
+                    else{
+                        var current_high_score = value.score;
+                        if (current_high_score < previous_player.score){
+                            current_high_score = previous_player.score;
+                        }
+                        stationUser_score.child("score").set(current_high_score);
+                    }
+                });
+            }
+        });
+        
+        start_game_over();
+    });
 }
 //--------------------------------------------------------------------------- Functions for gameover states ---------------------------------------------------------------------------------------------

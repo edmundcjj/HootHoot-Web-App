@@ -98,7 +98,7 @@ and open the template in the editor.
     height: 120px;
     margin: 0px;
 }
-#h2_game_over_nickname, #h2_game_over_nickname1, #h2_game_over_nickname2, #h2_game_over_nickname3, #h2_game_over_nickname4{
+#h2_game_over_nickname, #h2_gameover_nickname1, #h2_gameover_nickname2, #h2_gameover_nickname3, #h2_gameover_nickname4{
     font-size: 70px;
     margin-bottom: 0px;
     margin-top: 0px;
@@ -113,7 +113,7 @@ and open the template in the editor.
     margin: 0px;
     font-size: 70px;
 }
-#game_over_points1, #game_over_points2, #game_over_points3, #game_over_points4{
+#gameover_points1, #gameover_points2, #gameover_points3, #gameover_points4{
     margin: 0px;
     font-size: 70px;
     display: flex;
