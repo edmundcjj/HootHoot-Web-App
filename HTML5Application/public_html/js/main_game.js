@@ -1341,6 +1341,9 @@ function update_player_score(posting_time){
                     
                     // Calculate score for player for current question and update Firebase
                     player_gained_score = (1 - ((parseInt(value.answering_time) - parseInt(posting_time)) / parseInt(curr_qns.answering_duration * 1000))) * 1000;
+					if(player_gained_score < 0){
+						player_gained_score = 10;
+					}
                     stationPlayer_ref.child("score_gained").set(parseInt(player_gained_score));
                     player_score = parseInt(value.score);
                     stationPlayer_ref.child("score").set(parseInt(player_score + player_gained_score));
