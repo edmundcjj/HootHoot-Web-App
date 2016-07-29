@@ -25,9 +25,16 @@ and open the template in the editor.
 }
 .answering_qns_name_row{
     padding: 0px;
-    height: 46%; 
+    height: 41%; 
 }
 .answering_qns_name_row > div{
+    height: 100%;
+}
+.answering_hint_row{
+    padding: 0px;
+    height: 5%;
+}
+.answering_hint_row > div{
     height: 100%;
 }
 .answering_side_column{
@@ -69,9 +76,20 @@ and open the template in the editor.
     font-size: 100px;
     margin: 0px;
     position: relative;
-    top: 25%;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
 /*Question Name*/
+
+/*Hint*/
+#answering_h3_hint{
+    text-align: center;
+    font-size: 50px;
+    margin: 0px;
+}
+/*Hint*/
 
 /*Number of answers chosen by players*/
 #answering_side_column{
@@ -82,12 +100,12 @@ and open the template in the editor.
     padding-right: 0px;
 }
 #ans_num{
-    position: absolute;
-    top: 90%;
-    left:50%;
-    transform: translate(-50%,-50%);
-    font-size: 42px;
+    position: relative;
+    top: 100%;
+    transform: translateY(-50%);
+    font-size: 65px;
     text-align: center;
+    margin: 0px;
 }
 /*Number of answers chosen by players*/
 
@@ -117,13 +135,14 @@ and open the template in the editor.
     justify-content: center;
     background: #00FF7F;
 }
-#answering_option_1_img{
-    align-content: flex-start;
-    padding: 0px;
-}
 #answering_option_1_text, #answering_option_2_text, #answering_option_3_text, #answering_option_4_text{
     font-size: 80px;
     word-wrap: break-word;
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 #answering_option_1_optionimg, #answering_option_2_optionimg, #answering_option_3_optionimg, #answering_option_4_optionimg{
     align-content: center;

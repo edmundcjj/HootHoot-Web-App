@@ -57,14 +57,22 @@ and open the template in the editor.
     margin-bottom: 0px;
     margin-top: 0px;
     font-size: 85px;
-    position: absolute;
+    position: relative;
     top: 50%;
-    left:50%;
-    transform: translate(-50%,-50%);
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
 /*Leaderboard Header*/
 
 /*Display Top 5 Nicknames and points*/
+#leaderboard_player_icon1, #leaderboard_player_icon2, #leaderboard_player_icon3, #leaderboard_player_icon4, #leaderboard_player_icon5{
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
 #leaderboard_nickname{
     background: #00BF96;
     text-align: center;
@@ -76,16 +84,21 @@ and open the template in the editor.
 }
 #h2_leaderboard_nickname1, #h2_leaderboard_nickname2, #h2_leaderboard_nickname3, #h2_leaderboard_nickname4, #h2_leaderboard_nickname5{
     font-size: 70px;
-    margin-bottom: 0px;
-    margin-top: 0px;
-    padding-top: 3%;
+    margin: 0px;
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
 #leaderboard_points1, #leaderboard_points2, #leaderboard_points3, #leaderboard_points4, #leaderboard_points5{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative;
+    top: 40%;
+    left: 10%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
     margin: 0px;
     font-size: 70px;
-    padding-top: 3%;
 }
 /*Display Top 5 Nicknames and points*/

@@ -12,7 +12,7 @@
 // Global Variables
 var questionBank = [];                                                                  // Pool of questions for a specific station
 var curr_qns, interval;                                                                 // Variable that contains details of current question
-var curr_qns_index = 7;                                                                 // Current index of current question
+var curr_qns_index = 0;                                                                 // Current index of current question
 var qns_num_icon = 0;                                                                   // Qns number icon
 var current_state = "";                                                                 // Current state of the station
 var optionicon_list = [];                                                               // Array that contains icon_url for the different question options
@@ -107,8 +107,8 @@ function waiting_countdown_60sec_timer(ref1, ref2){
     document.getElementById("waiting_skillbar-bar_width").style.width = "0%";
     console.log("After waiting reset");
     
-    var seconds = 20,
-    timer = 22000,
+    var seconds = 60,
+    timer = 62000,
     second = 0;
 
     interval = setInterval(function() {
@@ -817,7 +817,8 @@ function start_get_ready(){
                 option_3: curr_qns.option_3,
                 option_4: curr_qns.option_4
             },
-            question: curr_qns.question_name
+            question: curr_qns.question_name,
+            hint: curr_qns.hint
         },function(error){
             if (!error){
                 // Change station state to getready
@@ -1062,6 +1063,10 @@ function start_answering_qns(){
     
     // Display current qns name
     document.getElementById("answering_h2_qns_name").innerHTML = curr_qns.question_name;
+    
+    // Display hint for current question
+//    document.getElementById("answering_h3_hint").innerHTML = curr_qns.hint;                                           // Use this when hint in CMS has been populated with proper hint
+    document.getElementById("answering_h3_hint").innerHTML = "Hint: Answers can be found on the informative boards";    // Temporary hint
     
     // Display current question options and toggle visibility of option field for answered state
     if (curr_qns.option_type === "TEXT"){
@@ -1341,9 +1346,9 @@ function update_player_score(posting_time){
                     
                     // Calculate score for player for current question and update Firebase
                     player_gained_score = (1 - ((parseInt(value.answering_time) - parseInt(posting_time)) / parseInt(curr_qns.answering_duration * 1000))) * 1000;
-					if(player_gained_score < 0){
-						player_gained_score = 10;
-					}
+                    if(player_gained_score < 0){
+                            player_gained_score = 10;
+                    }
                     stationPlayer_ref.child("score_gained").set(parseInt(player_gained_score));
                     player_score = parseInt(value.score);
                     stationPlayer_ref.child("score").set(parseInt(player_score + player_gained_score));
@@ -1383,7 +1388,8 @@ function update_player_score(posting_time){
 
                 // Make display of <div id="answering_questions"> visible
                 document.getElementById("answered").style.display = "block";
-
+                
+                console.log("Before answering_question state");
                 // Call function for answered state
                 start_answered();
             }
@@ -1416,7 +1422,7 @@ function toggle_answered_qns_icons_visibility(){
 
 // Start all functions related to answered state
 function start_answered(){
-    
+    console.log("In Answering_question state");
     // Local variable
     var curr_option1_stats = 0;
     var curr_option2_stats = 0;

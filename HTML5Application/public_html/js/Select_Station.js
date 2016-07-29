@@ -43,27 +43,27 @@ function onSubmit(){
 	
 	var station_ref = new Firebase(FB_STATION_URL).child(station_id).child("active");
 	station_ref.once("value", function(datasnapshot){
-		var isActive = datasnapshot.val();
-		
-		// Check if the selected station is active
-		if(isActive){
-			alert("The selected station is already in operation");
-		}
-		else{	
-			var removePlayer_ref = new Firebase(FB_STATIONIDPLAYER_URL);
-			removePlayer_ref.remove(function(error){
-				if(!error){
-					// Set active to true when station is selected
-					var station_ref = new Firebase(FB_STATION_URL).child(station_id).child("active").set(true);
-					
-					document.getElementById("station_form").submit();
-				}
-				else
-				{
-					alert("Players remove error");
-				}
-			});
-		}
+            var isActive = datasnapshot.val();
+
+            // Check if the selected station is active
+            if(isActive){
+                    alert("The selected station is already in operation");
+            }
+            else{	
+                    var removePlayer_ref = new Firebase(FB_STATIONIDPLAYER_URL);
+                    removePlayer_ref.remove(function(error){
+                            if(!error){
+                                // Set active to true when station is selected
+                                var station_ref = new Firebase(FB_STATION_URL).child(station_id).child("active").set(true);
+
+                                document.getElementById("station_form").submit();
+                            }
+                            else
+                            {
+                                alert("Players remove error");
+                            }
+                    });
+            }
 	});
 }
 // Function to erase any existing players when first launched

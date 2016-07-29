@@ -70,7 +70,7 @@ body, html {
     left:50%;
     transform: translate(-50%,-50%);
 }
-#answering_qns_name, #answered_stats_num, #answered_stats_img, #answered_qns_ticks{
+#answering_qns_name, #answering_hint, #answered_stats_num, #answered_stats_img, #answered_qns_ticks{
     background: #00BF96;
     text-align: center;
 }
