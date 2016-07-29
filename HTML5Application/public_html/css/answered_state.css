@@ -105,11 +105,25 @@ and open the template in the editor.
 }
 #answered_option_1_text, #answered_option_2_text, #answered_option_3_text, #answered_option_4_text{
     font-size: 80px;
+    word-wrap: break-word;
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #answered_option_1_optionimg, #answered_option_2_optionimg, #answered_option_3_optionimg, #answered_option_4_optionimg{
     align-content: center;
     height: 190px;
     width: 225px;
+}
+#answered_option_1_icon, #answered_option_2_icon, #answered_option_3_icon, #answered_option_4_icon{
+    position: relative;
+    top: 50%;
+    left: 5%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
 /*Question Option*/

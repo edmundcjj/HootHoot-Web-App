@@ -101,4 +101,11 @@ and open the template in the editor.
     margin: 0px;
     font-size: 70px;
 }
+#leaderboard_rank_icon_1, #leaderboard_rank_icon_2, #leaderboard_rank_icon_3, #leaderboard_rank_icon_4{
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
 /*Display Top 5 Nicknames and points*/
