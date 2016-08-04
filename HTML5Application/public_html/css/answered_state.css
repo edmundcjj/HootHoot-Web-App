@@ -111,6 +111,7 @@ and open the template in the editor.
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
 }
 
 #answered_option_1_optionimg, #answered_option_2_optionimg, #answered_option_3_optionimg, #answered_option_4_optionimg{

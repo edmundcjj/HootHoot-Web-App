@@ -44,9 +44,9 @@ body, html {
 	transition-property:width, background-color;
 }
 .waiting_skillbar-bar, .get_ready_skillbar-bar, .answering_skillbar-bar, .answered_skillbar-bar, .leaderboard_skillbar-bar, .gameover_skillbar-bar {
-	height:100%;
-	width:0px;
-	background:00BFFF;
+	height: 100%;
+	width: 0px;
+	background: #00BFFF;
 }
 .col-lg-12,.row{
     padding-left: 0px;

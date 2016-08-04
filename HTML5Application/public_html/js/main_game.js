@@ -22,6 +22,7 @@ var answering_qns1, answering_qns2, answering_qns3, answering_qns4, answering_qn
 var answering_qns6, answering_qns7, answering_qns8, answering_qns9, answering_qns10;    // Answering_questions State qns number icons
 var answered_qns1, answered_qns2, answered_qns3, answered_qns4, answered_qns5;          // Answered State qns number icons
 var answered_qns6, answered_qns7, answered_qns8, answered_qns9, answered_qns10;         // Answered State qns number icons
+var station_monitor_players_ref = null;
 
 // Decode url to get station name
 var search_query = window.location.search;
@@ -44,6 +45,7 @@ var FB_STATIONCURRENTQUESTION_URL = "https://mantrodev.firebaseio.com/STATIONS/"
 var FB_OPTIONICON_URL = "https://mantrodev.firebaseio.com/OPTION_ICONS";
 var FB_STATIONUSERS_URL = "https://mantrodev.firebaseio.com/USERS";
 var FB_STATIONLEADERBOARD_URL = "https://mantrodev.firebaseio.com/STATIONS/" + station_id + "/LEADERBOARD_OF_THE_DAY";
+var station_monitor_players_ref = null;
 
 // Constants for station states
 var WAITING_STATE = "waiting";
@@ -94,7 +96,6 @@ function pauseAllAudios()
     ANSWERED_AUDIO.pause();
     GAME_OVER_AUDIO.pause();
     NEW_PLAYER_AUDIO.pause();
-
 }
 //--------------------------------------------------------------------------- Functions for Audio ---------------------------------------------------------------------------------------------
 
@@ -107,8 +108,8 @@ function waiting_countdown_60sec_timer(ref1, ref2){
     document.getElementById("waiting_skillbar-bar_width").style.width = "0%";
     console.log("After waiting reset");
     
-    var seconds = 60,
-    timer = 62000,
+    var seconds = 20,
+    timer = 22000,
     second = 0;
 
     interval = setInterval(function() {
@@ -425,7 +426,7 @@ function game_over_countdown_10sec_timer(ref1){
 // Function to retrieve all questions from Content Management System
 function get_qns_from_CMS(){
     questionBank = [];
-    curr_qns_index = 0;
+    curr_qns_index = 9;
     // Retrieve all questions from CMS and save it to QNS_BANK array
     var xmlhttp = new XMLHttpRequest();
     var url = 'http://hootsq-mantro.azurewebsites.net/api/Questions/GetQuestions?station_id=' + station_id;
@@ -767,8 +768,72 @@ function toggle_getready_qns_icons_invisibility(){
     getready_qns10.style.visibility = "visible";
 }
 
+// Function to change back to waiting state automatically when number of players becomes 0
+function change_to_waiting(current_div){
+    
+    // Clear timer for current state
+    clearInterval(interval);
+    
+    // Clear player list
+    document.getElementById("player_name").innerHTML = "";
+    
+    // Reset waiting_for_players state progress bar to 0%
+    document.getElementById("waiting_skillbar-bar_width").style.width = "0%";
+    
+    // Change text in waiting state to waiting for players...
+    document.getElementById("state_reference").innerHTML = "Waiting for players...";
+    
+    // Change station state to waiting state
+    var station_ref = new Firebase(FB_STATION_URL);
+    current_state = WAITING_STATE;
+    station_ref.update({
+        "state": current_state
+    });
+    
+    // Clear display of current div
+    document.getElementById(current_div).style.display = "none";
+
+    // Make display of <div id="waiting_for_players"> visible
+    document.getElementById("waiting_for_players").style.display = "block";
+    
+    // Start waiting_for_players function
+    start_waiting_for_players();
+}
+
 // Start all functions related to getready state
 function start_get_ready(){
+    
+    // Check the remaining number of players, if 0, go straight to waiting state
+    if (station_monitor_players_ref !== null){
+        station_monitor_players_ref.off();
+    }
+    station_monitor_players_ref = new Firebase(FB_STATIONPLAYERS_URL);
+    station_monitor_players_ref.on("value", function(snapshot){
+        if(snapshot.val() === null){
+            // change to waiting state
+            change_to_waiting("get_ready");
+            
+            station_monitor_players_ref.off();
+        }
+        else{ // if there is/are players remains, then check if the players are still connected to the game
+            var total_players_remain = snapshot.numChildren();
+            var total_disconnected_players = 0;
+            
+            snapshot.forEach(function(childSnapshot) {
+                var value = childSnapshot.val();
+                if (!value.connected){ // disconnected players
+                    total_disconnected_players = total_disconnected_players + 1;
+                }
+            });
+            
+            if(total_players_remain === total_disconnected_players){ // if all players remain disconnected
+                // change to waiting state
+                change_to_waiting("get_ready");
+                
+                station_monitor_players_ref.off();
+            }
+        }
+    });
     
     // Local variables
     var station_ref;
@@ -1034,6 +1099,38 @@ function toggle_answering_qns_icons_visibility(){
 // Start all functions related to answering questions state
 function start_answering_qns(){
     
+    // Check the remaining number of players, if 0, go straight to waiting state
+    if (station_monitor_players_ref !== null){
+        station_monitor_players_ref.off();
+    }
+    station_monitor_players_ref = new Firebase(FB_STATIONPLAYERS_URL);
+    station_monitor_players_ref.on("value", function(snapshot){
+        if(snapshot.val() === null){
+            // change to waiting state
+            change_to_waiting("answering_questions");
+            
+            station_monitor_players_ref.off();
+        }
+        else{ // if there is/are players remains, then check if the players are still connected to the game
+            var total_players_remain = snapshot.numChildren();
+            var total_disconnected_players = 0;
+            
+            snapshot.forEach(function(childSnapshot) {
+                var value = childSnapshot.val();
+                if (!value.connected){ // disconnected players
+                    total_disconnected_players = total_disconnected_players + 1;
+                }
+            });
+            
+            if(total_players_remain === total_disconnected_players){ // if all players remain disconnected
+                // change to waiting state
+                change_to_waiting("answering_questions");
+                
+                station_monitor_players_ref.off();
+            }
+        }
+    });
+    
     // Local variables
     var posting_time = 0;
     var station_state_ref, station_qns_posttime_ref;
@@ -1065,8 +1162,7 @@ function start_answering_qns(){
     document.getElementById("answering_h2_qns_name").innerHTML = curr_qns.question_name;
     
     // Display hint for current question
-//    document.getElementById("answering_h3_hint").innerHTML = curr_qns.hint;                                           // Use this when hint in CMS has been populated with proper hint
-    document.getElementById("answering_h3_hint").innerHTML = "Hint: Answers can be found on the informative boards";    // Temporary hint
+    document.getElementById("answering_h3_hint").innerHTML = "Hint: " + curr_qns.hint;            // Use this when hint in CMS has been populated with proper hint
     
     // Display current question options and toggle visibility of option field for answered state
     if (curr_qns.option_type === "TEXT"){
@@ -1278,6 +1374,9 @@ function update_answers_num(){
     stationPlayers_ref = new Firebase(FB_STATIONPLAYERS_URL);
     stationPlayers_ref.on("value", function(snapshot){
         var values = snapshot.val();
+        
+        if(values === null){ return; }
+        
         var player_count = Object.keys(values).length;
         console.log("There are " + player_count + " players");
         snapshot.forEach(function(childSnapshot) {
@@ -1319,6 +1418,9 @@ function update_player_score(posting_time){
     // Event when player has selected their answer
     stationPlayers_ref = new Firebase(FB_STATIONPLAYERS_URL);
     stationPlayers_ref.once("value", function(snapshot){
+        
+        if(snapshot.val() === null){ return; }
+        
         total_players = Object.keys(snapshot.val()).length;
         snapshot.forEach(function(childSnapshot) {
             console.log("Inside every player");
@@ -1423,6 +1525,39 @@ function toggle_answered_qns_icons_visibility(){
 // Start all functions related to answered state
 function start_answered(){
     console.log("In Answering_question state");
+    
+    // Check the remaining number of players, if 0, go straight to waiting state
+    if (station_monitor_players_ref !== null){
+        station_monitor_players_ref.off();
+    }
+    station_monitor_players_ref = new Firebase(FB_STATIONPLAYERS_URL);
+    station_monitor_players_ref.on("value", function(snapshot){
+        if(snapshot.val() === null){
+            // change to waiting state
+            change_to_waiting("answered");
+            
+            station_monitor_players_ref.off();
+        }
+        else{ // if there is/are players remains, then check if the players are still connected to the game
+            var total_players_remain = snapshot.numChildren();
+            var total_disconnected_players = 0;
+            
+            snapshot.forEach(function(childSnapshot) {
+                var value = childSnapshot.val();
+                if (!value.connected){ // disconnected players
+                    total_disconnected_players = total_disconnected_players + 1;
+                }
+            });
+            
+            if(total_players_remain === total_disconnected_players){ // if all players remain disconnected
+                // change to waiting state
+                change_to_waiting("answered");
+                
+                station_monitor_players_ref.off();
+            }
+        }
+    });
+    
     // Local variable
     var curr_option1_stats = 0;
     var curr_option2_stats = 0;
@@ -1685,6 +1820,38 @@ function display_answered_qns_icons(answered_index){
 // Start all functions related to leaderboard state
 function start_leaderboard(){
     
+    // Check the remaining number of players, if 0, go straight to waiting state
+    if (station_monitor_players_ref !== null){
+        station_monitor_players_ref.off();
+    }
+    station_monitor_players_ref = new Firebase(FB_STATIONPLAYERS_URL);
+    station_monitor_players_ref.on("value", function(snapshot){
+        if(snapshot.val() === null){
+            // change to waiting state
+            change_to_waiting("leaderboard");
+            
+            station_monitor_players_ref.off();
+        }
+        else{ // if there is/are players remains, then check if the players are still connected to the game
+            var total_players_remain = snapshot.numChildren();
+            var total_disconnected_players = 0;
+            
+            snapshot.forEach(function(childSnapshot) {
+                var value = childSnapshot.val();
+                if (!value.connected){ // disconnected players
+                    total_disconnected_players = total_disconnected_players + 1;
+                }
+            });
+            
+            if(total_players_remain === total_disconnected_players){ // if all players remain disconnected
+                // change to waiting state
+                change_to_waiting("leaderboard");
+                
+                station_monitor_players_ref.off();
+            }
+        }
+    });
+    
     // Local variable
     var all_scores = [];
     var station_state_ref, stationPlayers_ref;
@@ -1757,6 +1924,10 @@ function bubbleSort(a, par)
 //--------------------------------------------------------------------------- Functions for gameover states ---------------------------------------------------------------------------------------------
 // Start all functions related to game over state
 function start_game_over(){
+    
+    if (station_monitor_players_ref !== null){
+        station_monitor_players_ref.off();
+    }
     
     // Local variable
     var all_scores = [];
