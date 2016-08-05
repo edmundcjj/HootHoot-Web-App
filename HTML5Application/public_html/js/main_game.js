@@ -794,7 +794,7 @@ function toggle_getready_qns_icons_invisibility(){
 function start_get_ready(){
     
     // Local variables
-    var stationqnshistory_ref, station_ref;
+    var station_ref;
     
     // Toggle get ready state qns number icons to visible
     toggle_getready_qns_icons_invisibility();
@@ -837,6 +837,7 @@ function start_get_ready(){
     display_getready_qns_num_icons(qns_num_icon);
     var qns_name = document.getElementById("get_ready_h2_qns_name");
     qns_name.innerHTML = curr_qns.question_name;
+    document.getElementById("get_ready_h2_qns_hint").innerHTML = "Hint: " + curr_qns.hint;
     
     // Toggle visibility of option field depending on option type for answering_question state
     if (curr_qns.option_type === "TEXT"){

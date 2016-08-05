@@ -30,9 +30,15 @@ and open the template in the editor.
     height: 100%;
 }
 .get_ready_qns_name_row{
-    height: 78%;
+    height: 71%;
 }
 .get_ready_qns_name_row > div{
+    height: 100%;
+}
+.get_ready_qns_hint_row{
+    height: 7%;
+}
+.get_ready_qns_hint_row > div{
     height: 100%;
 }
 /*Get Ready Layout Configuration*/
@@ -69,5 +75,19 @@ and open the template in the editor.
     text-align: center;
 }
 /*Question name css*/
+
+#get_ready_qns_hint{
+    background: #00BF96;
+}
+#get_ready_h2_qns_hint{
+    font-size: 60px;
+    font-style: italic;
+    position: relative;
+    top: 10%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    text-align: center;
+}
 
 
