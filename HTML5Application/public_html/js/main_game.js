@@ -72,8 +72,13 @@ var NEW_PLAYER_AUDIO;
 function playAudio(audio)
 {
     console.log("Playing " + current_state + " audio");
-    audio.currentTime = 0;
-    audio.play();
+    audio.volume = 0;
+    audio.pause();
+    setTimeout(function(){
+        audio.volume = 1;
+        audio.currentTime = 0;
+        audio.play();
+    }, 150);
 }
 
 // Pause all audio sounds
@@ -102,14 +107,14 @@ function pauseAllAudios()
 
 //--------------------------------------------------------------------------- Functions for waiting state timer ---------------------------------------------------------------------------------------------
 // 60 seconds countdown timer function for waiting state
-function waiting_countdown_60sec_timer(ref1, ref2){
+function starting_countdown_60sec_timer(ref1, ref2){
     // Reset get_ready state progress bar's width to 0px
     console.log("Before waiting reset");
     document.getElementById("waiting_skillbar-bar_width").style.width = "0%";
     console.log("After waiting reset");
     
-    var seconds = 60,
-    timer = 62000,
+    var seconds = 10,
+    timer = 12000,
     second = 0;
 
     interval = setInterval(function() {
@@ -136,10 +141,23 @@ function waiting_countdown_60sec_timer(ref1, ref2){
 }
 
 // Stop 60 seconds countdown timer function
-function stop_waiting_countdown_60sec_timer(){
+function stop_starting_countdown_60sec_timer(){
     clearInterval(interval);
 }
 //--------------------------------------------------------------------------- Functions for waiting state timer ---------------------------------------------------------------------------------------------
+
+
+//--------------------------------------------------------------------------- Function to check for 0 players remaining--------------------------------------------------------------------------------------
+// Check if PLAYERS node exist
+function check_0_players(){
+    var is_0_players = false;
+    var stationPlayers_ref = new Firebase(FB_STATIONPLAYERS_URL);
+    stationPlayers_ref.once("value", function(snapshot) {
+        is_0_players = snapshot.exists();
+    });
+    return is_0_players;
+}
+//--------------------------------------------------------------------------- Function to check for 0 players remaining--------------------------------------------------------------------------------------
 
 
 //--------------------------------------------------------------------------- Functions for getready state timer ---------------------------------------------------------------------------------------------
@@ -624,7 +642,7 @@ function start_waiting_for_players(){
         });
         
         // Stop 60 sec timer
-        stop_waiting_countdown_60sec_timer();
+        stop_starting_countdown_60sec_timer();
 
         var p = document.getElementById("state_reference");
         p.innerHTML = "Waiting for players...";
@@ -696,7 +714,7 @@ function start_waiting_for_players(){
 
                         var p = document.getElementById("state_reference");
                         p.innerHTML = "Waiting for players...";
-                        stop_waiting_countdown_60sec_timer();
+                        stop_starting_countdown_60sec_timer();
                     }
                 });
             });
@@ -740,7 +758,7 @@ function start_waiting_for_players(){
                         p.innerHTML = "Game starting soon...";
                         console.log("P inner HTML = " + p.innerHTML);
                         if (current_state === WAITING_STATE){
-                            waiting_countdown_60sec_timer(stationPlayers_ref, station_ref);
+                            starting_countdown_60sec_timer(stationPlayers_ref, station_ref);
                             current_state = STARTING_STATE;
 
                             // Play music for waiting state
@@ -1317,9 +1335,6 @@ function update_player_score(posting_time){
     var total_correct = 0, total_incorrect = 0;
     var stationPlayer_ref, stationPlayers_ref;
     
-    // Reset the number of answers to 0
-    document.getElementById("ans_num").innerHTML = "0 answers";
-    
     // Event when player has selected their answer
     stationPlayers_ref = new Firebase(FB_STATIONPLAYERS_URL);
     stationPlayers_ref.once("value", function(snapshot){
@@ -1403,6 +1418,9 @@ function update_player_score(posting_time){
 
                 // Make display of <div id="answering_questions"> visible
                 document.getElementById("answered").style.display = "block";
+                
+                // Reset the number of answers to 0
+                document.getElementById("ans_num").innerHTML = "0 answers";
                 
                 console.log("Before answering_question state");
                 
