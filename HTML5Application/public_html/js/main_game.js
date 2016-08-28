@@ -442,12 +442,10 @@ function game_over_countdown_10sec_timer(ref1){
 
 //--------------------------------------------------------------------------- CMS retrieve qns function ---------------------------------------------------------------------------------------------
 // Function to retrieve all questions from Content Management System
-function get_qns_from_CMS(){
-    questionBank = [];
-    curr_qns_index = 5;
+function get_qns_from_CMS(){              
     // Retrieve all questions from CMS and save it to QNS_BANK array
     var xmlhttp = new XMLHttpRequest();
-    var url = 'http://hootsq-mantro.azurewebsites.net/api/Questions/GetQuestions?station_id=' + station_id;
+    var url = 'http://hootsq-cms.azurewebsites.net/api/Questions/GetQuestions?station_id=' + station_id;
     xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                     questionBank = JSON.parse(xmlhttp.responseText);
