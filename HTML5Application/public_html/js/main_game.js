@@ -444,6 +444,7 @@ function game_over_countdown_10sec_timer(ref1){
 // Function to retrieve all questions from Content Management System
 function get_qns_from_CMS(){              
     // Retrieve all questions from CMS and save it to QNS_BANK array
+    curr_qns_index = 5;
     var xmlhttp = new XMLHttpRequest();
     var url = 'http://hootsq-cms.azurewebsites.net/api/Questions/GetQuestions?station_id=' + station_id;
     xmlhttp.onreadystatechange = function() {
